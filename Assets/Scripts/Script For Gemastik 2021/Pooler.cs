@@ -11,7 +11,6 @@ public class Pooler : MonoBehaviour
     [Range(1,3)] public int powerUpsAmount = 1;
     List<GameObject> pooledCoins = new List<GameObject>();
     List<GameObject> powerUps = new List<GameObject>();
-    // public GameObject[] powerUps = new GameObject[3];
 
     private void Awake() {
         current = this;    

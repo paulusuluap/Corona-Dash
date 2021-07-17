@@ -36,7 +36,6 @@ public class FirstPersonController : MonoBehaviour
         
         if(coinMagnet.Magnetized)
             coinMagnet.Magnetizing(this);
-        
     }
     private void FixedUpdate() {
         rb.MovePosition(rb.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
@@ -57,13 +56,16 @@ public class FirstPersonController : MonoBehaviour
             
             if(Input.GetTouch(i).position.x < screenWidth/2)
                 SideMovement(-1f);
-            i++;
+            
+            if(Input.GetTouch(i).position.x > screenWidth/2 && Input.GetTouch(i).position.x < screenWidth/2)
+                return;
+            i++;    
         }
     }
 
-    private void OnDrawGizmos() 
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(this.transform.position, 10f);
-    }
+    // private void OnDrawGizmos() 
+    // {
+    //     Gizmos.color = Color.red;
+    //     Gizmos.DrawWireSphere(this.transform.position, 10f);
+    // }
 }

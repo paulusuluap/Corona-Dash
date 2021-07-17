@@ -40,11 +40,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5731313946452084908}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90cd0ef1ca0a445119d33f7d96a34a8a, type: 3}
+  m_Script: {fileID: 11500000, guid: c8dbd0c83c4ab4e45938b1672764e43f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 5
-  magnetSpeed: 10
+  radius: 10
+  magnetSpeed: 22.5
   hitColliders:
   - {fileID: 0}
   - {fileID: 0}

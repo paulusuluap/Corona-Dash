@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class CameraBackgroudColor : MonoBehaviour
 {
-    private Color color1 = Color.red;
-    private Color color2 = Color.blue;
-    private float duration = 3f;
+    private Color color1 = new Vector4(1f, 0.8511444f, 0.740566f);
+    private Color color2 = new Vector4(0.22f, 0.01f, 0.36f);
+    private float duration = 60f;
     private Camera m_camera;
     void Start()
     {
