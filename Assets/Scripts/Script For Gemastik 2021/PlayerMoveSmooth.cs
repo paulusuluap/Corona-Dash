@@ -2,48 +2,71 @@
 
 public class PlayerMoveSmooth : MonoBehaviour
 {
-    CharacterController characterController;
-    private Vector3 velocity;
-    private float gravity = -9.81f;
-    public float turnSpeed = 5f;
-    public float walkSpeed = 3f;    
+    Rigidbody rb;
+    public float walkSpeed;    
+    public float turnSpeed;  
+    private float screenWidth, screenHeight;
+    private Vector3 moveAmount;  
+    private Vector3 smoothMoveVelocity;
+    private Transform planetPos;
 
     void Start()
     {
-        characterController = GetComponent<CharacterController>();
+        rb = GetComponent<Rigidbody>();
+        planetPos = GameObject.FindGameObjectWithTag("Planet").transform;
+        screenWidth = Screen.width;
+        screenHeight = Screen.height;
     }
 
-    void Update()
-    {
-        velocity.y += gravity * Time.deltaTime;
+    private void Movement () {
+        float horizontal = Input.GetAxisRaw("Horizontal");
+        float vertical = Input.GetAxisRaw("Vertical");
+
+        // Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
+        Vector3 direction = new Vector3(0f, 0f, vertical).normalized;
+        Vector3 targetMoveAmount = direction * walkSpeed;
+        moveAmount = Vector3.SmoothDamp(moveAmount, targetMoveAmount, ref smoothMoveVelocity, .15f);
         
-        Move();
+        if(direction != Vector3.zero) Rotate(direction, planetPos);
+
+        rb.MovePosition(rb.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
     }
 
-    void Move () {
-        float horizontal = Input.GetAxisRaw("Horizontal") * walkSpeed * Time.deltaTime;
-        float vertical = Input.GetAxisRaw("Vertical") * walkSpeed * Time.deltaTime;
-
-        Vector3 moveVector = new Vector3(horizontal, 0f, vertical);
-        // Vector3 moveVector = new Vector3(horizontal, 0f, Time.deltaTime);
-
-        characterController.Move(moveVector + velocity);
-
-        if(moveVector != Vector3.zero)
-            Rotate(moveVector);
-
+    private void Update() {
+        PlayerInputRotation();
+    }
+    private void FixedUpdate() {
+        Movement(); 
     }
 
-    void Rotate (Vector3 moveVector) {
-        Quaternion targetRotation = Quaternion.LookRotation(moveVector, Vector3.up);
-        Quaternion newRotation = Quaternion.Lerp(this.transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+    void Rotate (Vector3 moveVector, Transform planet) 
+    {
+        Vector3 targetDir = (this.transform.position - planet.position).normalized;
+        Quaternion targetRotation = Quaternion.FromToRotation(this.transform.up, targetDir) * this.transform.rotation;
+        Quaternion newRotation = Quaternion.Slerp(this.transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
 
         transform.rotation = newRotation;
     }
 
-    public float GetCurrentSpeed()
+    private void PlayerInputRotation()
     {
-        return 3f;
+        int i = 0;
+        while(i < Input.touchCount)
+        {
+            //Belok Kiri
+            if(Input.GetTouch(i).position.x < screenWidth/2)   
+                SideMovement(-1f);
+            
+            //Belok Kanan
+            if(Input.GetTouch(i).position.x > screenWidth/2)
+                SideMovement(1f);
+
+            i++;    
+        }
     }
+    private void SideMovement(float dir)
+	{
+		transform.Rotate(Vector3.up * dir * Time.deltaTime * turnSpeed, Space.Self);
+	}
 }
 

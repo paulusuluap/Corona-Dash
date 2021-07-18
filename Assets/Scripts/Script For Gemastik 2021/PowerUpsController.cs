@@ -1,10 +1,9 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PowerUpsController : MonoBehaviour
 {
     [SerializeField] private float radius = 10f;
-    public float magnetSpeed = 22.5f;
+    public float magnetSpeed = 20f;
     private float magnetDuration = 10f;
     private Vector3 playerPosStoring;
     protected bool isMagnetized = false; 
@@ -32,13 +31,6 @@ public class PowerUpsController : MonoBehaviour
         
         if(magnetDuration <= 0f)
             isMagnetized = false;
-
-        // if(!isMagnetized)
-        //     return;
-        
-        // yield return new WaitForSecondsRealtime(magnetDuration);
-
-        // isMagnetized = false;
     }
 
     public void Magnetizing(FirstPersonController player)

@@ -196,7 +196,7 @@ PrefabInstance:
     - target: {fileID: 2556263070926547770, guid: 68ae6e3bb81354e51a6e91d9da1dc8fc,
         type: 3}
       propertyPath: magnetSpeed
-      value: 22.5
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5731313946452084908, guid: 68ae6e3bb81354e51a6e91d9da1dc8fc,
         type: 3}
@@ -971,8 +971,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f780324132dd44c4b82239ff8f815273, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotateSensitivityX: 100
-  walkSpeed: 10
 --- !u!114 &1420947944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1354,7 +1352,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1670013630}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: be49323c5a8f54708aaafe82c377b79c, type: 3}
   m_Name: 

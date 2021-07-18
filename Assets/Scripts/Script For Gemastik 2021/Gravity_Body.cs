@@ -4,7 +4,7 @@
 public class Gravity_Body : MonoBehaviour
 {
     private Rigidbody rb;
-    GravityAttractor planet;
+    private GravityAttractor planet;
 
     private void Awake() 
     {

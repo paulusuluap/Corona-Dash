@@ -15,9 +15,10 @@ public class TestingManager : MonoBehaviour
     {
         planetRadius = this.transform.localScale.x/2;
         coinPosition = planetRadius + offset;
-        randomPos = new Vector3[7];
+        randomPos = new Vector3[3];
         earthGravity = this.gameObject.GetComponent<GravityAttractor>();
 
+        DOTween.Init(true, true, LogBehaviour.Verbose).SetCapacity(2000, 100);
 
         InvokeRepeating("Coins", 2f, 1f);
         InvokeRepeating("PowerUps", 20f, 30f);
@@ -32,7 +33,7 @@ public class TestingManager : MonoBehaviour
 
         for(int i = 0; i < posAmount ; i++)
         {
-            coin.transform.position = randomPos[i];
+            coin.transform.position = randomPos[0];
             coin.SetActive(true);
             earthGravity.AttractOtherObject(coin.transform);
             coin.transform.DOLocalRotate(new Vector3(0.0f, 180f, 0.0f), .5f, RotateMode.LocalAxisAdd).SetLoops(-1, LoopType.Incremental).SetEase(Ease.Linear).SetRelative();
@@ -49,28 +50,18 @@ public class TestingManager : MonoBehaviour
         for (int i = 0 ; i < powerUpsAmount ; i++)
         {
             //Belum dibuat randomization untuk dapet power up apa
-            powerUp.transform.position = randomPos[5];
+            powerUp.transform.position = randomPos[1];
             powerUp.SetActive(true);
             earthGravity.AttractOtherObject(powerUp.transform);
-            powerUp.transform.DOLocalRotate(new Vector3(0.0f, 180f, 0.0f), .5f, RotateMode.LocalAxisAdd).SetLoops(-1, LoopType.Incremental).SetEase(Ease.Linear).SetRelative();
         }
-
     }
 
     private void RandomCoinPosition(){
         Vector3 pos1 = Random.onUnitSphere * (coinPosition);
-        Vector3 pos2 = Random.onUnitSphere * (coinPosition);
-        Vector3 pos3 = Random.onUnitSphere * (coinPosition);
-        Vector3 pos4 = Random.onUnitSphere * (coinPosition);
-        Vector3 pos5 = Random.onUnitSphere * (coinPosition);
         Vector3 powerUpPos = Random.onUnitSphere * (coinPosition);
 
         randomPos[0] = pos1;
-        randomPos[1] = pos2;
-        randomPos[2] = pos3;
-        randomPos[3] = pos4;
-        randomPos[4] = pos5;
-        randomPos[5] = powerUpPos;
+        randomPos[1] = powerUpPos;
     }
     void Update()
     {   
