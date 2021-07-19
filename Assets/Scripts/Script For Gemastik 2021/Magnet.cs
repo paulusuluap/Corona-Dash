@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using DG.Tweening;
 
 public class Magnet : MonoBehaviour
 {
@@ -6,6 +7,12 @@ public class Magnet : MonoBehaviour
     private GravityAttractor planet;
     private void OnEnable() {
         coinMagnet = FindObjectOfType<PowerUpsController>();
+        planet = GameObject.FindObjectOfType<GravityAttractor>();
+        Attract();
+    }
+
+    private void OnDisable() {
+        Attract();
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -20,4 +27,11 @@ public class Magnet : MonoBehaviour
             coinMagnet.MagnetDuration = 10f;
         }
     }    
+
+    private void Attract()
+    {
+        if(!this.gameObject.activeInHierarchy) return;
+
+        planet.AttractOtherObject(this.transform);
+    }
 }

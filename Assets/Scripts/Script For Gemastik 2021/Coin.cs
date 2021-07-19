@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using DG.Tweening;
 
-public class CoinTestScript : MonoBehaviour
+public class Coin : MonoBehaviour
 {
     private GravityAttractor planet;
     private Tweener tweener;
@@ -34,11 +34,5 @@ public class CoinTestScript : MonoBehaviour
         if(!this.gameObject.activeInHierarchy) return;
 
         planet.AttractOtherObject(this.transform);
-        
-        Vector3 coinUp = this.transform.up;
-        Vector3 targetDir = (this.transform.position - planet.transform.position).normalized;
-
-        this.transform.rotation = Quaternion.FromToRotation(coinUp, targetDir) * this.transform.rotation;
     }
-
 }

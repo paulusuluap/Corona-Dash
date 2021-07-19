@@ -63,7 +63,6 @@ public class TestingManager : MonoBehaviour
             coin.transform.position = randomPos[0];
             coin.transform.SetParent(this.transform);
             coin.SetActive(true);
-            coin.transform.DOLocalRotate(new Vector3(0.0f, 180f, 0.0f), .5f, RotateMode.LocalAxisAdd).SetLoops(-1, LoopType.Incremental).SetEase(Ease.Linear).SetRelative();
         }
     }
 
