@@ -35,6 +35,7 @@ public class FirstPersonController : MonoBehaviour
     }
 
     private void Movement () {
+        // Vector3 direction = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical")).normalized;
         Vector3 direction = new Vector3(0f, 0f, 1f).normalized;
         Vector3 targetMoveAmount = direction * walkSpeed;
 
@@ -45,8 +46,10 @@ public class FirstPersonController : MonoBehaviour
         rb.MovePosition(rb.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
     }
 
+    //Kayanya harus dihapus moveVector, gk dipakek
     private void Rotate (Vector3 moveVector, Transform planet) 
     {   
+        //FromtoRotation is for spherical planet, LookRotation for flat surface with different components
         Vector3 targetDir = (this.transform.position - planet.position).normalized;
         Quaternion targetRotation = Quaternion.FromToRotation(this.transform.up, targetDir) * this.transform.rotation;
         Quaternion newRotation = Quaternion.Slerp(this.transform.rotation, targetRotation, turnSpeed * Time.deltaTime);

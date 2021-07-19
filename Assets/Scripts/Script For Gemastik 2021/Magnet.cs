@@ -3,6 +3,7 @@
 public class Magnet : MonoBehaviour
 {
     private PowerUpsController coinMagnet;
+    private GravityAttractor planet;
     private void OnEnable() {
         coinMagnet = FindObjectOfType<PowerUpsController>();
     }

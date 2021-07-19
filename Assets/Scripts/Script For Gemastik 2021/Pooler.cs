@@ -7,10 +7,20 @@ public class Pooler : MonoBehaviour
     public static Pooler current;
     public GameObject pooledCoin;
     public GameObject magnet;
-    [Range(1,7)] public int pooledCoinAmount = 7;
-    [Range(1,3)] public int powerUpsAmount = 1;
+    public GameObject corona;
+    public bool willGrow = false; // Nonton videonya lagi
+    private int pooledCoinAmount = 5;
+    private int powerUpsAmount = 1;
+    [Range(1,8)] public int pooledCoronaAmount = 4;
+    public int PooledCoinAmount {get { return pooledCoinAmount; }}
+    public int PowerUpsAmount {get { return powerUpsAmount; }}
+    public int PooledCoronaAmount {get { return pooledCoronaAmount; }}
     List<GameObject> pooledCoins = new List<GameObject>();
     List<GameObject> powerUps = new List<GameObject>();
+    List<GameObject> pooledCoronas = new List<GameObject>();
+    public List<GameObject> PooledCoins {get { return pooledCoins; }}
+    public List<GameObject> PowerUps {get { return powerUps; }}
+    public List<GameObject> PooledCoronas {get { return pooledCoronas; }}
 
     private void Awake() {
         current = this;    
@@ -21,23 +31,24 @@ public class Pooler : MonoBehaviour
 
         for(int i = 0; i < pooledCoinAmount; i++)
         {
-            GameObject obj = (GameObject) Instantiate (pooledCoin);
-            obj.SetActive(false);
-            pooledCoins.Add(obj);
+            GameObject coin = (GameObject) Instantiate (pooledCoin);
+            coin.SetActive(false);
+            pooledCoins.Add(coin);
         }
 
-        for(int i = 0; i < 1; i++)
+        for(int i = 0; i < powerUpsAmount; i++)
         {
-            GameObject obj = (GameObject) Instantiate (magnet);
-            obj.SetActive(false);
-            powerUps.Add(obj);
+            GameObject powUp = (GameObject) Instantiate (magnet);
+            powUp.SetActive(false);
+            powerUps.Add(powUp);
         }
 
-        // foreach(GameObject powerUp in powerUps)
-        // {
-        //     if(powerUp.activeInHierarchy)
-        //         powerUp.SetActive(false);
-        // }
+        for(int i = 0; i < pooledCoronaAmount; i++)
+        {
+            GameObject virus = (GameObject) Instantiate (corona);
+            virus.SetActive(false);
+            pooledCoronas.Add(virus);
+        }
     }
 
     public GameObject GetPooledCoins()
@@ -52,7 +63,7 @@ public class Pooler : MonoBehaviour
 
     public GameObject GetPooledPowerUps()
     {
-        // for(int i = 0; i < powerUps.Length ; i++)
+        // for(int i = 0; i < powerUps.Length ; i++) // Rubah dari List ke Array untuk Magnet, Bonus, Invincible
         for(int i = 0; i < powerUps.Count ; i++)
         {
             if(!powerUps[i].activeInHierarchy)
@@ -61,21 +72,21 @@ public class Pooler : MonoBehaviour
         return null;
     }
 
-    // public GameObject GetPooledEnemies()
-    // {
-    //     for(int i = 0; i < pooledEnemies.Count ; i++)
-    //     {
-    //         if(!pooledEnemies[i].activeInHierarchy)
-    //             return pooledEnemies[i];
-    //     }
+    public GameObject GetPooledCorona()
+    {
+        for(int i = 0; i < pooledCoronas.Count ; i++)
+        {
+            if(!pooledCoronas[i].activeInHierarchy)
+                return pooledCoronas[i];
+        }
 
-    //     if(willGrow)
-    //     {
-    //         GameObject obj = (GameObject) Instantiate (pooledEnemy);
-    //         pooledEnemies.Add(obj);
-    //         return obj;
-    //     }
+        if(willGrow)
+        {
+            GameObject obj = (GameObject) Instantiate (corona);
+            pooledCoronas.Add(obj);
+            return obj;
+        }
 
-    //     return null;
-    // }
+        return null;
+    }
 }

@@ -18,12 +18,11 @@ public class GravityAttractor : MonoBehaviour
 
     public void AttractOtherObject(Transform obj)
     {
+        if(!obj.gameObject.activeInHierarchy) return;
+
         Vector3 objUp = obj.up;
         Vector3 targetDir = (obj.position - transform.position).normalized;
 
         obj.rotation = Quaternion.FromToRotation(objUp, targetDir) * obj.rotation;
-
-        if(!obj.gameObject.activeInHierarchy)
-            return;
     }
 }

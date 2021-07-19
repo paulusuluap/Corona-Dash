@@ -7,43 +7,70 @@ public class TestingManager : MonoBehaviour
     [SerializeField]
     private float offset = 8.5f;
     private float planetRadius;
-    private float coinPosition;
-    GravityAttractor earthGravity;
+    private float objectPosOnPlanet;
+    GravityAttractor planet;
+    FirstPersonController player;
     Vector3[] randomPos;
 
     void Start()
     {
+        player = GameObject.FindWithTag("Player").GetComponent<FirstPersonController>();
+        planet = GameObject.FindGameObjectWithTag("Planet").GetComponent<GravityAttractor>();
+
         planetRadius = this.transform.localScale.x/2;
-        coinPosition = planetRadius + offset;
+        objectPosOnPlanet = planetRadius + offset;
         randomPos = new Vector3[3];
-        earthGravity = this.gameObject.GetComponent<GravityAttractor>();
 
         DOTween.Init(true, true, LogBehaviour.Verbose).SetCapacity(2000, 100);
 
-        InvokeRepeating("Coins", 2f, 1f);
-        InvokeRepeating("PowerUps", 20f, 30f);
+        InvokeRepeating("CoinSpawning", 2f, 1f);
+        InvokeRepeating("PowerUpSpawning", 20f, 30f);
+        InvokeRepeating("CoronaVirusSpawning", 5f, 10f);
     }
 
-    void Coins()
+
+    //Ngetes aja, performa pasti ancur
+    void SetAttractPooledItems(){
+        //Attract anak
+
+        foreach (Transform eachChild in transform) 
+        {
+            if (eachChild.gameObject.activeInHierarchy)
+                planet.AttractOtherObject(eachChild.transform);    
+        }  
+
+    }
+
+    private void Update()
+    {   
+        RandomPosition();
+        SetAttractPooledItems();
+    }
+
+    private void FixedUpdate() {
+        CoronaManager.current.ChasingPlayer(player);
+    }
+
+    void CoinSpawning()
     {
         GameObject coin = Pooler.current.GetPooledCoins();
-        int posAmount = Pooler.current.pooledCoinAmount;
+        int posAmount = Pooler.current.PooledCoinAmount;
 
         if(coin == null) return;
 
         for(int i = 0; i < posAmount ; i++)
         {
             coin.transform.position = randomPos[0];
+            coin.transform.SetParent(this.transform);
             coin.SetActive(true);
-            earthGravity.AttractOtherObject(coin.transform);
             coin.transform.DOLocalRotate(new Vector3(0.0f, 180f, 0.0f), .5f, RotateMode.LocalAxisAdd).SetLoops(-1, LoopType.Incremental).SetEase(Ease.Linear).SetRelative();
         }
     }
 
-    void PowerUps ()
+    void PowerUpSpawning ()
     {
         GameObject powerUp = Pooler.current.GetPooledPowerUps();
-        int powerUpsAmount = Pooler.current.powerUpsAmount;
+        int powerUpsAmount = Pooler.current.PowerUpsAmount;
 
         if(powerUp == null) return;
 
@@ -51,20 +78,32 @@ public class TestingManager : MonoBehaviour
         {
             //Belum dibuat randomization untuk dapet power up apa
             powerUp.transform.position = randomPos[1];
+            powerUp.transform.SetParent(this.transform);
             powerUp.SetActive(true);
-            earthGravity.AttractOtherObject(powerUp.transform);
+        }
+    }
+    void CoronaVirusSpawning ()
+    {
+        GameObject coronaVirus = Pooler.current.GetPooledCorona();
+        int coronaAmount = Pooler.current.pooledCoronaAmount;
+
+        if(coronaVirus == null) return;
+
+        for (int i = 0 ; i < coronaAmount ; i++)
+        {
+            coronaVirus.transform.position = randomPos[2];
+            coronaVirus.transform.SetParent(this.transform);
+            coronaVirus.SetActive(true);
         }
     }
 
-    private void RandomCoinPosition(){
-        Vector3 pos1 = Random.onUnitSphere * (coinPosition);
-        Vector3 powerUpPos = Random.onUnitSphere * (coinPosition);
+    private void RandomPosition(){
+        Vector3 coinPos = Random.onUnitSphere * (objectPosOnPlanet);
+        Vector3 powerUpPos = Random.onUnitSphere * (objectPosOnPlanet);
+        Vector3 coronaPos = Random.onUnitSphere * (objectPosOnPlanet);
 
-        randomPos[0] = pos1;
+        randomPos[0] = coinPos;
         randomPos[1] = powerUpPos;
-    }
-    void Update()
-    {   
-        RandomCoinPosition();
-    }
+        randomPos[2] = coronaPos;
+    }    
 }
