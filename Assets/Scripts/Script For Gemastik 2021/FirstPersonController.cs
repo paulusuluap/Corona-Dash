@@ -10,25 +10,29 @@ public class FirstPersonController : MonoBehaviour
     private float screenWidth, screenHeight;
     private Vector3 moveAmount;
     private Vector3 smoothMoveVelocity;
-    private PowerUpsController coinMagnet;
+    private PowerUpsController powerUps;
     private Transform planetPos;
+    private Renderer rend;
+    private Color c;
 
     void Start() {
+        rend = GetComponent<Renderer>();
         rb = GetComponent<Rigidbody>();
+        c = rend.material.color;
+
         screenWidth = Screen.width;
         screenHeight = Screen.height;
         
-        coinMagnet = FindObjectOfType<PowerUpsController>();
+        powerUps = FindObjectOfType<PowerUpsController>();
         planetPos = FindObjectOfType<GravityAttractor>().transform;
-        
-        // Debug.Log("Width : " + screenWidth + " Height : " + screenHeight);
     }
 
     void Update()
     {
         PlayerInputRotation();
 
-        if(coinMagnet.Magnetized) coinMagnet.Magnetizing(this);
+        if(powerUps.IsMagnetized) powerUps.Magnetizing(this);
+        if(powerUps.IsInvincible) powerUps.Invulnerable(rend, c);
     }
     private void FixedUpdate() {
         Movement();

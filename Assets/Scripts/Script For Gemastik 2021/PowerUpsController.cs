@@ -1,13 +1,17 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class PowerUpsController : MonoBehaviour
 {
     [SerializeField] private float radius = 10f;
     public float magnetSpeed = 20f;
     private float magnetDuration = 10f;
+    private float invincibleDuration = 10f;
     private Vector3 playerPosStoring;
     protected bool isMagnetized = false; 
-    public bool Magnetized {get { return isMagnetized;} set {isMagnetized = value;} }
+    protected bool isInvincible = false; 
+    public bool IsMagnetized {get { return isMagnetized;} set {isMagnetized = value;} }
+    public bool IsInvincible {get { return isInvincible;} set {isInvincible = value;} }
     public float MagnetDuration {get { return magnetDuration; } set {magnetDuration = value;} }
     [SerializeField] Collider[] hitColliders = new Collider[10];
 
@@ -30,11 +34,39 @@ public class PowerUpsController : MonoBehaviour
         magnetDuration -= Time.deltaTime;
         
         if(magnetDuration <= 0f)
+        {
+            magnetDuration = 10f;
             isMagnetized = false;
+        }
+    }
+
+    IEnumerator Invincibility(Renderer playerRender, Color c)
+    {
+        c = playerRender.material.color;
+        c.a = 0.5f;
+        playerRender.material.color = c;
+
+        Physics.IgnoreLayerCollision(8, 11, true);
+        Physics.IgnoreLayerCollision(8, 12, true);
+
+        yield return new WaitForSeconds(invincibleDuration);
+
+        Physics.IgnoreLayerCollision(8, 11, false);
+        Physics.IgnoreLayerCollision(8, 12, false);
+
+        c.a = 1f;
+        playerRender.material.color = c;
+
+        isInvincible = false;
     }
 
     public void Magnetizing(FirstPersonController player)
     {
         Magnetize(player);
+    }
+
+    public void Invulnerable(Renderer playerRender, Color c)
+    {
+        StartCoroutine(Invincibility(playerRender, c));
     }
 }

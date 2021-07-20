@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Magnet : MonoBehaviour
+public class Invincible : MonoBehaviour
 {
     private PowerUpsController powerUps;
     private GravityAttractor planet;
@@ -17,9 +17,9 @@ public class Magnet : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other) {
-        if(other.gameObject.CompareTag("Player") && !powerUps.IsMagnetized)
+        if(other.gameObject.CompareTag("Player") && !powerUps.IsInvincible)
         {
-            powerUps.IsMagnetized = true;
+            powerUps.IsInvincible = true;
             this.gameObject.SetActive(false);
         }
     }    

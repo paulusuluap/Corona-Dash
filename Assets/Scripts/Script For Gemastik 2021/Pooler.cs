@@ -9,11 +9,11 @@ public class Pooler : MonoBehaviour
     public GameObject pooledCoin;
     [Header("Power Ups")]
     public GameObject magnet;
-    // public GameObject star;
+    public GameObject star;
     [Header("Prize")]public GameObject prizeBox;
     [Header("Corona")]public GameObject pooledCorona;
     private int pooledCoinAmount = 5;
-    private int powerUpsAmount = 1; //Nanti diganti 2 ya hehehe
+    private int powerUpsAmount = 2;
     private int prizeBoxAmount = 1;
     private int pooledCoronaAmount = 4;
 
@@ -105,10 +105,10 @@ public class Pooler : MonoBehaviour
     private void PowerUpsInstantiation()
     {
         GameObject m_magnet = (GameObject) Instantiate (magnet);
-        // GameObject m_invincible = (GameObject) Instantiate (star);
+        GameObject m_invincible = (GameObject) Instantiate (star);
 
         powerUps.Add(m_magnet);
-        // powerUps.Add(m_invincible);
+        powerUps.Add(m_invincible);
         
         for(int i = 0; i < powerUpsAmount; i++) powerUps[i].SetActive(false);
     }
