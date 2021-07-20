@@ -53,9 +53,9 @@ public class CoronaManager : MonoBehaviour
 
     protected void CoronaRotation(GameObject corona, FirstPersonController player)
     {
-        Vector3 targetDir = (corona.transform.position - player.transform.position).normalized;
-        Quaternion targetRotation = Quaternion.FromToRotation(corona.transform.up, targetDir) * corona.transform.rotation;
-        Quaternion newRotation = Quaternion.Slerp(corona.transform.rotation, targetRotation, .15f);
+        Vector3 targetDir = (player.transform.position - corona.transform.position).normalized;
+        Quaternion targetRotation = Quaternion.LookRotation(new Vector3(targetDir.x, 0f, targetDir.z));
+        Quaternion newRotation = Quaternion.Slerp(corona.transform.rotation, targetRotation, Time.deltaTime * 5f);
 
         transform.rotation = newRotation;
     }

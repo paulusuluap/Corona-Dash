@@ -15,6 +15,7 @@ TagManager:
   - EndHealth
   - Enemy1
   - PowerUp
+  - Prize
   layers:
   - Default
   - TransparentFX
@@ -24,10 +25,10 @@ TagManager:
   - UI
   - 
   - 
-  - Coin
-  - 
-  - 
-  - 
+  - Player
+  - Collectibles
+  - Environtment
+  - Virus
   - 
   - 
   - 

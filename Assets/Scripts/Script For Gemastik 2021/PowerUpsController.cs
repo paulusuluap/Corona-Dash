@@ -35,7 +35,6 @@ public class PowerUpsController : MonoBehaviour
 
     public void Magnetizing(FirstPersonController player)
     {
-        // StartCoroutine(Magnetize(player));
         Magnetize(player);
     }
 }

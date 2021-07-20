@@ -45,8 +45,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pooledCoin: {fileID: 1654909804264824708, guid: 137b4d1ad4f7347379c95cdd2c7b13f9,
     type: 3}
-  pooledCoinAmount: 4
-  powerUps:
-  - {fileID: 7461940612252205294, guid: 0a618e5b102b0433588c1f7b44fe23f2, type: 3}
-  - {fileID: 7461940612252205294, guid: 0a618e5b102b0433588c1f7b44fe23f2, type: 3}
-  - {fileID: 7461940612252205294, guid: 0a618e5b102b0433588c1f7b44fe23f2, type: 3}
+  magnet: {fileID: 170173696165451807, guid: 46955a697f03c4dd484449c99de89425, type: 3}
+  specialBox: {fileID: 8403106571310345334, guid: 42550e825db0848d0908cb196af63206,
+    type: 3}
+  pooledCorona: {fileID: 1546532096341185368, guid: a83bcf8da254442ab91ae540a31fcaf8,
+    type: 3}
+  willGrow: 0

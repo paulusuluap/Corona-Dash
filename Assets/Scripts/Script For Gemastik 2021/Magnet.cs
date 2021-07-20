@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
-using DG.Tweening;
 
 public class Magnet : MonoBehaviour
 {
     private PowerUpsController coinMagnet;
     private GravityAttractor planet;
-    private void OnEnable() {
+
+    private void OnEnable() 
+    {
         coinMagnet = FindObjectOfType<PowerUpsController>();
         planet = GameObject.FindObjectOfType<GravityAttractor>();
         Attract();

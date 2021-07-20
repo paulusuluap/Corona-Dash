@@ -8,43 +8,34 @@ public class TestingManager : MonoBehaviour
     private float offset = 8.5f;
     private float planetRadius;
     private float objectPosOnPlanet;
+    private float randomPick;
     GravityAttractor planet;
     FirstPersonController player;
     Vector3[] randomPos;
 
+
     void Start()
     {
+        DOTween.Init(true, true, LogBehaviour.Verbose).SetCapacity(2000, 100);
+
         player = GameObject.FindWithTag("Player").GetComponent<FirstPersonController>();
         planet = GameObject.FindGameObjectWithTag("Planet").GetComponent<GravityAttractor>();
 
         planetRadius = this.transform.localScale.x/2;
         objectPosOnPlanet = planetRadius + offset;
-        randomPos = new Vector3[3];
+        randomPos = new Vector3[4];
 
-        DOTween.Init(true, true, LogBehaviour.Verbose).SetCapacity(2000, 100);
+        float prizeInitalTime = Random.Range(30f, 60f);
 
+        InvokeRepeating("PrizeSpawning", prizeInitalTime, 300f);
         InvokeRepeating("CoinSpawning", 2f, 1f);
         InvokeRepeating("PowerUpSpawning", 20f, 30f);
-        InvokeRepeating("CoronaVirusSpawning", 5f, 10f);
-    }
-
-
-    //Ngetes aja, performa pasti ancur
-    void SetAttractPooledItems(){
-        //Attract anak
-
-        foreach (Transform eachChild in transform) 
-        {
-            if (eachChild.gameObject.activeInHierarchy)
-                planet.AttractOtherObject(eachChild.transform);    
-        }  
-
+        InvokeRepeating("CoronaVirusSpawning", 10f, 10f);
     }
 
     private void Update()
     {   
-        RandomPosition();
-        SetAttractPooledItems();
+        Randoms();
     }
 
     private void FixedUpdate() {
@@ -61,48 +52,56 @@ public class TestingManager : MonoBehaviour
         for(int i = 0; i < posAmount ; i++)
         {
             coin.transform.position = randomPos[0];
-            coin.transform.SetParent(this.transform);
             coin.SetActive(true);
         }
     }
 
     void PowerUpSpawning ()
     {
-        GameObject powerUp = Pooler.current.GetPooledPowerUps();
-        int powerUpsAmount = Pooler.current.PowerUpsAmount;
+        List<GameObject> powerUps = Pooler.current.PowerUps;
 
-        if(powerUp == null) return;
+        int powAmount = Pooler.current.PowerUpsAmount;
+        int random = Random.Range(0, powAmount);
 
-        for (int i = 0 ; i < powerUpsAmount ; i++)
-        {
-            //Belum dibuat randomization untuk dapet power up apa
-            powerUp.transform.position = randomPos[1];
-            powerUp.transform.SetParent(this.transform);
-            powerUp.SetActive(true);
-        }
+        if(powerUps[random] == null) return;
+        
+        powerUps[random].transform.position = randomPos[1];
+        powerUps[random].SetActive(true);
     }
+
+    void PrizeSpawning()
+    {
+        GameObject prize = Pooler.current.GetPrize();
+
+        if(prize == null) return;
+
+        prize.transform.position = randomPos[3]; //Certain place
+        prize.SetActive(true);
+    }
+
     void CoronaVirusSpawning ()
     {
         GameObject coronaVirus = Pooler.current.GetPooledCorona();
-        int coronaAmount = Pooler.current.pooledCoronaAmount;
+        int coronaAmount = Pooler.current.PooledCoronaAmount;
 
         if(coronaVirus == null) return;
 
         for (int i = 0 ; i < coronaAmount ; i++)
         {
             coronaVirus.transform.position = randomPos[2];
-            coronaVirus.transform.SetParent(this.transform);
             coronaVirus.SetActive(true);
         }
     }
 
-    private void RandomPosition(){
+    private void Randoms(){
         Vector3 coinPos = Random.onUnitSphere * (objectPosOnPlanet);
         Vector3 powerUpPos = Random.onUnitSphere * (objectPosOnPlanet);
         Vector3 coronaPos = Random.onUnitSphere * (objectPosOnPlanet);
+        Vector3 prizePos = Random.onUnitSphere * (objectPosOnPlanet);
 
         randomPos[0] = coinPos;
         randomPos[1] = powerUpPos;
         randomPos[2] = coronaPos;
+        randomPos[3] = prizePos;
     }    
 }
