@@ -40,7 +40,7 @@ public class PowerUpsController : MonoBehaviour
         }
     }
 
-    IEnumerator Invincible(Renderer playerRender, Color c)
+    IEnumerator Invincible(Renderer myRenderTransparent, Renderer myRenderOpaque, Color c)
     {
         c.a = 1f;
         
@@ -48,18 +48,24 @@ public class PowerUpsController : MonoBehaviour
         Physics.IgnoreLayerCollision(8, 12, true);
 
         c.a -= 0.5f;
+        
+        Invincibility.instance.SetOpaqueRenderer(myRenderOpaque, false);
+        Invincibility.instance.Fading(myRenderTransparent, c);
         Invincibility.instance.FadeT(c.a);
-        Invincibility.instance.Fading(playerRender, c);
 
         yield return new WaitForSeconds(invincibleDuration);
-
-        Invincibility.instance.Fading(playerRender, c);
         
         Physics.IgnoreLayerCollision(8, 11, false);
         Physics.IgnoreLayerCollision(8, 12, false);
 
+        Invincibility.instance.Fading(myRenderTransparent, c);
+
         c.a += 0.5f;
         Invincibility.instance.FadeT(c.a);
+
+        yield return new WaitForSeconds(1.25f);
+
+        Invincibility.instance.SetOpaqueRenderer(myRenderOpaque, true);
 
         isInvincible = false;
     }
@@ -69,8 +75,8 @@ public class PowerUpsController : MonoBehaviour
         Magnetize(player);
     }
 
-    public void Invulnerable(Renderer playerRender, Color c)
+    public void Invulnerable(Renderer myRenderTransparent, Renderer myRenderOpaque, Color c)
     {
-        StartCoroutine(Invincible(playerRender, c));
+        StartCoroutine(Invincible(myRenderTransparent, myRenderOpaque, c));
     }
 }

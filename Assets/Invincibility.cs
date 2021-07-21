@@ -10,22 +10,18 @@ public class Invincibility : MonoBehaviour
     float tempDist;
     bool isFadingUp;
     bool isFadingDown;
-    Renderer myRender;
-    Color myColor;
+    // Renderer myRender;
      
     void Awake()
     {
         instance = this;
         currentTransparency = defaultTransparency;
-        
-        // myRender = this.gameObject.GetComponent<Renderer>();
-        // myColor = myRender.material.GetColor("_BaseColor");
-
-        // // ApplyTransparency();
     }
      
-    void ApplyTransparency(Renderer myRender, Color c){
-        myRender.material.SetColor("_BaseColor",new Color(c.r, c.g, c.b, currentTransparency));
+    void ApplyTransparency(Renderer myRenderTransparent, Color c)
+    {
+        
+        myRenderTransparent.material.SetColor("_BaseColor",new Color(c.r, c.g, c.b, currentTransparency));
     }
  
     // public void SetT(float newT){
@@ -44,12 +40,13 @@ public class Invincibility : MonoBehaviour
         }
     }
 
-    public void Fading(Renderer myRender, Color c)
+    public void Fading(Renderer myRenderTransparent, Color c)
     {
         if(isFadingUp){
             if(currentTransparency < toFadeTo){
                 currentTransparency += (tempDist/fadeDuration) * Time.deltaTime;
-                ApplyTransparency(myRender, c);
+                ApplyTransparency(myRenderTransparent, c);
+                //Opaque enabled
             }else{
                 isFadingUp = false;
             }
@@ -57,10 +54,16 @@ public class Invincibility : MonoBehaviour
         else if(isFadingDown){
             if(currentTransparency > toFadeTo){
                 currentTransparency -= (tempDist/fadeDuration) * Time.deltaTime;
-                ApplyTransparency(myRender, c);
+                ApplyTransparency(myRenderTransparent, c);
             }else{
                 isFadingDown = false;
             }
         }
+    }
+
+    public void SetOpaqueRenderer(Renderer myRenderOpaque, bool whatMyRenderOpaque)
+    {
+        if(!whatMyRenderOpaque) myRenderOpaque.GetComponent<Renderer>().enabled = whatMyRenderOpaque;
+        else myRenderOpaque.GetComponent<Renderer>().enabled = whatMyRenderOpaque;
     }
 }

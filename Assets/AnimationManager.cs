@@ -2,14 +2,16 @@
 
 public class AnimationManager : MonoBehaviour
 {
-    private static Animator playerAnim;
+    public static AnimationManager current;
+    private Animator playerAnim;
     public GameObject m_PlayerCharacter;
 
     private void Start() {
+        current = this;
         playerAnim = m_PlayerCharacter.GetComponent<Animator>();
     }
 
-    public static void SetAnim(string whatIsCondition)
+    public void SetAnim(string whatIsCondition)
     {
         switch(whatIsCondition)
         {
@@ -25,13 +27,20 @@ public class AnimationManager : MonoBehaviour
             case "DeathType2":
                 playerAnim.SetInteger("DeathType_int" , 2);
                 break;
+            case "LookStraight":
+                playerAnim.SetFloat("Head_Horizontal_f", 0f);
+                break;
             case "LookLeft":
-                float lookLeft = Mathf.Lerp(0f, -0.3f, 1f * Time.deltaTime);
+                float lookLeft = Mathf.Lerp(0f, -0.3f, 30f * Time.deltaTime);
                 playerAnim.SetFloat("Head_Horizontal_f", lookLeft);
                 break;
             case "LookRight":
-                float LookRight = Mathf.Lerp(0f, 0.3f, 1f * Time.deltaTime);
+                float LookRight = Mathf.Lerp(0f, 0.3f, 30f * Time.deltaTime);
                 playerAnim.SetFloat("Head_Horizontal_f", LookRight);
+                break;
+            case "Happy":
+                //PlaySound Ayayay or Yohoo (Male/Female)
+                playerAnim.SetFloat("Head_Horizontal_f", 0.2f);
                 break;
             
         }

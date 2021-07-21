@@ -12,7 +12,7 @@ public class FirstPersonController : MonoBehaviour
     private PowerUpsController powerUps;
     private Transform planetPos;
     private Renderer myRender;
-    public Renderer[] characterRender;
+    public Renderer c_transparent, c_opaque;
     private Color c;
 
     void Start() {
@@ -25,13 +25,13 @@ public class FirstPersonController : MonoBehaviour
         screenWidth = Screen.width;
         screenHeight = Screen.height;
         
-        c = myRender.material.GetColor("_BaseColor");
+        c = c_transparent.material.GetColor("_BaseColor");
     }
 
     void Update()
     {
         if(powerUps.IsMagnetized) powerUps.Magnetizing(this);
-        if(powerUps.IsInvincible) powerUps.Invulnerable(myRender, c);
+        if(powerUps.IsInvincible) powerUps.Invulnerable(c_transparent, c_opaque, c);
     }
     private void FixedUpdate() {
         Movement();
@@ -62,22 +62,25 @@ public class FirstPersonController : MonoBehaviour
     private void PlayerInputRotation()
     {   
         int i = 0;
+        if(i == Input.touchCount) AnimationManager.current.SetAnim("LookStraight");
+        
         while(i < Input.touchCount)
         {
             //Belok Kiri
             if(Input.GetTouch(i).position.x < screenWidth/2)
             {
                 SideMovement(-1f);
-                // AnimationManager.SetAnim("LookLeft");
+                AnimationManager.current.SetAnim("LookLeft");
             }
             //Belok Kanan
             if(Input.GetTouch(i).position.x > screenWidth/2)
             {
                 SideMovement(1f);
-                // AnimationManager.SetAnim("LookRight");
+                AnimationManager.current.SetAnim("LookRight");
             }
             i++;    
         }
+
     }
     private void SideMovement(float dir)
 	{

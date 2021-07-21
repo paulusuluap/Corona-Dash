@@ -20,7 +20,10 @@ public class Corona : MonoBehaviour
         {
             Destroy();     
             col.gameObject.GetComponent<FirstPersonController>().enabled = false;
-            AnimationManager.SetAnim("Die");
+
+            AnimationManager.current.SetAnim("DeathType1");
+            AnimationManager.current.SetAnim("Die");
+            
             //Panggil game over
             // - Cinemachine camera rotate
             // - Score appear
