@@ -11,7 +11,7 @@ AnimatorController:
   m_AnimatorParameters:
   - m_Name: Speed_f
     m_Type: 1
-    m_DefaultFloat: 1
+    m_DefaultFloat: 0.5
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
@@ -8313,7 +8313,7 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 110253591}
-    m_Position: {x: 24, y: 48, z: 0}
+    m_Position: {x: 20, y: 50, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -8382,7 +8382,7 @@ AnimatorStateMachine:
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
-  m_EntryPosition: {x: 50, y: 120, z: 0}
+  m_EntryPosition: {x: 20, y: 110, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 110216906}
@@ -8403,7 +8403,7 @@ AnimatorStateMachine:
     m_Position: {x: -72, y: 180, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 110204794}
-    m_Position: {x: 168, y: 180, z: 0}
+    m_Position: {x: 170, y: 180, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 110214858}
     m_Position: {x: 168, y: 240, z: 0}

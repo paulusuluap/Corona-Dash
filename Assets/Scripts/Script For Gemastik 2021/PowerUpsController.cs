@@ -40,22 +40,26 @@ public class PowerUpsController : MonoBehaviour
         }
     }
 
-    IEnumerator Invincibility(Renderer playerRender, Color c)
+    IEnumerator Invincible(Renderer playerRender, Color c)
     {
-        c = playerRender.material.color;
-        c.a = 0.5f;
-        playerRender.material.color = c;
-
+        c.a = 1f;
+        
         Physics.IgnoreLayerCollision(8, 11, true);
         Physics.IgnoreLayerCollision(8, 12, true);
 
+        c.a -= 0.5f;
+        Invincibility.instance.FadeT(c.a);
+        Invincibility.instance.Fading(playerRender, c);
+
         yield return new WaitForSeconds(invincibleDuration);
 
+        Invincibility.instance.Fading(playerRender, c);
+        
         Physics.IgnoreLayerCollision(8, 11, false);
         Physics.IgnoreLayerCollision(8, 12, false);
 
-        c.a = 1f;
-        playerRender.material.color = c;
+        c.a += 0.5f;
+        Invincibility.instance.FadeT(c.a);
 
         isInvincible = false;
     }
@@ -67,6 +71,6 @@ public class PowerUpsController : MonoBehaviour
 
     public void Invulnerable(Renderer playerRender, Color c)
     {
-        StartCoroutine(Invincibility(playerRender, c));
+        StartCoroutine(Invincible(playerRender, c));
     }
 }

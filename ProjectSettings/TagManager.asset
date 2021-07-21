@@ -6,16 +6,14 @@ TagManager:
   tags:
   - Health
   - Corona
-  - BGAudio
   - UI
   - Planet
   - Obstacle
-  - UIFeatures
   - Anim
-  - EndHealth
-  - Enemy1
   - PowerUp
   - Prize
+  - Characters
+  - Audio
   layers:
   - Default
   - TransparentFX

@@ -2,7 +2,6 @@
 
 public class Corona : MonoBehaviour
 {
-    //Corona Mesh Selection (Normal & Delta)
     private GravityAttractor planet;
     private Rigidbody rb;
     
@@ -17,7 +16,17 @@ public class Corona : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision col) {   
-        if(col.gameObject.CompareTag("Player")) Destroy();            
+        if(col.gameObject.CompareTag("Player")) 
+        {
+            Destroy();     
+            col.gameObject.GetComponent<FirstPersonController>().enabled = false;
+            AnimationManager.SetAnim("Die");
+            //Panggil game over
+            // - Cinemachine camera rotate
+            // - Score appear
+            // - Restart button appear
+            // - Pulang ke home       
+        }
     }
 
     private void Destroy() {
@@ -41,6 +50,6 @@ public class Corona : MonoBehaviour
 
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(this.transform.position ,new Vector3 (25.0f, 25.0f, 25.0f));
+        Gizmos.DrawWireCube(this.transform.position ,new Vector3 (15.0f, 15.0f, 15.0f));
     }
 }

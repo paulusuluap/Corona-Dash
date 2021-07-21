@@ -1,45 +1,44 @@
 ﻿using UnityEngine;
-
 public class FirstPersonController : MonoBehaviour
 {
     Rigidbody rb;
     private float walkSpeed = 10f;
     public float WalkSpeed { get{ return walkSpeed; } set{ walkSpeed = value; } }
-    private float turnSpeed = 100f;
+    private float turnSpeed = 180f;
     public float TurnSpeed { get{ return turnSpeed; } set{ turnSpeed = value; } }
     private float screenWidth, screenHeight;
     private Vector3 moveAmount;
     private Vector3 smoothMoveVelocity;
     private PowerUpsController powerUps;
     private Transform planetPos;
-    private Renderer rend;
+    private Renderer myRender;
+    public Renderer[] characterRender;
     private Color c;
 
     void Start() {
-        rend = GetComponent<Renderer>();
+
         rb = GetComponent<Rigidbody>();
-        c = rend.material.color;
+        myRender = GetComponent<Renderer>();
+        powerUps = FindObjectOfType<PowerUpsController>();
+        planetPos = FindObjectOfType<GravityAttractor>().transform;
 
         screenWidth = Screen.width;
         screenHeight = Screen.height;
         
-        powerUps = FindObjectOfType<PowerUpsController>();
-        planetPos = FindObjectOfType<GravityAttractor>().transform;
+        c = myRender.material.GetColor("_BaseColor");
     }
 
     void Update()
     {
-        PlayerInputRotation();
-
         if(powerUps.IsMagnetized) powerUps.Magnetizing(this);
-        if(powerUps.IsInvincible) powerUps.Invulnerable(rend, c);
+        if(powerUps.IsInvincible) powerUps.Invulnerable(myRender, c);
     }
     private void FixedUpdate() {
         Movement();
+        PlayerInputRotation();
     }
 
     private void Movement () {
-        // Vector3 direction = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical")).normalized;
         Vector3 direction = new Vector3(0f, 0f, 1f).normalized;
         Vector3 targetMoveAmount = direction * walkSpeed;
 
@@ -50,7 +49,6 @@ public class FirstPersonController : MonoBehaviour
         rb.MovePosition(rb.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
     }
 
-    //Kayanya harus dihapus moveVector, gk dipakek
     private void Rotate (Vector3 moveVector, Transform planet) 
     {   
         //FromtoRotation is for spherical planet, LookRotation for flat surface with different components
@@ -62,30 +60,31 @@ public class FirstPersonController : MonoBehaviour
     }
 
     private void PlayerInputRotation()
-    {
+    {   
         int i = 0;
         while(i < Input.touchCount)
         {
             //Belok Kiri
             if(Input.GetTouch(i).position.x < screenWidth/2)
+            {
                 SideMovement(-1f);
-            
+                // AnimationManager.SetAnim("LookLeft");
+            }
             //Belok Kanan
             if(Input.GetTouch(i).position.x > screenWidth/2)
+            {
                 SideMovement(1f);
-                
+                // AnimationManager.SetAnim("LookRight");
+            }
             i++;    
         }
     }
     private void SideMovement(float dir)
 	{
-		transform.Rotate(Vector3.up * dir * Time.deltaTime * turnSpeed, Space.Self);
+        float initTurnSpeed = 0f;
+        float lerpSpeed = 25f;
+
+        initTurnSpeed = Mathf.Lerp(initTurnSpeed, turnSpeed, lerpSpeed * Time.deltaTime);
+		transform.Rotate(Vector3.up * dir * Time.deltaTime * initTurnSpeed, Space.Self);
 	}
-
-
-    // private void OnDrawGizmos() 
-    // {
-    //     Gizmos.color = Color.red;
-    //     Gizmos.DrawWireSphere(this.transform.position, 10f);
-    // }
 }

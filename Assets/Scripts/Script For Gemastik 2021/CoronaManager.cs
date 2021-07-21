@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CoronaManager : MonoBehaviour
 {
     public static CoronaManager current;
-    protected readonly Vector3 k_HalfExtentsBox = new Vector3 (25.0f, 25.0f, 25.0f); //Perhatikan lagi
-    public float coronaSpeed = 5f;
+    protected readonly Vector3 k_HalfExtentsBox = new Vector3 (15.0f, 15.0f, 15.0f); //Perhatikan lagi
+    private float coronaSpeed = 7.5f;
     private float chaseDuration = 10f;
     private float resetChaseDuration;
     [SerializeField] Collider[] hitColliders = new Collider[30];
@@ -36,7 +34,7 @@ public class CoronaManager : MonoBehaviour
                     virus.CoronaMoveToPlayer(player, coronaSpeed);
                     CoronaRotation(corona, player);
                 }
-                
+
                 if(chaseDuration <= .0f) 
                 {
                     corona.SetActive(false);

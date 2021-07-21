@@ -5,7 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/GamePlayReimplement.unity
     guid: 55025d36a25c340e8b0aa9a2f3ce9986
+  - enabled: 1
+    path: Assets/Scenes/CharacterImplement.unity
+    guid: 1b6e020adc54e48fc801dab5911d7482
   m_configObjects: {}
