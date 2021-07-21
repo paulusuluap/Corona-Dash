@@ -3,8 +3,8 @@ using System.Collections;
 
 public class PowerUpsController : MonoBehaviour
 {
-    [SerializeField] private float radius = 10f;
-    public float magnetSpeed = 20f;
+    private float radius = 10f;
+    private float magnetSpeed = 20f;
     private float magnetDuration = 10f;
     private float invincibleDuration = 10f;
     private Vector3 playerPosStoring;

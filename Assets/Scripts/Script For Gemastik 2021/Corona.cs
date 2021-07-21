@@ -51,8 +51,8 @@ public class Corona : MonoBehaviour
         planet.AttractOtherObject(this.transform);
     }
 
-    private void OnDrawGizmos() {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(this.transform.position ,new Vector3 (15.0f, 15.0f, 15.0f));
-    }
+    // private void OnDrawGizmos() {
+    //     Gizmos.color = Color.red;
+    //     Gizmos.DrawWireCube(this.transform.position ,new Vector3 (15.0f, 15.0f, 15.0f));
+    // }
 }

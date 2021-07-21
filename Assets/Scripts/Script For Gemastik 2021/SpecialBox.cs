@@ -27,6 +27,8 @@ public class SpecialBox : MonoBehaviour
         if(collider.gameObject.CompareTag("Player"))
         {            
             //Coin Collected += prizePool[prize];
+            // Wohoo audio
+            AnimationManager.current.SetAnim("Happy");
             this.gameObject.SetActive(false);
         }
     }

@@ -40,7 +40,7 @@ public class AnimationManager : MonoBehaviour
                 break;
             case "Happy":
                 //PlaySound Ayayay or Yohoo (Male/Female)
-                playerAnim.SetFloat("Head_Horizontal_f", 0.2f);
+                playerAnim.SetTrigger("Jump_trig");
                 break;
             
         }
