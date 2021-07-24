@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 using DG.Tweening;
+using UnityEngine;
 
 public class TestingManager : MonoBehaviour
 {
@@ -31,6 +31,8 @@ public class TestingManager : MonoBehaviour
         InvokeRepeating("CoinSpawning", 2f, 1f);
         InvokeRepeating("PowerUpSpawning", 20f, 30f);
         InvokeRepeating("CoronaVirusSpawning", 10f, 10f);
+
+        Physics.IgnoreLayerCollision(11, 12, true);
     }
 
     private void Update()
@@ -59,23 +61,25 @@ public class TestingManager : MonoBehaviour
     void PowerUpSpawning ()
     {
         List<GameObject> powerUps = Pooler.current.PowerUps;
+        Vector3 loc = Pooler.current.PowerUpSpawnLocation;
 
         int powAmount = Pooler.current.PowerUpsAmount;
         int random = Random.Range(0, powAmount);
 
         if(powerUps[random] == null) return;
         
-        powerUps[random].transform.position = randomPos[1];
+        powerUps[random].transform.position = loc;
         powerUps[random].SetActive(true);
     }
 
     void PrizeSpawning()
     {
         GameObject prize = Pooler.current.GetPrize();
+        Vector3 loc = Pooler.current.PrizeBoxLocation;
 
         if(prize == null) return;
 
-        prize.transform.position = randomPos[3]; //Certain place
+        prize.transform.position = loc;
         prize.SetActive(true);
     }
 
@@ -97,11 +101,9 @@ public class TestingManager : MonoBehaviour
         Vector3 coinPos = Random.onUnitSphere * (objectPosOnPlanet);
         Vector3 powerUpPos = Random.onUnitSphere * (objectPosOnPlanet);
         Vector3 coronaPos = Random.onUnitSphere * (objectPosOnPlanet);
-        Vector3 prizePos = Random.onUnitSphere * (objectPosOnPlanet);
 
         randomPos[0] = coinPos;
         randomPos[1] = powerUpPos;
         randomPos[2] = coronaPos;
-        randomPos[3] = prizePos;
     }    
 }

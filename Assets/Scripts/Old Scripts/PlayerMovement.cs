@@ -11,23 +11,23 @@ public class PlayerMovement : MonoBehaviour
     private PlayerHealth p_health;
     private UI_Manager t_counter;
 
+    // [SerializeField] private GameManager.PlatformSelection platform;
     private void Awake() {
         rb = this.gameObject.GetComponent<Rigidbody>();     
         p_health = GameObject.FindWithTag("Player").GetComponent<PlayerHealth>();      
         t_counter = GameObject.FindWithTag("UI").GetComponent<UI_Manager>(); 
 
-        platform = GameManager.PlatformSelection.PC;
+        // platform = GameManager.PlatformSelection.PC;
     }
 
-    [SerializeField] private GameManager.PlatformSelection platform;
 
     void Update()
     {
         playHealth = p_health.playerHealth;
         bool _gameStop = t_counter.gameStop; 
 
-        if(platform == GameManager.PlatformSelection.PC)
-            PC_Controller();
+        // if(platform == GameManager.PlatformSelection.PC)
+        //     PC_Controller();
     }
     
     void PC_Controller()
@@ -42,15 +42,15 @@ public class PlayerMovement : MonoBehaviour
     //     Vector3 targetMoveAmount2 = moveDir2 * walkSpeed;
     //     moveAmount2 = Vector3.SmoothDamp(moveAmount2, targetMoveAmount2, ref smoothMoveVelocity, .15f);  
     // }
-    private void FixedUpdate() 
-    {
-        //PC / Mac Controller
-        if(platform == GameManager.PlatformSelection.PC)
-            rb.MovePosition(rb.position + transform.TransformDirection(moveAmount1) * Time.fixedDeltaTime);
+    // private void FixedUpdate() 
+    // {
+    //     //PC / Mac Controller
+    //     if(platform == GameManager.PlatformSelection.PC)
+    //         rb.MovePosition(rb.position + transform.TransformDirection(moveAmount1) * Time.fixedDeltaTime);
 
-        //Mobile Controller
-        else if(platform == GameManager.PlatformSelection.Mobile)
-            rb.MovePosition(rb.position + transform.TransformDirection(moveAmount2) * Time.fixedDeltaTime);
-    }
+    //     //Mobile Controller
+    //     else if(platform == GameManager.PlatformSelection.Mobile)
+    //         rb.MovePosition(rb.position + transform.TransformDirection(moveAmount2) * Time.fixedDeltaTime);
+    // }
 }
     

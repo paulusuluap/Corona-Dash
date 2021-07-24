@@ -80,7 +80,6 @@ public class FirstPersonController : MonoBehaviour
             }
             i++;    
         }
-
     }
     private void SideMovement(float dir)
 	{
@@ -90,4 +89,13 @@ public class FirstPersonController : MonoBehaviour
         initTurnSpeed = Mathf.Lerp(initTurnSpeed, turnSpeed, lerpSpeed * Time.deltaTime);
 		transform.Rotate(Vector3.up * dir * Time.deltaTime * initTurnSpeed, Space.Self);
 	}
+
+    private void OnCollisionEnter(Collision obs) {
+        if(obs.gameObject.CompareTag("Obstacle"))
+        {
+            AnimationManager.current.SetAnim("DeathType1");
+            AnimationManager.current.SetAnim("Die");
+            this.enabled = false;
+        }
+    }
 }

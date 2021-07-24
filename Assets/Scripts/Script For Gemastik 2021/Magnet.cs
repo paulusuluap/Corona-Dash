@@ -20,7 +20,8 @@ public class Magnet : MonoBehaviour
         if(other.gameObject.CompareTag("Player") && !powerUps.IsMagnetized)
         {
             powerUps.IsMagnetized = true;
-            this.gameObject.SetActive(false);
+            this.gameObject.SetActive(false);            
+            ParticleManager.instance.IdleParticles("PowTaken");
         }
     }    
 

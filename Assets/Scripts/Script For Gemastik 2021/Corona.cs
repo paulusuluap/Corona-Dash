@@ -21,8 +21,10 @@ public class Corona : MonoBehaviour
             Destroy();     
             col.gameObject.GetComponent<FirstPersonController>().enabled = false;
 
-            AnimationManager.current.SetAnim("DeathType1");
+            AnimationManager.current.SetAnim("DeathType2");
             AnimationManager.current.SetAnim("Die");
+
+        if(col.gameObject.CompareTag("Obstacle")) gameObject.SetActive(false);
             
             //Panggil game over
             // - Cinemachine camera rotate
@@ -38,7 +40,7 @@ public class Corona : MonoBehaviour
 
     public void CoronaMoveToPlayer(FirstPersonController player, float coronaSpeed)
     {
-        if(!this.gameObject.activeInHierarchy) return;
+        if(!this.gameObject.activeInHierarchy || !player.enabled) return;
 
         Vector3 chasePlayer = Vector3.MoveTowards(this.transform.position, player.transform.position, coronaSpeed * Time.deltaTime);
         rb.MovePosition(chasePlayer);

@@ -14,13 +14,13 @@ public class SpecialBox : MonoBehaviour
     {
         planet = GameObject.FindObjectOfType<GravityAttractor>();
         prize = Random.Range(0, prizePool.Length);
-        // Debug.Log("Coin Prize : " + (int)prizePool[prize]); //Jangan lupa dihapus   
         Attract();
     }
 
     private void OnDisable() 
     {
         Attract();
+        
     }
 
     private void OnTriggerEnter(Collider collider) {
@@ -28,8 +28,8 @@ public class SpecialBox : MonoBehaviour
         {            
             //Coin Collected += prizePool[prize];
             // Wohoo audio
-            AnimationManager.current.SetAnim("Happy");
             this.gameObject.SetActive(false);
+            ParticleManager.instance.IdleParticles("PrizeTaken");
         }
     }
 

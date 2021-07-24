@@ -7,7 +7,6 @@ public class PowerUpsController : MonoBehaviour
     private float magnetSpeed = 20f;
     private float magnetDuration = 10f;
     private float invincibleDuration = 10f;
-    private Vector3 playerPosStoring;
     protected bool isMagnetized = false; 
     protected bool isInvincible = false; 
     public bool IsMagnetized {get { return isMagnetized;} set {isMagnetized = value;} }
@@ -18,8 +17,6 @@ public class PowerUpsController : MonoBehaviour
     protected void Magnetize(FirstPersonController player) 
     {
         int nb = Physics.OverlapSphereNonAlloc(player.transform.position, radius, hitColliders);
-
-        playerPosStoring = player.transform.position;
         
         for(int i = 0 ; i < nb ; i++)
         {

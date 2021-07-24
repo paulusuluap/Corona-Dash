@@ -1,4 +1,3 @@
-using System.Collections;   
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,16 +15,21 @@ public class Pooler : MonoBehaviour
     private int powerUpsAmount = 2;
     private int prizeBoxAmount = 1;
     private int pooledCoronaAmount = 4;
+    private Vector3 powerUpSpawnLocation = new Vector3 (-7.186849f, -8.279894f, -12.61536f);
+    private Vector3 prizeSpawnLocation = new Vector3 (0f, 16.21f, 0f);
 
     public int PooledCoinAmount {get { return pooledCoinAmount; }}
     public int PowerUpsAmount {get { return powerUpsAmount; }}
-    public int PrizeBoxAmount {get { return prizeBoxAmount; }}
+    public int PrizeSpawnAmount {get { return prizeBoxAmount; }}
+    public Vector3 PrizeBoxLocation {get { return prizeSpawnLocation; }}
+    public Vector3 PowerUpSpawnLocation {get { return powerUpSpawnLocation; }}
     public int PooledCoronaAmount {get { return pooledCoronaAmount; }}
     
     List<GameObject> pooledCoins = new List<GameObject>();
     List<GameObject> powerUps = new List<GameObject>();
     List<GameObject> prizeBoxes = new List<GameObject>();
     List<GameObject> pooledCoronas = new List<GameObject>();
+    public Transform[] coronaPositions = new Transform[7];
 
     public List<GameObject> PowerUps {get { return powerUps; }}
     public List<GameObject> PrizeBoxes {get { return prizeBoxes; }}
