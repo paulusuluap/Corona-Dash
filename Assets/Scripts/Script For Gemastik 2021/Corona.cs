@@ -13,13 +13,14 @@ public class Corona : MonoBehaviour
 
     private void OnDisable() {
         Attract();
+        ParticleManager.instance.SmokeParticles("CoronaOver", this.transform, this.transform);
     }
 
     private void OnCollisionEnter(Collision col) {   
         if(col.gameObject.CompareTag("Player")) 
         {
-            Destroy();     
             col.gameObject.GetComponent<FirstPersonController>().enabled = false;
+            Destroy();
 
             AnimationManager.current.SetAnim("DeathType2");
             AnimationManager.current.SetAnim("Die");
@@ -35,6 +36,7 @@ public class Corona : MonoBehaviour
     }
 
     private void Destroy() {
+        ParticleManager.instance.SmokeParticles("PeopleDie", this.transform, this.transform);
         this.gameObject.SetActive(false);
     }
 

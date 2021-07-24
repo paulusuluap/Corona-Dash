@@ -5,7 +5,6 @@ public class ParticleManager : MonoBehaviour
 {
     public static ParticleManager instance;
     private List<ParticleSystem> particles = new List<ParticleSystem>();
-    private List<ParticleSystem> coronaParticles = new List<ParticleSystem>();
 
     private void Awake() {
         instance = this;
@@ -63,14 +62,30 @@ public class ParticleManager : MonoBehaviour
         }
     }
 
-    public void SmokeParticles (string state, Vector3 coronaPos)
+    public void SmokeParticles (string state, Transform coronaPos, Transform coronaRot)
     {
         switch(state)
         {
             case "CoronaOver":
+                if(!transform.GetChild(4).gameObject.activeInHierarchy)
+                    transform.GetChild(4).gameObject.SetActive(true);
+                else
+                {
+                    //Transform to coronaPos and rotate to coronaPos
+                    particles[4].gameObject.transform.position = coronaPos.position;
+                    particles[4].gameObject.transform.rotation = coronaPos.rotation;
+                    particles[4].Simulate(0f, true, true);
+                    particles[4].Play();
+                }
             break;
             case "PeopleDie":
-            break;
+                if(!transform.GetChild(5).gameObject.activeInHierarchy) 
+                {   
+                    transform.GetChild(5).gameObject.transform.position = coronaPos.position;
+                    transform.GetChild(5).gameObject.transform.rotation = coronaPos.rotation;
+                    transform.GetChild(5).gameObject.SetActive(true);
+                }
+                break;
         }
     }
 }
