@@ -67,8 +67,12 @@ public class ParticleManager : MonoBehaviour
         switch(state)
         {
             case "CoronaOver":
-                if(!transform.GetChild(4).gameObject.activeInHierarchy)
+                if(!transform.GetChild(4).gameObject.activeInHierarchy)                    
+                {
+                    particles[4].gameObject.transform.position = coronaPos.position;
+                    particles[4].gameObject.transform.rotation = coronaPos.rotation;
                     transform.GetChild(4).gameObject.SetActive(true);
+                }
                 else
                 {
                     //Transform to coronaPos and rotate to coronaPos
