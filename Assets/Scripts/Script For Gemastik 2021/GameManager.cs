@@ -4,12 +4,6 @@ using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
-    // public enum PlatformSelection
-    // {
-    //     Mobile,
-    //     PC
-    // }
-
     [SerializeField]
     private float offset = 8.5f;
     private float planetRadius;
@@ -40,8 +34,9 @@ public class GameManager : MonoBehaviour
         InvokeRepeating("PrizeSpawning", prizeInitalTime, 300f);
         InvokeRepeating("CoinSpawning", 2f, 1f);
         InvokeRepeating("PowerUpSpawning", 20f, 45f);
-        InvokeRepeating("CoronaVirusSpawning", 10f, 10f);
+        InvokeRepeating("CoronaVirusSpawning", 10f, CoronaManager.current.CoronaSpawnTime);
 
+        Physics.IgnoreLayerCollision(9, 11, true);
         Physics.IgnoreLayerCollision(11, 12, true);
     }
 
@@ -49,6 +44,7 @@ public class GameManager : MonoBehaviour
     {   
         Randoms();
         CloudMove();
+        StageSetter();
     }
 
     private void FixedUpdate() {
@@ -106,7 +102,6 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0 ; i < coronaAmount ; i++)
         {
-            // coronaVirus.transform.position = randomPos[2];
             coronaVirus.transform.position = PosColletion[random].position;
             coronaVirus.SetActive(true);
         }
@@ -114,12 +109,7 @@ public class GameManager : MonoBehaviour
 
     private void Randoms(){
         Vector3 coinPos = Random.onUnitSphere * (objectPosOnPlanet);
-        Vector3 powerUpPos = Random.onUnitSphere * (objectPosOnPlanet);
-        Vector3 coronaPos = Random.onUnitSphere * (objectPosOnPlanet);
-        
         randomPos[0] = coinPos;
-        randomPos[1] = powerUpPos;
-        randomPos[2] = coronaPos;
     }
 
     private void CloudMove()
@@ -133,5 +123,48 @@ public class GameManager : MonoBehaviour
 
         if(clouds.transform.position == cloudPosEnd)
         clouds.transform.position = cloudPosInit;
+    }
+
+    private void StageSetter()
+    {
+        if(UIManager.current.Score < 50) return;
+
+        if(UIManager.current.Score >= 50 && UIManager.current.Score < 120)
+        {
+            player.WalkSpeed = 12.5f;
+            player.TurnSpeed = 225f;
+            CoronaManager.current.CoronaSpawnTime = 7.5f;
+            CinemachineShake.Instance.ShakeCamera(5f, 0.25f);
+            return;
+        }
+
+        if(UIManager.current.Score >= 120 && UIManager.current.Score < 205)
+        {
+            player.WalkSpeed = 15f;
+            player.TurnSpeed = 270f;
+            CoronaManager.current.CoronaSpawnTime = 5f;
+            CoronaManager.current.CoronaSpeed = 8f;
+            Pooler.current.stage1 = true;
+            CinemachineShake.Instance.ShakeCamera(5f, 0.25f);
+            return;
+        }
+        if(UIManager.current.Score >= 205 && UIManager.current.Score < 290)
+        {
+            player.WalkSpeed = 17.5f;
+            player.TurnSpeed = 315f;
+            CoronaManager.current.CoronaSpeed = 8.5f;
+            CinemachineShake.Instance.ShakeCamera(5f, 0.25f);
+            return;
+        }
+        if(UIManager.current.Score >= 290 && UIManager.current.Score < 375)
+        {
+            player.WalkSpeed = 20f;
+            player.TurnSpeed = 360f;
+            CoronaManager.current.CoronaSpawnTime = 3f;
+            CoronaManager.current.CoronaSpeed = 9f;
+            CinemachineShake.Instance.ShakeCamera(5f, 0.25f);
+            Pooler.current.stage2 = true;
+            return;
+        }
     }
 }

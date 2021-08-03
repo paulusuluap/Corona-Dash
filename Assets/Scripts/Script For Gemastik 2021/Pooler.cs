@@ -4,7 +4,8 @@ using UnityEngine;
 public class Pooler : MonoBehaviour
 {
     public static Pooler current;
-    public bool willGrow = false;
+    public bool stage1 = false;
+    public bool stage2 = false;
     public GameObject pooledCoin;
     [Header("Power Ups")]
     public GameObject magnet;
@@ -29,7 +30,7 @@ public class Pooler : MonoBehaviour
     List<GameObject> powerUps = new List<GameObject>();
     List<GameObject> prizeBoxes = new List<GameObject>();
     List<GameObject> pooledCoronas = new List<GameObject>();
-    public Transform[] coronaPositions = new Transform[7];
+    public Transform[] coronaPositions = new Transform[10];
 
     public List<GameObject> PowerUps {get { return powerUps; }}
     public List<GameObject> PrizeBoxes {get { return prizeBoxes; }}
@@ -96,7 +97,14 @@ public class Pooler : MonoBehaviour
                 return pooledCoronas[i];
         }
 
-        if(willGrow)
+        if(stage1)
+        {
+            GameObject obj = (GameObject) Instantiate (pooledCorona);
+            pooledCoronas.Add(obj);
+            return obj;
+        }
+
+        if(stage2)
         {
             GameObject obj = (GameObject) Instantiate (pooledCorona);
             pooledCoronas.Add(obj);

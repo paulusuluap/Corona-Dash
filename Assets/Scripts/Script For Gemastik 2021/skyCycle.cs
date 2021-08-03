@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class skyCycle : MonoBehaviour
 {
@@ -37,7 +35,8 @@ public class skyCycle : MonoBehaviour
 
     void UpdatingSky()
     {
-        smoothMin = (Time.time/secondsPerMinute) + (startTime * 60);
+        //Time.timeSinceLevelLoad to reset Time.Time (before it was Time.time)
+        smoothMin = (Time.timeSinceLevelLoad/secondsPerMinute) + (startTime * 60);
         day = Mathf.Floor(smoothMin / 1440f) + 1;
 
         smoothMin = smoothMin - (Mathf.Floor(smoothMin / 1440f) * 1440f); //clamp smoothMin between 0-1440

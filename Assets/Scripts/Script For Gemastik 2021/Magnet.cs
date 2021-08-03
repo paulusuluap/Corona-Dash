@@ -22,6 +22,7 @@ public class Magnet : MonoBehaviour
             powerUps.IsMagnetized = true;
             this.gameObject.SetActive(false);            
             ParticleManager.instance.IdleParticles("PowTaken");
+            AudioManager.PlaySound("TakePow");
         }
     }    
 

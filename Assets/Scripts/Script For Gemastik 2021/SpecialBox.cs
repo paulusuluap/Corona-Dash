@@ -2,7 +2,8 @@
 
 public class SpecialBox : MonoBehaviour
 {
-    private int prize;
+    private int randomPrize;
+    private int prizeCollectedOnGame = 0;
     private int[] prizePool = 
         {5, 8, 10, 13, 15, 17, 20, 23, 25, 26, 30, 32, 
         35, 39, 40, 41, 45, 50, 52, 55, 56, 58, 60, 62, 
@@ -13,7 +14,6 @@ public class SpecialBox : MonoBehaviour
     private void OnEnable() 
     {
         planet = GameObject.FindObjectOfType<GravityAttractor>();
-        prize = Random.Range(0, prizePool.Length);
         Attract();
     }
 
@@ -25,10 +25,14 @@ public class SpecialBox : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider) {
         if(collider.gameObject.CompareTag("Player"))
-        {            
-            //Coin Collected += prizePool[prize];
+        {
             // Wohoo audio
+            randomPrize = Random.Range(0, prizePool.Length);
+            prizeCollectedOnGame += randomPrize;
+            PlayerPrefs.SetInt("MoneyCollected", PlayerPrefs.GetInt("MoneyCollected", 0) + prizeCollectedOnGame);
+
             this.gameObject.SetActive(false);
+            AudioManager.PlaySound("TakePrize");
             ParticleManager.instance.IdleParticles("PrizeTaken");
         }
     }

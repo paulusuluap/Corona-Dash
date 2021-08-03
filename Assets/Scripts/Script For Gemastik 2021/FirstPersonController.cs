@@ -3,8 +3,8 @@ public class FirstPersonController : MonoBehaviour
 {
     Rigidbody rb;
     private float walkSpeed = 10f;
-    public float WalkSpeed { get{ return walkSpeed; } set{ walkSpeed = value; } }
     private float turnSpeed = 180f;
+    public float WalkSpeed { get{ return walkSpeed; } set{ walkSpeed = value; } }
     public float TurnSpeed { get{ return turnSpeed; } set{ turnSpeed = value; } }
     private float screenWidth, screenHeight;
     private Vector3 moveAmount;
@@ -62,7 +62,11 @@ public class FirstPersonController : MonoBehaviour
     private void PlayerInputRotation()
     {   
         int i = 0;
-        if(i == Input.touchCount) AnimationManager.current.SetAnim("LookStraight");
+        if(i == Input.touchCount) 
+        {
+            AnimationManager.current.SetAnim("LookStraight");
+            return;
+        }
         
         while(i < Input.touchCount)
         {
@@ -93,8 +97,11 @@ public class FirstPersonController : MonoBehaviour
     private void OnCollisionEnter(Collision obs) {
         if(obs.gameObject.CompareTag("Obstacle"))
         {
+            UIManager.current.Vibrate();
+            AudioManager.PlaySound("MaleHit"); //Harus dicek lagi, nanti ada karakter cewe
             AnimationManager.current.SetAnim("DeathType1");
             AnimationManager.current.SetAnim("Die");
+            UIManager.current.EndUI();
             this.enabled = false;
         }
     }

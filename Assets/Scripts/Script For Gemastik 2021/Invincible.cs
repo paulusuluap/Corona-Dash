@@ -21,6 +21,7 @@ public class Invincible : MonoBehaviour
         {
             powerUps.IsInvincible = true;
             this.gameObject.SetActive(false);
+            AudioManager.PlaySound("TakePow");
             ParticleManager.instance.IdleParticles("PowTaken");
         }
     }    

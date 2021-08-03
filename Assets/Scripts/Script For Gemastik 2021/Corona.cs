@@ -12,26 +12,19 @@ public class Corona : MonoBehaviour
     }
 
     private void OnDisable() {
-        Attract();
         ParticleManager.instance.SmokeParticles("CoronaOver", this.transform, this.transform);
     }
 
     private void OnCollisionEnter(Collision col) {   
         if(col.gameObject.CompareTag("Player")) 
         {
+            UIManager.current.Vibrate();
             col.gameObject.GetComponent<FirstPersonController>().enabled = false;
             Destroy();
-
+            AudioManager.PlaySound("MaleCorona");
             AnimationManager.current.SetAnim("DeathType2");
             AnimationManager.current.SetAnim("Die");
-
-        if(col.gameObject.CompareTag("Obstacle")) gameObject.SetActive(false);
-            
-            //Panggil game over
-            // - Cinemachine camera rotate
-            // - Score appear
-            // - Restart button appear
-            // - Pulang ke home       
+            UIManager.current.EndUI();
         }
     }
 

@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 
 public class PowerUpsController : MonoBehaviour
 {
@@ -11,7 +11,8 @@ public class PowerUpsController : MonoBehaviour
     protected bool isInvincible = false; 
     public bool IsMagnetized {get { return isMagnetized;} set {isMagnetized = value;} }
     public bool IsInvincible {get { return isInvincible;} set {isInvincible = value;} }
-    public float MagnetDuration {get { return magnetDuration; } set {magnetDuration = value;} }
+    public float MagnetDuration {get { return magnetDuration; }}
+    public float InvincibleDuration {get { return invincibleDuration; }}
     [SerializeField] Collider[] hitColliders = new Collider[10];
 
     protected void Magnetize(FirstPersonController player) 
@@ -29,6 +30,8 @@ public class PowerUpsController : MonoBehaviour
         }
         
         magnetDuration -= Time.deltaTime;
+        // call the UI Magnet Icon here
+        UIManager.current.MagnetIconCalled(magnetDuration);
         
         if(magnetDuration <= 0f)
         {
@@ -49,7 +52,7 @@ public class PowerUpsController : MonoBehaviour
         Invincibility.instance.SetOpaqueRenderer(myRenderOpaque, false);
         Invincibility.instance.Fading(myRenderTransparent, c);
         Invincibility.instance.FadeT(c.a);
-
+        
         yield return new WaitForSeconds(invincibleDuration);
         
         Physics.IgnoreLayerCollision(8, 11, false);
@@ -65,6 +68,7 @@ public class PowerUpsController : MonoBehaviour
         Invincibility.instance.SetOpaqueRenderer(myRenderOpaque, true);
 
         isInvincible = false;
+        invincibleDuration = 10f; //reset duration
     }
 
     public void Magnetizing(FirstPersonController player)
@@ -75,5 +79,6 @@ public class PowerUpsController : MonoBehaviour
     public void Invulnerable(Renderer myRenderTransparent, Renderer myRenderOpaque, Color c)
     {
         StartCoroutine(Invincible(myRenderTransparent, myRenderOpaque, c));
+        UIManager.current.InvincibleIconCalled(invincibleDuration -= Time.deltaTime);
     }
 }

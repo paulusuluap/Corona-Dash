@@ -60,6 +60,36 @@ Transform:
   m_Father: {fileID: 6902237379681139637}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: -84.159004, y: -30.871002, z: -59.845}
+--- !u!1 &2678447668935250333
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2618669982506109866}
+  m_Layer: 0
+  m_Name: Pos8
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!4 &2618669982506109866
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2678447668935250333}
+  m_LocalRotation: {x: 0.92031646, y: -0.36394107, z: 0.12849607, w: -0.06366563}
+  m_LocalPosition: {x: 13, y: -12.18, z: -5.32}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
+  m_Children: []
+  m_Father: {fileID: 6902237379681139637}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 82.64001, y: 119.227005, z: 150.281}
 --- !u!1 &3489702242954649533
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,6 +210,66 @@ Transform:
   m_Father: {fileID: 6902237379681139637}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -106.732994, y: 106.814995, z: 47.73799}
+--- !u!1 &8078911574583541730
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8181928828362364267}
+  m_Layer: 0
+  m_Name: Pos9
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!4 &8181928828362364267
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8078911574583541730}
+  m_LocalRotation: {x: 0.92031646, y: -0.36394107, z: 0.12849607, w: -0.06366563}
+  m_LocalPosition: {x: 11.81, y: 9.48, z: -13.49}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
+  m_Children: []
+  m_Father: {fileID: 6902237379681139637}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 82.64001, y: 119.227005, z: 150.281}
+--- !u!1 &8103479909345431816
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3492025386017278910}
+  m_Layer: 0
+  m_Name: Pos10
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!4 &3492025386017278910
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8103479909345431816}
+  m_LocalRotation: {x: 0.92031646, y: -0.36394107, z: 0.12849607, w: -0.06366563}
+  m_LocalPosition: {x: -0.2, y: 26.26, z: 4.87}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
+  m_Children: []
+  m_Father: {fileID: 6902237379681139637}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 82.64001, y: 119.227005, z: 150.281}
 --- !u!1 &8122590537632258898
 GameObject:
   m_ObjectHideFlags: 0
@@ -233,7 +323,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8585518218653369371}
-  m_LocalRotation: {x: -0.46133545, y: -0.49344894, z: -0.51147497, w: 0.53110373}
+  m_LocalRotation: {x: -0.4613391, y: -0.49344832, z: -0.5114735, w: 0.5311026}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -244,6 +334,9 @@ Transform:
   - {fileID: 7428278908388495049}
   - {fileID: 4232966865826637559}
   - {fileID: 3193868802375914082}
+  - {fileID: 2618669982506109866}
+  - {fileID: 8181928828362364267}
+  - {fileID: 3492025386017278910}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -84.159004, y: -30.871002, z: -59.845}

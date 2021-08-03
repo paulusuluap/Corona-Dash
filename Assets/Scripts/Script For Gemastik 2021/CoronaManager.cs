@@ -5,7 +5,10 @@ public class CoronaManager : MonoBehaviour
     public static CoronaManager current;
     protected readonly Vector3 k_HalfExtentsBox = new Vector3 (15.0f, 15.0f, 15.0f); //Perhatikan lagi
     private float coronaSpeed = 7.5f;
-    private float chaseDuration = 10f;
+    private float chaseDuration = 15f;
+    private float coronaSpawnTime = 10f;
+    public float CoronaSpeed {get { return coronaSpeed;} set {value = coronaSpeed;}}
+    public float CoronaSpawnTime {get { return coronaSpawnTime;} set {value = coronaSpawnTime;}}
     private float resetChaseDuration;
     [SerializeField] Collider[] hitColliders = new Collider[30];
     private GravityAttractor planet;
