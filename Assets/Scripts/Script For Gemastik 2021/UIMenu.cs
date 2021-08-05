@@ -3,13 +3,36 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using DG.Tweening;
 using System.Collections;
+using UnityEngine.UI;
 
 public class UIMenu : MonoBehaviour
 {
-    public TextMeshProUGUI walletText, highScoreText;
-    private int myMoney, addedMoney, prizeCollected, highscore;
-    private float moneyUpdateTime = 5f;
-    public Transform tapOnPlayTransform, centre;
+    private int highscore;
+    private float myMoney, initMoney, addedMoney; //initMoney tempat store myMoney awal awake
+    private float moneyUpdateTime = 1.5f;
+    private bool isMoneyUpdated = false;
+    private bool isHidden = false; // for settings UI
+    public Transform tapOnPlayTransform, character, centre; //character hanya percobaan satu stage
+    public CanvasGroup settingsGroup;
+    [Header("Texts")]
+    public TextMeshProUGUI walletText;
+    public TextMeshProUGUI highScoreText; //Nanti highscoretext dipisah per stage
+    public TextMeshProUGUI selectedLanguageText = default;
+
+    [Header("Rect Transforms")]
+    public RectTransform mainMenu;
+    public RectTransform settingsMenu;
+    public RectTransform powerUpsMenu;
+
+    [Header("Languages")]
+    public Button selectedLanguage;
+    public Button bahasa;
+    public Button english;
+    [Header("Buttons")]
+    public Button msc_Button;
+    public Button sou_Button;
+    public Button vib_Button;
+    public Image[] buttonImages = new Image[3];
     
 
     private void Awake() {
@@ -17,13 +40,10 @@ public class UIMenu : MonoBehaviour
 
         //Initial Money
         myMoney = PlayerPrefs.HasKey("MyWallet") ? PlayerPrefs.GetInt("MyWallet") : 0;
-        walletText.text = myMoney.ToString();
+        initMoney = myMoney;
 
-        //Update Money
+        //Added Money
         addedMoney = PlayerPrefs.HasKey("MoneyCollected") ? PlayerPrefs.GetInt("MoneyCollected", 0) : 0;
-        myMoney += addedMoney;
-        PlayerPrefs.SetInt("MyWallet", myMoney);
-        walletText.text = myMoney.ToString();
 
         //Update HighScore
         if(PlayerPrefs.HasKey("Highscore"))
@@ -34,51 +54,195 @@ public class UIMenu : MonoBehaviour
     }
 
     private void Start() {
+        
+        // Nanti dibuat setiap selected stage dan udh kebeli akan play animasi ini
+        character.DOScale(new Vector3(140f, 140f, 1f), 2.5f)
+			.SetEase(Ease.InOutSine)
+			.SetLoops(-1, LoopType.Yoyo);  
+
+        //Tap To Play Yoyo Effect
         tapOnPlayTransform.DOScale(new Vector3(17.5f, 17.5f, 1f), 1.5f)
 			.SetEase(Ease.InOutSine)
 			.SetLoops(-1, LoopType.Yoyo);
+
+        //Audio Button Images On Start Menu
+        AudioButtonImageMenu();
     }
 
-    // private void Update() {
-    //     PlayerPrefs.DeleteAll();
-    //     // UpdatingWallet();
-    // }
+    private void Update() {
+        if(!isMoneyUpdated) UpdatingWallet();
+    }
 
     private void UpdatingWallet()
     {
-        //Belum berhasil
-        walletText.text = Mathf.Lerp(0, myMoney, moneyUpdateTime * Time.deltaTime).ToString();
+        myMoney = Mathf.Lerp(myMoney, (initMoney + addedMoney), moneyUpdateTime * Time.deltaTime);
+        walletText.text = (myMoney).ToString("0");
+
+        if(myMoney >= initMoney + addedMoney)
+        {
+            PlayerPrefs.SetInt("MyWallet", (int) myMoney);
+            PlayerPrefs.DeleteKey("MoneyCollected");
+            isMoneyUpdated = true;
+            return;
+        }
+    }
+
+    private IEnumerator LoadWorld (int no)
+    {
+        AudioManager.PlaySound("Button");
+        centre.DOScale(new Vector3(0f, 0f, 0f), 0.5f)
+			.SetEase(Ease.OutSine);
+        
+        yield return new WaitForSeconds(0.51f);
+
+        SceneManager.LoadScene("WorldDesign" + no.ToString());
     }
     public void PlayWorld1()
     {
         //Play sound effect
-        StartCoroutine(LoadWorld1());
+        StartCoroutine(LoadWorld(1));
     }
     public void PlayWorld2()
     {
         //Play sound effect
-        SceneManager.LoadScene("WorldDesign2");
+        StartCoroutine(LoadWorld(2));
+    }
+    public void PlayWorld3()
+    {
+        //Play sound effect
+        StartCoroutine(LoadWorld(3));
+    }
+    public void PlayWorld4()
+    {
+        //Play sound effect
+        StartCoroutine(LoadWorld(4));
+    }
+    public void PlayWorld5()
+    {
+        //Play sound effect
+        StartCoroutine(LoadWorld(5));
     }
 
-    private IEnumerator LoadWorld1 ()
+
+    // Settings
+
+    public void SettingsMenu()
     {
         AudioManager.PlaySound("Button");
-        centre.DOScale(new Vector3(0f, 0f, 0f), 0.5f)
-			.SetEase(Ease.OutSine);
-        
-        yield return new WaitForSeconds(0.51f);
-
-        SceneManager.LoadScene("WorldDesign1");
+        mainMenu.DOAnchorPos(new Vector2(0f, 2000f), 0.25f);
+        settingsMenu.DOAnchorPos(new Vector2(0f, 0f), 0.25f).SetDelay(0.25f);
+    }
+    public void BackFromSettingsMenu()
+    {
+        AudioManager.PlaySound("Button");
+        settingsMenu.DOAnchorPos(new Vector2(-1100f, 0f), 0.25f);
+        mainMenu.DOAnchorPos(new Vector2(0f, 0f), 0.25f).SetDelay(0.25f);
     }
 
-    private IEnumerator LoadWorld2 ()
+    public void SelectLanguage()
+    {
+        isHidden = true;
+        AudioManager.PlaySound("Button");
+
+        if(!selectedLanguage.transform.GetChild(0).gameObject.activeInHierarchy)
+            selectedLanguage.transform.GetChild(0).gameObject.SetActive(true);
+        else
+        {
+            isHidden = false;
+            selectedLanguage.transform.GetChild(0).gameObject.SetActive(false);
+        }
+
+        FadeOtherSettings();
+    }
+
+    private void FadeOtherSettings()
+    {
+        float alphaValue = isHidden == true ? 0.1f : 1f;
+        settingsGroup.DOFade(alphaValue, 0.15f);
+    }
+
+    public void Bahasa()
     {
         AudioManager.PlaySound("Button");
-        centre.DOScale(new Vector3(0f, 0f, 0f), 0.5f)
-			.SetEase(Ease.OutSine);
-        
-        yield return new WaitForSeconds(0.51f);
+        selectedLanguageText.text = "Bahasa";
+        settingsGroup.DOFade(1f, 0.15f);
+        selectedLanguage.transform.GetChild(0).gameObject.SetActive(false);
 
-        SceneManager.LoadScene("WorldDesign2");
+        //Semua bahasa berubah Indonesia
+    }
+
+    public void English()
+    {
+        AudioManager.PlaySound("Button");
+        selectedLanguageText.text = "English";
+        settingsGroup.DOFade(1f, 0.15f);
+        selectedLanguage.transform.GetChild(0).gameObject.SetActive(false);
+
+        //Semua bahasa berubah Inggris
+    }
+
+
+    //Music Etc.
+
+        //Untuk atur image audio buttons setelah di set, ke game, balik lagi
+    private void AudioButtonImageMenu()
+    {
+        if(PlayerPrefs.GetInt("Music", 1) == 0) buttonImages[0].enabled = false;
+        else buttonImages[0].enabled = true;
+        if(PlayerPrefs.GetInt("Sound", 1) == 0) buttonImages[1].enabled = false;
+        else buttonImages[1].enabled = true;
+        if(PlayerPrefs.GetInt("Vibrate", 1) == 0) buttonImages[2].enabled = false;
+        else buttonImages[2].enabled = true;
+    }
+    public void MusicButton()
+    {
+        AudioManager.PlaySound("Button");
+        
+        Image onImage = msc_Button.transform.GetChild(0).GetComponent<Image>();
+
+        if(onImage.enabled)
+        {
+            PlayerPrefs.SetInt("Music", 0);
+            onImage.enabled = false;
+        }
+        else
+        {
+            PlayerPrefs.SetInt("Music", 1);
+            onImage.enabled = true;
+        }
+    }
+    public void SoundButton()
+    {
+        AudioManager.PlaySound("Button");
+        
+        Image onImage = sou_Button.transform.GetChild(0).GetComponent<Image>();
+
+        if(onImage.enabled)
+        {
+            PlayerPrefs.SetInt("Sound", 0);
+            onImage.enabled = false;
+        }
+        else
+        {
+            PlayerPrefs.SetInt("Sound", 1);
+            onImage.enabled = true;
+        }
+    }
+    public void VibrationButton()
+    {
+        AudioManager.PlaySound("Button");
+        
+        Image onImage = vib_Button.transform.GetChild(0).GetComponent<Image>();
+
+        if(onImage.enabled)
+        {
+            PlayerPrefs.SetInt("Vibrate", 0);
+            onImage.enabled = false;
+        }
+        else
+        {
+            PlayerPrefs.SetInt("Vibrate", 1);
+            onImage.enabled = true;
+        }
     }
 }

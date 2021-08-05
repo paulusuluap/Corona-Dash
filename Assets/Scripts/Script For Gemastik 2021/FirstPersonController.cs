@@ -90,18 +90,22 @@ public class FirstPersonController : MonoBehaviour
         float initTurnSpeed = 0f;
         float lerpSpeed = 25f;
 
-        initTurnSpeed = Mathf.Lerp(initTurnSpeed, turnSpeed, lerpSpeed * Time.deltaTime);
+        initTurnSpeed = Mathf.Lerp(initTurnSpeed, turnSpeed, lerpSpeed * Time.deltaTime); //make the turn move smooth
 		transform.Rotate(Vector3.up * dir * Time.deltaTime * initTurnSpeed, Space.Self);
 	}
 
     private void OnCollisionEnter(Collision obs) {
         if(obs.gameObject.CompareTag("Obstacle"))
         {
-            UIManager.current.Vibrate();
+            if(ParticleManager.instance.walkDust.isPlaying) ParticleManager.instance.walkDust.Stop();
+
+            AudioManager.Vibrate();
             AudioManager.PlaySound("MaleHit"); //Harus dicek lagi, nanti ada karakter cewe
+
             AnimationManager.current.SetAnim("DeathType1");
             AnimationManager.current.SetAnim("Die");
             UIManager.current.EndUI();
+
             this.enabled = false;
         }
     }

@@ -4,6 +4,7 @@ using UnityEngine;
 public class ParticleManager : MonoBehaviour
 {
     public static ParticleManager instance;
+    public ParticleSystem walkDust; // pengecualian
     private List<ParticleSystem> particles = new List<ParticleSystem>();
 
     private void Awake() {
@@ -83,6 +84,7 @@ public class ParticleManager : MonoBehaviour
                 }
             break;
             case "PeopleDie":
+                if(walkDust.isPlaying) walkDust.Stop();
                 if(!transform.GetChild(5).gameObject.activeInHierarchy) 
                 {   
                     transform.GetChild(5).gameObject.transform.position = coronaPos.position;

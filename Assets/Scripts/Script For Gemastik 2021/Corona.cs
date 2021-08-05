@@ -18,7 +18,7 @@ public class Corona : MonoBehaviour
     private void OnCollisionEnter(Collision col) {   
         if(col.gameObject.CompareTag("Player")) 
         {
-            UIManager.current.Vibrate();
+            AudioManager.Vibrate();
             col.gameObject.GetComponent<FirstPersonController>().enabled = false;
             Destroy();
             AudioManager.PlaySound("MaleCorona");

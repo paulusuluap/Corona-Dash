@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class AudioManager : MonoBehaviour
 {
@@ -10,9 +9,14 @@ public class AudioManager : MonoBehaviour
     void Start()    
     {
         audioSource = GetComponent<AudioSource>();      
-        musicAudioSource = transform.GetChild(0).GetComponent<AudioSource>();      
-        musicAudioSource.loop = true;
+        if(PlayerPrefs.GetInt("Sound", 1) == 0) audioSource.mute = true;
+        
+        CheckChildAudioSource();
+        GetAllClips();    
+    }
 
+    private void GetAllClips()
+    {
         coin = Resources.Load<AudioClip>("Coin");
         maleHitSound = Resources.Load<AudioClip>("ManHit");
         maleCorona = Resources.Load<AudioClip>("ManCorona");
@@ -21,7 +25,20 @@ public class AudioManager : MonoBehaviour
         menuButton = Resources.Load<AudioClip>("Menu2");        
         prize = Resources.Load<AudioClip>("PrizeFinal");      
         powerUp = Resources.Load<AudioClip>("Prize4");      
-        newHighScore = Resources.Load<AudioClip>("NewHighScore");      
+        newHighScore = Resources.Load<AudioClip>("NewHighScore");  
+    }
+
+    private void CheckChildAudioSource()
+    {
+        if(transform.GetChild(0).name == "Null") return;
+        else
+        {
+            musicAudioSource = transform.GetChild(0).GetComponent<AudioSource>();      
+            musicAudioSource.loop = true;
+
+            if(PlayerPrefs.GetInt("Music", 1) == 0)
+            musicAudioSource.Stop();
+        }
     }
 
     public static void PlaySound(string clip)
@@ -64,5 +81,11 @@ public class AudioManager : MonoBehaviour
                 audioSource.PlayOneShot(newHighScore);
                 break;         
         }
+    }
+    public static void Vibrate()
+    {
+        if(PlayerPrefs.GetInt("Vibrate", 1) == 0) return;
+
+        Handheld.Vibrate();
     }
 }

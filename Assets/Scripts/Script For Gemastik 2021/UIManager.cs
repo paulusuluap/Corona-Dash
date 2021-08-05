@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI newHighScoreText;
     public TextMeshProUGUI deathScoreText;
     public TextMeshProUGUI highScoreText;
+
     [Header("Others")]
     public GameObject powerUpsIcon, deathPopUp, gameplayUI;
     public Slider powSlider;
@@ -167,7 +168,6 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(2f);
         deathPopUp.SetActive(true);
     }
-
     IEnumerator RestartScene()
     {
         yield return new WaitForSeconds(0.5f);
@@ -178,9 +178,5 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         SceneManager.LoadScene("MainMenu");
     }
-
-    public void Vibrate()
-    {
-        Handheld.Vibrate();
-    }
+    
 }
