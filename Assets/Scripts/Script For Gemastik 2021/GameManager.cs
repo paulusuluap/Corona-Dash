@@ -47,10 +47,6 @@ public class GameManager : MonoBehaviour
         StageSetter();
     }
 
-    private void FixedUpdate() {
-        CoronaManager.current.ChasingPlayer(player);
-    }
-
     void CoinSpawning()
     {
         GameObject coin = Pooler.current.GetPooledCoins();

@@ -12,11 +12,17 @@ public class CoronaManager : MonoBehaviour
     private float resetChaseDuration;
     [SerializeField] Collider[] hitColliders = new Collider[30];
     private GravityAttractor planet;
+    private FirstPersonController player;
 
     private void Awake() {
         current = this;
         resetChaseDuration = chaseDuration;
         planet = FindObjectOfType<GravityAttractor>();
+        player = GameObject.FindWithTag("Player").GetComponent<FirstPersonController>();
+    }
+
+    private void FixedUpdate() {
+        ChasingPlayer(player);
     }
 
     protected void DetectPlayer(FirstPersonController player) 

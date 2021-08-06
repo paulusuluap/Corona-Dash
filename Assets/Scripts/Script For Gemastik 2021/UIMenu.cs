@@ -12,7 +12,7 @@ public class UIMenu : MonoBehaviour
     private float moneyUpdateTime = 1.5f;
     private bool isMoneyUpdated = false;
     private bool isHidden = false; // for settings UI
-    public Transform tapOnPlayTransform, character, centre; //character hanya percobaan satu stage
+    public Transform tapOnPlayTransform, centre; //character hanya percobaan satu stage
     public CanvasGroup settingsGroup;
     [Header("Texts")]
     public TextMeshProUGUI walletText;
@@ -54,14 +54,9 @@ public class UIMenu : MonoBehaviour
     }
 
     private void Start() {
-        
-        // Nanti dibuat setiap selected stage dan udh kebeli akan play animasi ini
-        character.DOScale(new Vector3(140f, 140f, 1f), 2.5f)
-			.SetEase(Ease.InOutSine)
-			.SetLoops(-1, LoopType.Yoyo);  
 
         //Tap To Play Yoyo Effect
-        tapOnPlayTransform.DOScale(new Vector3(17.5f, 17.5f, 1f), 1.5f)
+        tapOnPlayTransform.DOScale(new Vector3(18.5f, 18.5f, 1f), 1.5f)
 			.SetEase(Ease.InOutSine)
 			.SetLoops(-1, LoopType.Yoyo);
 
@@ -87,6 +82,7 @@ public class UIMenu : MonoBehaviour
         }
     }
 
+    //Stage Selection
     private IEnumerator LoadWorld (int no)
     {
         AudioManager.PlaySound("Button");
@@ -164,7 +160,7 @@ public class UIMenu : MonoBehaviour
     public void Bahasa()
     {
         AudioManager.PlaySound("Button");
-        selectedLanguageText.text = "Bahasa";
+        selectedLanguageText.text = "Indonesia";
         settingsGroup.DOFade(1f, 0.15f);
         selectedLanguage.transform.GetChild(0).gameObject.SetActive(false);
 
