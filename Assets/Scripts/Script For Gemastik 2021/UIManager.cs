@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -14,24 +15,28 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI newHighScoreText;
     public TextMeshProUGUI deathScoreText;
     public TextMeshProUGUI highScoreText;
-
-    [Header("Others")]
-    public GameObject powerUpsIcon, deathPopUp, gameplayUI;
-    public Slider powSlider;
-    public List<GameObject> powIconStorage;
     private int score;
     public int Score { get{return score; } set {value = score;}}
     private int lastHighScore;
+
+    [Header("Others")]
+    public GameObject powerUpsIcon;
+    public GameObject deathPopUp;
+    public GameObject gameplayUI;
+    public List<GameObject> powIconStorage;
+    public Slider powSlider;
+    public RectTransform fader;
     private float resetSlider = 10f;
     private bool isNewScore = false;
-
-    //Code sementara untuk firework, nanti dirapihin
-    public ParticleSystem[] fireworks = new ParticleSystem[3];
+    public ParticleSystem[] fireworks = new ParticleSystem[3]; // Fireworks Trigger
 
     private void Awake() {
         current = this;
         Collectibles.CoinPickedUp += Pulsing;
         score = 0;
+
+        FadeSetter();
+
         lastHighScore = PlayerPrefs.GetInt("Highscore");
         newHighScoreText.gameObject.SetActive(false);
 
@@ -48,6 +53,26 @@ public class UIManager : MonoBehaviour
         BeatTheHighScore();
     }
 
+    #region FadeTransition
+    private void FadeSetter()
+    {
+        if(PlayerPrefs.GetInt("FromMenu") == 1) 
+        {
+            fader.gameObject.SetActive(true);
+            Invoke("Fade", 0.5f);
+        } else return;
+    }
+
+    private void Fade()
+    {   
+        PlayerPrefs.SetInt("FromMenu", 0);
+
+        fader.DOAnchorPos(new Vector2(2500f, 0f), 1.5f).SetEase(Ease.OutSine)
+            .OnComplete(()=> fader.gameObject.SetActive(false));
+    }
+    #endregion
+
+    //Coin Counter Pulse Effect
     private IEnumerator Pulse()
     {   
         for(float i = 1f; i <= 1.15f ; i += 0.05f)
