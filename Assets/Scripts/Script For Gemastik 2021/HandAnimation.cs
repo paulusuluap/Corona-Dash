@@ -9,8 +9,7 @@ public class HandAnimation : MonoBehaviour
                 .SetLoops(-1, LoopType.Yoyo)
                 .SetUpdate(true);
     }
-
     private void OnDisable() {
-        this.transform.DOKill(true);
+        this.transform.DOKill();
     }
 }

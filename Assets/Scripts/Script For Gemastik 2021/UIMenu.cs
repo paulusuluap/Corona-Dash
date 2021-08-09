@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 using TMPro;
 using DG.Tweening;
 using UnityEngine.UI;
@@ -7,7 +7,6 @@ using UnityEngine.UI;
 namespace MainMenu {
     public class UIMenu : MonoBehaviour
     {
-        private int highscore;
         private float myMoney, initMoney, addedMoney; //initMoney tempat store myMoney awal awake
         private float moneyUpdateTime = 1.5f;
         private bool isMoneyUpdated = false;
@@ -16,8 +15,8 @@ namespace MainMenu {
         public CanvasGroup settingsGroup;
         [Header("Texts")]
         public TextMeshProUGUI walletText;
-        public TextMeshProUGUI highScoreText; //Nanti highscoretext dipisah per stage
         public TextMeshProUGUI selectedLanguageText = default;
+        public TextMeshProUGUI[] highScoreTexts = new TextMeshProUGUI[5]; //Nanti dicari metode lain
 
         [Header("Rect Transforms")]
         public RectTransform mainMenu;
@@ -46,12 +45,9 @@ namespace MainMenu {
             //Added Money
             addedMoney = PlayerPrefs.HasKey("MoneyCollected") ? PlayerPrefs.GetInt("MoneyCollected", 0) : 0;
 
-            //Update HighScore
-            // if(PlayerPrefs.HasKey("Highscore"))
-            // {
-            //     highscore = PlayerPrefs.GetInt("Highscore", 0);
-            //     highScoreText.text = highscore.ToString();
-            // }
+            //Load HighScore
+            for(int i = 0 ; i < SceneManagerScript.instance.numberOfWorlds ; i++)
+            highScoreTexts[i].text = PlayerPrefs.GetInt("Highscore"+(i+1).ToString()).ToString();
         }
 
         private void Start() {
@@ -69,6 +65,7 @@ namespace MainMenu {
             if(!isMoneyUpdated) UpdatingWallet();
         }
 
+        //Updating Wallet Smooth with Lerp
         private void UpdatingWallet()
         {
             myMoney = Mathf.Lerp(myMoney, (initMoney + addedMoney), moneyUpdateTime * Time.deltaTime);
@@ -84,19 +81,14 @@ namespace MainMenu {
         }
 
         //Stage Selection
-        public void FadeTransition (int no)
+        public void FadeSceneTransition (int index)
         {
             AudioManager.PlaySound("Button");
             PlayerPrefs.SetInt("FromMenu", 1);
             
             //Change DOScale below with black transition
             fade.DOAnchorPos(new Vector2(0f, 0f), 1.5f).SetEase(Ease.InSine)
-                .OnComplete(()=> PlayWorld(1));
-        }
-
-        public void PlayWorld(int no)
-        {
-            SceneManager.LoadScene("WorldDesign" + no.ToString());
+                .OnComplete(()=> SceneManagerScript.instance.LoadWorld(index));
         }
 
         // Settings

@@ -20,7 +20,6 @@ public class Invincibility : MonoBehaviour
      
     void ApplyTransparency(Renderer myRenderTransparent, Color c)
     {
-        
         myRenderTransparent.material.SetColor("_BaseColor",new Color(c.r, c.g, c.b, currentTransparency));
     }
  

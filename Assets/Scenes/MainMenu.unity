@@ -232,6 +232,7 @@ GameObject:
   - component: {fileID: 62765487}
   - component: {fileID: 62765488}
   - component: {fileID: 62765490}
+  - component: {fileID: 62765491}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -456,6 +457,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7a48d1fd1e4146bb8a0330b15dbef7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &62765491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62765483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6076f692b9514461ab888e1d1931672c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  worldContent: {fileID: 312956281}
+  numberOfWorlds: 0
 --- !u!1 &104610746
 GameObject:
   m_ObjectHideFlags: 0
@@ -1620,8 +1635,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -81.8}
-  m_SizeDelta: {x: 758.789, y: 976.1024}
+  m_AnchoredPosition: {x: 0, y: -132.5}
+  m_SizeDelta: {x: 758.789, y: 1077.5074}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &288901367
 MonoBehaviour:
@@ -1667,7 +1682,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 298162156}
-        m_MethodName: FadeTransition
+        m_MethodName: FadeSceneTransition
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1871,8 +1886,13 @@ MonoBehaviour:
   centre: {fileID: 293775730}
   settingsGroup: {fileID: 1188481702}
   walletText: {fileID: 720315997}
-  highScoreText: {fileID: 0}
   selectedLanguageText: {fileID: 1018647380}
+  highScoreTexts:
+  - {fileID: 1042092502}
+  - {fileID: 761543885}
+  - {fileID: 630892677}
+  - {fileID: 121339679}
+  - {fileID: 965017222}
   mainMenu: {fileID: 293775730}
   settingsMenu: {fileID: 450402970}
   powerUpsMenu: {fileID: 883901285}
@@ -2261,8 +2281,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -81.8}
-  m_SizeDelta: {x: 758.789, y: 976.1024}
+  m_AnchoredPosition: {x: 0, y: -132.5}
+  m_SizeDelta: {x: 758.789, y: 1077.5074}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &315302607
 MonoBehaviour:
@@ -2308,7 +2328,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 298162156}
-        m_MethodName: FadeTransition
+        m_MethodName: FadeSceneTransition
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5435,8 +5455,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -81.8}
-  m_SizeDelta: {x: 758.789, y: 976.1024}
+  m_AnchoredPosition: {x: 0, y: -132.5}
+  m_SizeDelta: {x: 758.789, y: 1077.5074}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &820960216
 MonoBehaviour:
@@ -5482,7 +5502,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 298162156}
-        m_MethodName: FadeTransition
+        m_MethodName: FadeSceneTransition
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6723,7 +6743,7 @@ GameObject:
   - component: {fileID: 1089104932}
   - component: {fileID: 1089104931}
   m_Layer: 5
-  m_Name: ON
+  m_Name: V_ON
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6993,7 +7013,7 @@ GameObject:
   - component: {fileID: 1166815428}
   - component: {fileID: 1166815427}
   m_Layer: 5
-  m_Name: ON
+  m_Name: M_ON
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8472,8 +8492,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -81.8}
-  m_SizeDelta: {x: 758.789, y: 976.1024}
+  m_AnchoredPosition: {x: 0, y: -132.5}
+  m_SizeDelta: {x: 758.789, y: 1077.5074}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1597153550
 MonoBehaviour:
@@ -8519,7 +8539,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 298162156}
-        m_MethodName: FadeTransition
+        m_MethodName: FadeSceneTransition
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10438,8 +10458,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -81.8}
-  m_SizeDelta: {x: 758.789, y: 976.1024}
+  m_AnchoredPosition: {x: 0, y: -132.5}
+  m_SizeDelta: {x: 758.789, y: 1077.5074}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2003663298
 MonoBehaviour:
@@ -10485,7 +10505,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 298162156}
-        m_MethodName: FadeTransition
+        m_MethodName: FadeSceneTransition
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11168,7 +11188,7 @@ GameObject:
   - component: {fileID: 2142823499}
   - component: {fileID: 2142823498}
   m_Layer: 5
-  m_Name: ON
+  m_Name: S_ON
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

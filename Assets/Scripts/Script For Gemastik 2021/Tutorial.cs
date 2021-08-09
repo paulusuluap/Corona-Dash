@@ -6,8 +6,8 @@ public class Tutorial : MonoBehaviour
     public TextMeshProUGUI guideText;
     public GameObject content;
     public Transform rightHand, leftHand;
-    private float screenWidth, screenHeight;
-    private float tutorialStepTime1 = 3f, tutorialStepTime2;
+    private float screenWidth;
+    private float tutorialStepTime1 = 2f, tutorialStepTime2;
     private bool isTut_OnePassed, isTut_TwoPassed, isTutorialPassed;
     int i = 0;
 
@@ -27,7 +27,7 @@ public class Tutorial : MonoBehaviour
         
         tutorialStepTime1 -= Time.deltaTime;
 
-        if(tutorialStepTime1 <= 0f)
+        if(tutorialStepTime1 <= 0f && !isTut_OnePassed)
         {
             //Tuts Turning Right
             content.SetActive(true);
@@ -45,7 +45,6 @@ public class Tutorial : MonoBehaviour
                 {
                     Time.timeScale = 1f;
                     content.SetActive(false);
-                    tutorialStepTime1 = tutorialStepTime2; //diakalin
                     isTut_OnePassed = true;
                 }
             }
@@ -53,7 +52,7 @@ public class Tutorial : MonoBehaviour
 
         if(isTut_OnePassed) tutorialStepTime2 -= Time.deltaTime;
         
-        if(tutorialStepTime2 <= 0)
+        if(tutorialStepTime2 <= 0 && !isTut_TwoPassed)
         {
             //Tuts Turning Left
             content.SetActive(true);
@@ -71,6 +70,7 @@ public class Tutorial : MonoBehaviour
                     content.SetActive(false);
                     Time.timeScale = 1f;
 
+                    isTut_TwoPassed = true;
                     isTutorialPassed = true;
                     PlayerPrefs.SetInt("TutorialPassed", 1);
 

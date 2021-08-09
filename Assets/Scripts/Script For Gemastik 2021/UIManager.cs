@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour
     private int score;
     public int Score { get{return score; } set {value = score;}}
     private int lastHighScore;
+    private int highscoreIndex;
 
     [Header("Others")]
     public GameObject powerUpsIcon;
@@ -28,6 +29,7 @@ public class UIManager : MonoBehaviour
     public RectTransform fader;
     private float resetSlider = 10f;
     private bool isNewScore = false;
+    private string sceneName;
     public ParticleSystem[] fireworks = new ParticleSystem[3]; // Fireworks Trigger
 
     private void Awake() {
@@ -37,7 +39,20 @@ public class UIManager : MonoBehaviour
 
         FadeSetter();
 
-        lastHighScore = PlayerPrefs.GetInt("Highscore");
+        //Get Scene name
+        sceneName = SceneManager.GetActiveScene().name;
+
+        //Get the last highscore
+        for(int i = 1 ; i < 6 ; i++) 
+        {
+            if(sceneName == "World_"+i.ToString())
+            {
+                lastHighScore = PlayerPrefs.GetInt("Highscore_" + i.ToString());
+                highscoreIndex = i;
+                // Debug.Log("HS index : " + highscoreIndex);
+            }
+        }
+        
         newHighScoreText.gameObject.SetActive(false);
 
         foreach(Transform p in powerUpsIcon.transform)
@@ -45,6 +60,7 @@ public class UIManager : MonoBehaviour
             p.gameObject.SetActive(false);
             powIconStorage.Add(p.gameObject);
         }
+
     }
 
     private void Update() {
@@ -185,10 +201,11 @@ public class UIManager : MonoBehaviour
     {
         deathScoreText.text = score.ToString("000");
 
+        //Set Highscore
         if(score > lastHighScore)
-        PlayerPrefs.SetInt("Highscore", score);
+        PlayerPrefs.SetInt("Highscore" + highscoreIndex, score);
         
-        highScoreText.text = "HIGHSCORE " + PlayerPrefs.GetInt("Highscore").ToString("000");
+        highScoreText.text = "HIGHSCORE " + PlayerPrefs.GetInt("Highscore" + highscoreIndex).ToString("000");
 
         yield return new WaitForSecondsRealtime(2f);
         deathPopUp.SetActive(true);
