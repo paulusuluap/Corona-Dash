@@ -2,7 +2,8 @@
 
 public class AudioManager : MonoBehaviour
 {
-    public static AudioClip coin, maleHitSound, maleCorona, femaleHitSound, femaleCorona, menuButton, prize, powerUp, newHighScore; 
+    public static AudioClip coin, maleHitSound, maleCorona, femaleHitSound, femaleCorona, updateGold;
+    public static AudioClip menuButton, prize, powerUp, newHighScore, playButton, buyWorld;
     private static AudioSource audioSource;
     private static AudioSource musicAudioSource;
  
@@ -21,11 +22,15 @@ public class AudioManager : MonoBehaviour
         maleHitSound = Resources.Load<AudioClip>("ManHit");
         maleCorona = Resources.Load<AudioClip>("ManCorona");
         femaleHitSound = Resources.Load<AudioClip>("FemaleOuch");        
-        femaleCorona = Resources.Load<AudioClip>("GirlCorona");        
+        femaleCorona = Resources.Load<AudioClip>("GirlCorona");
+        updateGold = Resources.Load<AudioClip>("updateGold");
+
+        playButton = Resources.Load<AudioClip>("Menu1");        
         menuButton = Resources.Load<AudioClip>("Menu2");        
         prize = Resources.Load<AudioClip>("PrizeFinal");      
         powerUp = Resources.Load<AudioClip>("Prize4");      
-        newHighScore = Resources.Load<AudioClip>("NewHighScore");  
+        newHighScore = Resources.Load<AudioClip>("NewHighScore");
+        buyWorld = Resources.Load<AudioClip>("Buy");
     }
 
     private void CheckChildAudioSource()
@@ -68,6 +73,9 @@ public class AudioManager : MonoBehaviour
                 CinemachineShake.Instance.ShakeCamera(3f, 0.1f);
                 musicAudioSource.Stop();
                 break;         
+            case "PlayButton":
+                audioSource.PlayOneShot(playButton);
+                break;         
             case "Button":
                 audioSource.PlayOneShot(menuButton);
                 break;         
@@ -79,6 +87,12 @@ public class AudioManager : MonoBehaviour
                 break;         
             case "NewHighScore":
                 audioSource.PlayOneShot(newHighScore);
+                break;         
+            case "Buy":
+                audioSource.PlayOneShot(buyWorld);
+                break;         
+            case "UpdateGold":
+                audioSource.PlayOneShot(updateGold);
                 break;         
         }
     }

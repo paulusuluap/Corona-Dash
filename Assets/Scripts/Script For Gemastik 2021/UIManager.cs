@@ -47,9 +47,10 @@ public class UIManager : MonoBehaviour
         {
             if(sceneName == "World_"+i.ToString())
             {
-                lastHighScore = PlayerPrefs.GetInt("Highscore_" + i.ToString());
+                lastHighScore =  PlayerPrefs.HasKey("Highscore_" + i.ToString()) 
+                    ? PlayerPrefs.GetInt("Highscore_" + i.ToString(), 0) : 0;
+
                 highscoreIndex = i;
-                // Debug.Log("HS index : " + highscoreIndex);
             }
         }
         
@@ -61,6 +62,16 @@ public class UIManager : MonoBehaviour
             powIconStorage.Add(p.gameObject);
         }
 
+        //Button Interactable control        
+
+        foreach(Button b in Resources.FindObjectsOfTypeAll(typeof(Button)) as Button[])
+        b.onClick.AddListener(TaskOnClick);
+    }
+
+    public void TaskOnClick()
+    {
+        foreach(Button b in Resources.FindObjectsOfTypeAll(typeof(Button)) as Button[])
+        b.enabled = false;
     }
 
     private void Update() {
@@ -158,12 +169,14 @@ public class UIManager : MonoBehaviour
     }
 
     public void UpdatingWalletWhenBackHome(){
-        PlayerPrefs.SetInt("MoneyCollected", PlayerPrefs.GetInt("MoneyCollected", 0) + score);
+        SaveManager.Instance.gainedMoney += score;
+        SaveManager.Instance.Save();
         AudioManager.PlaySound("Button");
         StartCoroutine(BackHome());
     }
     public void UpdatingWalletWhenRestart(){
-        PlayerPrefs.SetInt("MyWallet", PlayerPrefs.GetInt("MyWallet") + score);
+        SaveManager.Instance.gainedMoney += score;
+        SaveManager.Instance.Save();
         AudioManager.PlaySound("Button");
         StartCoroutine(RestartScene());
     }
@@ -203,9 +216,11 @@ public class UIManager : MonoBehaviour
 
         //Set Highscore
         if(score > lastHighScore)
-        PlayerPrefs.SetInt("Highscore" + highscoreIndex, score);
+        {
+            PlayerPrefs.SetInt("Highscore_" + highscoreIndex, score);
+        }
         
-        highScoreText.text = "HIGHSCORE " + PlayerPrefs.GetInt("Highscore" + highscoreIndex).ToString("000");
+        highScoreText.text = "HIGHSCORE " + PlayerPrefs.GetInt("Highscore_" + highscoreIndex).ToString("000");
 
         yield return new WaitForSecondsRealtime(2f);
         deathPopUp.SetActive(true);

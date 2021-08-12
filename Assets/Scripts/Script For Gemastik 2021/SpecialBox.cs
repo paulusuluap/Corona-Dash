@@ -20,7 +20,6 @@ public class SpecialBox : MonoBehaviour
     private void OnDisable() 
     {
         Attract();
-        
     }
 
     private void OnTriggerEnter(Collider collider) {
@@ -29,7 +28,9 @@ public class SpecialBox : MonoBehaviour
             // Wohoo audio
             randomPrize = Random.Range(0, prizePool.Length);
             prizeCollectedOnGame += randomPrize;
-            PlayerPrefs.SetInt("MoneyCollected", PlayerPrefs.GetInt("MoneyCollected", 0) + prizeCollectedOnGame);
+
+            SaveManager.Instance.gainedMoney += prizeCollectedOnGame;
+            SaveManager.Instance.Save();
 
             this.gameObject.SetActive(false);
             AudioManager.PlaySound("TakePrize");

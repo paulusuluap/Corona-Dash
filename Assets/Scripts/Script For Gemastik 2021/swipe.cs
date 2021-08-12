@@ -11,6 +11,7 @@ public class swipe : MonoBehaviour
     public float[] Pos {get {return pos;}}
     private float distance;
     public float Distance {get {return distance;}}
+    public int currentIndex;
 
     private void Start() 
     {
@@ -43,8 +44,16 @@ public class swipe : MonoBehaviour
             {
                 if (scroll_pos < pos[i] + (distance / 2) && scroll_pos > pos[i] - (distance / 2))
                 {
+                    currentIndex = i;
+
+                    if(ShopSystem.Instance.worldsPrice[i] > 500)
+                    ShopSystem.Instance.buy.enabled = false;
+                    else
+                    ShopSystem.Instance.buy.enabled = true;
+
                     scrollbar.GetComponent<Scrollbar>().value = Mathf.Lerp(scrollbar.GetComponent<Scrollbar>().value, pos[i], 0.1f);
                     scroll_pos = scrollbar.GetComponent<Scrollbar>().value;
+                    
                     transform.GetChild(i).localScale = Vector3.Lerp(transform.GetChild(i).localScale, new Vector3(1f, 1f, 1f), 0.1f);
                     // Debug.LogWarning("Current Selected Stage " + (i + 1));
 

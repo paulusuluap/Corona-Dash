@@ -1,14 +1,16 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 using System.Collections.Generic;
 
 public class SceneManagerScript : MonoBehaviour
 {   
-    public Transform worldContent;
     public static SceneManagerScript instance;
+    public Transform worldContent;
     private List<string> worldCollections = new List<string>();
     public List<string> WorldCollections {get{return worldCollections;}}
     [HideInInspector] public int numberOfWorlds;
+
     private void Awake() {
         instance = this;
         numberOfWorlds = worldContent.childCount;
