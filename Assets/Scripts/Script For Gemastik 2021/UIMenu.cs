@@ -33,6 +33,7 @@ public class UIMenu : MonoBehaviour
     private float textUpdateTime = 1.5f;
     private bool isMoneyUpdated = false;
     private bool isHidden = false; // for settings UI
+    public Transform[] bottomTransform = new Transform[2]; 
     public Transform tapOnPlayTransform; //character hanya percobaan satu stage
     public CanvasGroup settingsGroup;
     
@@ -57,11 +58,9 @@ public class UIMenu : MonoBehaviour
         
         if(addedMoney > 0) StartCoroutine(Pulse());
 
-        //Tap To Play Yoyo Effect
-        tapOnPlayTransform.DOScale(new Vector3(18.5f, 18.5f, 1f), 1.5f)
-            .SetEase(Ease.InOutSine)
-            .SetLoops(-1, LoopType.Yoyo);
-
+        //Tap To Play Yoyo Effect (bottomTranform are TapOnPlay and Buy Button)
+        YoyoScalingUpDown();
+        
         //Audio Button Images On Start Menu
         AudioButtonImageMenu();
     }
@@ -89,15 +88,27 @@ public class UIMenu : MonoBehaviour
         }
         else
         {   
-            myMoney = Mathf.Lerp(myMoney, (myMoney + addedMoney), textUpdateTime * Time.deltaTime);
-            walletText.text = (myMoney).ToString("0");
+            initMoney = Mathf.Lerp(initMoney, Mathf.RoundToInt(myMoney + addedMoney), textUpdateTime * Time.deltaTime);
+            walletText.text = Mathf.RoundToInt(initMoney).ToString("0");
 
-            if(Mathf.RoundToInt(myMoney) == Mathf.RoundToInt(initMoney + addedMoney))
+            if(Mathf.RoundToInt(initMoney) == Mathf.RoundToInt(myMoney + addedMoney))
             {
                 isMoneyUpdated = true;
                 return;
             }
         }
+    }
+
+    //Yoyo effect for play & buy image
+    private void YoyoScalingUpDown()
+    {
+        ShopSystem.Instance.play.transform.DOScale(new Vector3(18.5f, 18.5f, 1f), 1.5f)
+        .SetEase(Ease.InOutSine)
+        .SetLoops(-1, LoopType.Yoyo);
+
+        ShopSystem.Instance.buy.transform.DOScale(new Vector3(0.925f, 0.925f, 1f), 1.5f)
+        .SetEase(Ease.InOutSine)
+        .SetLoops(-1, LoopType.Yoyo);
     }
 
     //Stage Selection

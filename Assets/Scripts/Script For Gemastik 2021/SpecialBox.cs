@@ -31,6 +31,7 @@ public class SpecialBox : MonoBehaviour
 
             SaveManager.Instance.gainedMoney += prizeCollectedOnGame;
             SaveManager.Instance.Save();
+            Debug.Log(prizeCollectedOnGame);
 
             this.gameObject.SetActive(false);
             AudioManager.PlaySound("TakePrize");
