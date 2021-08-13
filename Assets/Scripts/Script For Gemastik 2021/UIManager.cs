@@ -10,11 +10,12 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager current;
 
-    [Header("Score")]
+    [Header("Texts")]
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI newHighScoreText;
     public TextMeshProUGUI deathScoreText;
     public TextMeshProUGUI highScoreText;
+    public TextMeshProUGUI prizeText;
     private int score;
     public int Score { get{return score; } set {value = score;}}
     private int lastHighScore;
@@ -34,15 +35,14 @@ public class UIManager : MonoBehaviour
 
     private void Awake() {
         current = this;
+        sceneName = SceneManager.GetActiveScene().name;
+        
         Collectibles.CoinPickedUp += Pulsing;
         score = 0;
 
         FadeSetter();
 
-        //Get Scene name
-        sceneName = SceneManager.GetActiveScene().name;
-
-        //Get the last highscore
+        //Get the last highscore for each scene
         for(int i = 1 ; i < 6 ; i++) 
         {
             if(sceneName == "World_"+i.ToString())
@@ -55,7 +55,9 @@ public class UIManager : MonoBehaviour
         }
         
         newHighScoreText.gameObject.SetActive(false);
+        prizeText.gameObject.SetActive(false);
 
+        //PowerUps inside frame icons
         foreach(Transform p in powerUpsIcon.transform)
         {
             p.gameObject.SetActive(false);
@@ -63,9 +65,11 @@ public class UIManager : MonoBehaviour
         }
 
         //Button Interactable control        
-
         foreach(Button b in Resources.FindObjectsOfTypeAll(typeof(Button)) as Button[])
-        b.onClick.AddListener(TaskOnClick);
+        {
+            b.enabled = true;
+            b.onClick.AddListener(TaskOnClick);
+        }   
     }
 
     public void TaskOnClick()
@@ -100,28 +104,28 @@ public class UIManager : MonoBehaviour
     #endregion
 
     //Coin Counter Pulse Effect
-    private IEnumerator Pulse()
+    private IEnumerator Pulse(TextMeshProUGUI text)
     {   
         for(float i = 1f; i <= 1.15f ; i += 0.05f)
         {
-            scoreText.rectTransform.localScale = new Vector3(i, i, i);
+            text.rectTransform.localScale = new Vector3(i, i, i);
             yield return new WaitForEndOfFrame();
         }
-        scoreText.rectTransform.localScale = new Vector3(1f, 1f, 1f);
+        text.rectTransform.localScale = new Vector3(1f, 1f, 1f);
 
         score++;
 
         for(float i = 1.2f; i >= 1f ; i -= 0.05f)
         {
-            scoreText.rectTransform.localScale = new Vector3(i, i, i);
+            text.rectTransform.localScale = new Vector3(i, i, i);
             yield return new WaitForEndOfFrame();
         }
-        scoreText.rectTransform.localScale = new Vector3(1f, 1f, 1f);
+        text.rectTransform.localScale = new Vector3(1f, 1f, 1f);
     }
 
     public void Pulsing()
     {
-        StartCoroutine(Pulse());
+        StartCoroutine(Pulse(scoreText));
     }
 
     private void OnDestroy() {
@@ -195,6 +199,11 @@ public class UIManager : MonoBehaviour
     IEnumerator NewHighScore()
     {
         newHighScoreText.gameObject.SetActive(true);
+
+        StartCoroutine(Pulse(newHighScoreText));
+
+        newHighScoreText.GetComponent<RectTransform>().DOAnchorPosY(-100f, 7f);
+
         //Cinemachine shake
         CinemachineShake.Instance.ShakeCamera(3f, 0.25f);
         //Firework
@@ -206,10 +215,40 @@ public class UIManager : MonoBehaviour
         //PlaySound
         AudioManager.PlaySound("NewHighScore");
         
-        yield return new WaitForSeconds(3.5f);
+        yield return new WaitForSeconds(3f);
+
+        newHighScoreText.GetComponent<CanvasGroup>().DOFade(0, 1f);
+
+        yield return new WaitForSeconds(1.5f);
 
         newHighScoreText.gameObject.SetActive(false);
     }
+
+    IEnumerator GetPrizeBox(int prize)
+    {
+        prizeText.gameObject.SetActive(true);
+        prizeText.text = prize.ToString() + " $";
+
+        StartCoroutine(Pulse(prizeText));
+        CinemachineShake.Instance.ShakeCamera(3f, 0.1f);
+
+        AudioManager.PlaySound("TakePrize");
+        ParticleManager.instance.IdleParticles("PrizeTaken");
+
+        yield return new WaitForSeconds(1f);
+
+        prizeText.GetComponent<CanvasGroup>().DOFade(0, 1f);
+
+        yield return new WaitForSeconds(1.2f);
+
+        prizeText.gameObject.SetActive(false);
+    }
+
+    public void ShowPrize(int prize)
+    {
+        StartCoroutine(GetPrizeBox(prize));
+    }
+
     IEnumerator DeathPopUp()
     {
         deathScoreText.text = score.ToString("000");
