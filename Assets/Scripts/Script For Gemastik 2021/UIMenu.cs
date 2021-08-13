@@ -75,7 +75,7 @@ public class UIMenu : MonoBehaviour
     //Updating Wallet Smooth with Lerp
     private void UpdatingWallet()
     {
-        if(SaveManager.Instance.playerMoney < myMoney)
+        if(SaveManager.Instance.playerMoney < Mathf.Round(initMoney))
         {
             myMoney = Mathf.Lerp(myMoney, SaveManager.Instance.playerMoney, textUpdateTime * Time.deltaTime);
             walletText.text = (myMoney).ToString("0");
