@@ -5001,7 +5001,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 0.5625, y: 1}
+    m_SensorSize: {x: 0.47368422, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -41307,7 +41307,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 818949699, guid: ad233b6e1fb6b4ac3891e4944fe60e13, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -200.00003
+      value: -200
       objectReference: {fileID: 0}
     - target: {fileID: 2116400497, guid: ad233b6e1fb6b4ac3891e4944fe60e13, type: 3}
       propertyPath: m_IsActive
@@ -41418,6 +41418,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5878424908255843447, guid: ad233b6e1fb6b4ac3891e4944fe60e13,
+        type: 3}
+      propertyPath: prizeText
+      value: 
+      objectReference: {fileID: 850898520}
     - target: {fileID: 5878424908255843448, guid: ad233b6e1fb6b4ac3891e4944fe60e13,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -41532,6 +41537,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UI Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 5878424909757905520, guid: ad233b6e1fb6b4ac3891e4944fe60e13,
+        type: 3}
+      propertyPath: m_isRightToLeft
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5878424909757905520, guid: ad233b6e1fb6b4ac3891e4944fe60e13,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 5878424909757905520, guid: ad233b6e1fb6b4ac3891e4944fe60e13,
+        type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5878424909757905521, guid: ad233b6e1fb6b4ac3891e4944fe60e13,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -152.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 5878424909757905521, guid: ad233b6e1fb6b4ac3891e4944fe60e13,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 24.571632
+      objectReference: {fileID: 0}
+    - target: {fileID: 5878424909757905522, guid: ad233b6e1fb6b4ac3891e4944fe60e13,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7780747195631448812, guid: ad233b6e1fb6b4ac3891e4944fe60e13,
         type: 3}

@@ -25,10 +25,9 @@ public class SpecialBox : MonoBehaviour
         if(collider.gameObject.CompareTag("Player"))
         {
             randomPrize = Random.Range(0, prizePool.Length);
-            UIManager.current.ShowPrize(randomPrize);
-            Debug.Log(randomPrize);
+            UIManager.current.ShowPrize(prizePool[randomPrize]);
 
-            SaveManager.Instance.gainedMoney += randomPrize;
+            SaveManager.Instance.gainedMoney += prizePool[randomPrize];
             SaveManager.Instance.Save();
 
             this.gameObject.SetActive(false);
