@@ -21,7 +21,12 @@ public class Corona : MonoBehaviour
             AudioManager.Vibrate();
             col.gameObject.GetComponent<FirstPersonController>().enabled = false;
             Destroy();
+
+            if(UIManager.current.SceneName == "World_3")
+            AudioManager.PlaySound("FemaleCorona");
+            else
             AudioManager.PlaySound("MaleCorona");
+            
             AnimationManager.current.SetAnim("DeathType2");
             AnimationManager.current.SetAnim("Die");
             UIManager.current.EndUI();

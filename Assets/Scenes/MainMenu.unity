@@ -2079,6 +2079,9 @@ MonoBehaviour:
   - {fileID: 1166815427}
   - {fileID: 2142823498}
   - {fileID: 1089104931}
+  bottomTransform:
+  - {fileID: 0}
+  - {fileID: 0}
   tapOnPlayTransform: {fileID: 1605906146}
   settingsGroup: {fileID: 1188481702}
 --- !u!1 &298674497
@@ -7762,7 +7765,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3360a5a36fc0402eb73590a1d882528, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldsPrice: 00000000fa000000f4010000e8030000c4090000
+  worldsPrice: 000000006400000064000000e8030000c4090000
   play: {fileID: 1605906145}
   buy: {fileID: 1040914920}
   price: {fileID: 772186512}

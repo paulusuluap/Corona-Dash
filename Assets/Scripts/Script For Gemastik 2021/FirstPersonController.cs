@@ -100,7 +100,11 @@ public class FirstPersonController : MonoBehaviour
             if(ParticleManager.instance.walkDust.isPlaying) ParticleManager.instance.walkDust.Stop();
 
             AudioManager.Vibrate();
-            AudioManager.PlaySound("MaleHit"); //Harus dicek lagi, nanti ada karakter cewe
+
+            if(UIManager.current.SceneName == "World_3")
+            AudioManager.PlaySound("FemaleHit");
+            else
+            AudioManager.PlaySound("MaleHit");
 
             AnimationManager.current.SetAnim("DeathType1");
             AnimationManager.current.SetAnim("Die");

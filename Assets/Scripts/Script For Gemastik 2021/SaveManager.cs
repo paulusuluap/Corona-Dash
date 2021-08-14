@@ -30,7 +30,7 @@ public class SaveManager : MonoBehaviour
         //Save JSON String
         PlayerPrefs.SetString("MySettings", jsonData);
         PlayerPrefs.Save();
-        // Debug.Log("Saved");
+        Debug.Log("Saved");
     }
 
     public void Load()
@@ -52,10 +52,6 @@ public class SaveManager : MonoBehaviour
             gainedMoney = loadedData.gainedMoney;
             //highscore
         }
-    }
-
-    private void OnApplicationQuit() {
-        Save();
     }
 }
 

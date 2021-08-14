@@ -6,6 +6,7 @@ public class AudioManager : MonoBehaviour
     public static AudioClip menuButton, prize, powerUp, newHighScore, playButton, buyWorld;
     private static AudioSource audioSource;
     private static AudioSource musicAudioSource;
+    public AudioClip[] musicCollections = new AudioClip[3];
  
     void Start()    
     {
@@ -13,7 +14,8 @@ public class AudioManager : MonoBehaviour
         if(PlayerPrefs.GetInt("Sound", 1) == 0) audioSource.mute = true;
         
         CheckChildAudioSource();
-        GetAllClips();    
+        GetAllClips();  
+        MusicToPlay();  
     }
 
     private void GetAllClips()
@@ -46,20 +48,22 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    private void MusicToPlay()
+    {
+        for(int i = 0 ; i < musicCollections.Length ; i++)
+        {
+            if(UIManager.current.SceneName == "World_" + (i+1))
+            musicAudioSource.PlayOneShot(musicCollections[i]);
+        }
+
+    }
+
     public static void PlaySound(string clip)
     {
         switch(clip)
         {
-            case "TakeCoin":
-                audioSource.PlayOneShot(coin);
-                break;
             case "MaleHit":
                 audioSource.PlayOneShot(maleHitSound);
-                CinemachineShake.Instance.ShakeCamera(3f, 0.1f);
-                musicAudioSource.Stop();
-                break;     
-            case "MaleCorona":
-                audioSource.PlayOneShot(maleCorona);
                 CinemachineShake.Instance.ShakeCamera(3f, 0.1f);
                 musicAudioSource.Stop();
                 break;     
@@ -68,6 +72,11 @@ public class AudioManager : MonoBehaviour
                 CinemachineShake.Instance.ShakeCamera(3f, 0.1f);
                 musicAudioSource.Stop();
                 break;         
+            case "MaleCorona":
+                audioSource.PlayOneShot(maleCorona);
+                CinemachineShake.Instance.ShakeCamera(3f, 0.1f);
+                musicAudioSource.Stop();
+                break;     
             case "FemaleCorona":
                 audioSource.PlayOneShot(femaleCorona);
                 CinemachineShake.Instance.ShakeCamera(3f, 0.1f);
@@ -79,6 +88,9 @@ public class AudioManager : MonoBehaviour
             case "Button":
                 audioSource.PlayOneShot(menuButton);
                 break;         
+            case "TakeCoin":
+                audioSource.PlayOneShot(coin);
+                break;
             case "TakePrize":
                 audioSource.PlayOneShot(prize);
                 break;         

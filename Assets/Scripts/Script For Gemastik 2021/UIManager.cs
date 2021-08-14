@@ -16,6 +16,9 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI deathScoreText;
     public TextMeshProUGUI highScoreText;
     public TextMeshProUGUI prizeText;
+    public TextMeshProUGUI nextLevelNotifText;
+
+    [Header("Scores")]
     private int score;
     public int Score { get{return score; } set {value = score;}}
     private int lastHighScore;
@@ -31,6 +34,7 @@ public class UIManager : MonoBehaviour
     private float resetSlider = 10f;
     private bool isNewScore = false;
     private string sceneName;
+    public string SceneName{get { return sceneName;}}
     public ParticleSystem[] fireworks = new ParticleSystem[3]; // Fireworks Trigger
 
     private void Awake() {
@@ -56,6 +60,7 @@ public class UIManager : MonoBehaviour
         
         newHighScoreText.gameObject.SetActive(false);
         prizeText.gameObject.SetActive(false);
+        nextLevelNotifText.gameObject.SetActive(false);
 
         //PowerUps inside frame icons
         foreach(Transform p in powerUpsIcon.transform)
@@ -82,6 +87,7 @@ public class UIManager : MonoBehaviour
         scoreText.text = score.ToString("000");
 
         BeatTheHighScore();
+        NextLevelNotification();
     }
 
     #region FadeTransition
@@ -104,18 +110,36 @@ public class UIManager : MonoBehaviour
     #endregion
 
     //Coin Counter Pulse Effect
-    private IEnumerator Pulse(TextMeshProUGUI text)
+    private IEnumerator CoinPulse()
     {   
         for(float i = 1f; i <= 1.15f ; i += 0.05f)
+        {
+            scoreText.rectTransform.localScale = new Vector3(i, i, i);
+            yield return new WaitForEndOfFrame();
+        }
+        scoreText.rectTransform.localScale = new Vector3(1f, 1f, 1f);
+
+        score++;
+
+        for(float i = 1.15f; i >= 1f ; i -= 0.05f)
+        {
+            scoreText.rectTransform.localScale = new Vector3(i, i, i);
+            yield return new WaitForEndOfFrame();
+        }
+        scoreText.rectTransform.localScale = new Vector3(1f, 1f, 1f);
+    }
+
+    //Pulse for other text than coin
+    private IEnumerator Pulse(TextMeshProUGUI text)
+    {   
+        for(float i = 1f; i <= 1.5f ; i += 0.05f)
         {
             text.rectTransform.localScale = new Vector3(i, i, i);
             yield return new WaitForEndOfFrame();
         }
         text.rectTransform.localScale = new Vector3(1f, 1f, 1f);
 
-        score++;
-
-        for(float i = 1.2f; i >= 1f ; i -= 0.05f)
+        for(float i = 1.5f; i >= 1f ; i -= 0.05f)
         {
             text.rectTransform.localScale = new Vector3(i, i, i);
             yield return new WaitForEndOfFrame();
@@ -125,7 +149,7 @@ public class UIManager : MonoBehaviour
 
     public void Pulsing()
     {
-        StartCoroutine(Pulse(scoreText));
+        StartCoroutine(CoinPulse());
     }
 
     private void OnDestroy() {
@@ -273,6 +297,23 @@ public class UIManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         SceneManager.LoadScene("MainMenu");
+    }
+
+    private void NextLevelNotification()
+    {
+        for(int i = 0 ; i < LevelManager.levelAmount ; i++)
+        {
+            if(score >= LevelManager.levelNotif[i] && score < LevelManager.newLevelScores[i])
+            {
+                nextLevelNotifText.gameObject.SetActive(true);
+
+                nextLevelNotifText.text = "next level in " + (LevelManager.newLevelScores[i] - score);
+            }
+            
+            if(nextLevelNotifText.gameObject.activeInHierarchy && score == LevelManager.newLevelScores[i])
+                nextLevelNotifText.gameObject.SetActive(false);
+
+        }
     }
     
 }

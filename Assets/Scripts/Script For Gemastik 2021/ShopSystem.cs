@@ -26,8 +26,6 @@ public class ShopSystem : MonoBehaviour
 
     private void TaskOnClick()
     {
-        Debug.Log("Button on clicked");
-    
         foreach(Button b in worldPlayButtons)
         b.enabled = false;
     }
@@ -39,7 +37,6 @@ public class ShopSystem : MonoBehaviour
             AudioManager.PlaySound("Buy");
             SaveManager.Instance.playerMoney -= ShopSystem.Instance.worldsPrice[swipe.instance.currentIndex];
             SaveManager.Instance.WorldsUnlocked[swipe.instance.currentIndex] = true;
-            
             SaveManager.Instance.Save();
         } 
         else AudioManager.PlaySound("Button");

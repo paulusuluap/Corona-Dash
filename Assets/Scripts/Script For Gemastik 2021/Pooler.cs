@@ -4,8 +4,8 @@ using UnityEngine;
 public class Pooler : MonoBehaviour
 {
     public static Pooler current;
-    public bool stage1 = false;
-    public bool stage2 = false;
+    public bool coronaStage1 = false;
+    public bool coronaStage2 = false;
     public GameObject pooledCoin;
     [Header("Power Ups")]
     public GameObject magnet;
@@ -97,14 +97,14 @@ public class Pooler : MonoBehaviour
                 return pooledCoronas[i];
         }
 
-        if(stage1)
+        if(coronaStage1)
         {
             GameObject obj = (GameObject) Instantiate (pooledCorona);
             pooledCoronas.Add(obj);
             return obj;
         }
 
-        if(stage2)
+        if(coronaStage2)
         {
             GameObject obj = (GameObject) Instantiate (pooledCorona);
             pooledCoronas.Add(obj);

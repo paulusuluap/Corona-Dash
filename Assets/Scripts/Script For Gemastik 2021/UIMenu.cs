@@ -29,7 +29,7 @@ public class UIMenu : MonoBehaviour
     public Button vib_Button;
     public Image[] buttonImages = new Image[3];
 
-    private float myMoney, initMoney, addedMoney; //initMoney tempat store myMoney awal awake
+    private float myMoney, updatedMoney, addedMoney; //initMoney tempat store myMoney awal awake
     private float textUpdateTime = 1.5f;
     private bool isMoneyUpdated = false;
     private bool isHidden = false; // for settings UI
@@ -38,6 +38,9 @@ public class UIMenu : MonoBehaviour
     public CanvasGroup settingsGroup;
     
     private void Awake() {
+        myMoney = SaveManager.Instance.playerMoney;
+        addedMoney = SaveManager.Instance.gainedMoney;
+
         //Tween Controller
         DOTween.Init(true, true, LogBehaviour.Verbose).SetCapacity(2000, 100);
 
@@ -48,13 +51,11 @@ public class UIMenu : MonoBehaviour
 
     private void Start() {
 
-        myMoney = SaveManager.Instance.playerMoney;
-        addedMoney = SaveManager.Instance.gainedMoney;
-        initMoney = myMoney;
-
         SaveManager.Instance.playerMoney = Mathf.RoundToInt(myMoney + addedMoney);
         SaveManager.Instance.gainedMoney = 0;
         SaveManager.Instance.Save();
+
+        updatedMoney = SaveManager.Instance.playerMoney;
         
         if(addedMoney > 0) StartCoroutine(Pulse());
 
@@ -66,21 +67,16 @@ public class UIMenu : MonoBehaviour
     }
 
     private void Update() {
-        if(!isMoneyUpdated) 
-        UpdatingWallet();
-
+        
+        if(!isMoneyUpdated)
+        UpdatingWalletAfterGame();
+        UpdatingWalletAfterBuy();
         UnlockedWorldsChecker();
     }
 
     //Updating Wallet Smooth with Lerp
-    private void UpdatingWallet()
+    private void UpdatingWalletAfterGame()
     {
-        if(SaveManager.Instance.playerMoney < Mathf.Round(initMoney))
-        {
-            myMoney = Mathf.Lerp(myMoney, SaveManager.Instance.playerMoney, textUpdateTime * Time.deltaTime);
-            walletText.text = (myMoney).ToString("0");
-        }
-
         if(addedMoney == 0) 
         {
             walletText.text = (myMoney).ToString("0");
@@ -88,14 +84,26 @@ public class UIMenu : MonoBehaviour
         }
         else
         {   
-            initMoney = Mathf.Lerp(initMoney, Mathf.RoundToInt(myMoney + addedMoney), textUpdateTime * Time.deltaTime);
-            walletText.text = Mathf.RoundToInt(initMoney).ToString("0");
+            myMoney = Mathf.Lerp(myMoney, updatedMoney, textUpdateTime * Time.deltaTime);
+            walletText.text = Mathf.RoundToInt(myMoney).ToString("0");
 
-            if(Mathf.RoundToInt(initMoney) == Mathf.RoundToInt(myMoney + addedMoney))
+            if(Mathf.RoundToInt(myMoney) == Mathf.RoundToInt(updatedMoney))
             {
                 isMoneyUpdated = true;
-                return;
+                return;   
             }
+        }
+    }
+
+    private void UpdatingWalletAfterBuy()
+    {
+        if(SaveManager.Instance.playerMoney == Mathf.RoundToInt(updatedMoney)) 
+        return;
+        
+        if(SaveManager.Instance.playerMoney < Mathf.RoundToInt(updatedMoney))
+        {
+            updatedMoney = Mathf.Lerp(updatedMoney, SaveManager.Instance.playerMoney, textUpdateTime * Time.deltaTime);
+            walletText.text = Mathf.Round(updatedMoney).ToString("0");
         }
     }
 

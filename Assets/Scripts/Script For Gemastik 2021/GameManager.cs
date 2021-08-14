@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     Vector3 cloudPosInit = new Vector3 (-13f, 119f, 234f); 
     Vector3 cloudPosEnd = new Vector3 (-13f, 119f, -71f);
     [Range(0f, 1f)] public float cloudLerp = 1f;
-    GameObject clouds;
+    private GameObject clouds;
 
     void Start()
     {
@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
         planet = GameObject.FindGameObjectWithTag("Planet").GetComponent<GravityAttractor>();
         clouds = GameObject.FindGameObjectWithTag("Clouds");
         
-        planetRadius = this.transform.localScale.x/2;
+        planetRadius = planet.transform.localScale.x/2;
         objectPosOnPlanet = planetRadius + offset;
         randomPos = new Vector3[4];
 
@@ -123,44 +123,54 @@ public class GameManager : MonoBehaviour
 
     private void StageSetter()
     {
-        if(UIManager.current.Score < 50) return;
+        for(int i = 0 ; i < LevelManager.levelAmount ; i++)
+        {   
+            if (UIManager.current.Score < LevelManager.newLevelScores[i] && UIManager.current.Score > LevelManager.newLevelScores[i])
+            return;
 
-        if(UIManager.current.Score >= 50 && UIManager.current.Score < 120)
-        {
-            player.WalkSpeed = 12.5f;
-            player.TurnSpeed = 225f;
-            CoronaManager.current.CoronaSpawnTime = 7.5f;
-            CinemachineShake.Instance.ShakeCamera(5f, 0.25f);
-            return;
-        }
-
-        if(UIManager.current.Score >= 120 && UIManager.current.Score < 205)
-        {
-            player.WalkSpeed = 15f;
-            player.TurnSpeed = 270f;
-            CoronaManager.current.CoronaSpawnTime = 5f;
-            CoronaManager.current.CoronaSpeed = 8f;
-            Pooler.current.stage1 = true;
-            CinemachineShake.Instance.ShakeCamera(5f, 0.25f);
-            return;
-        }
-        if(UIManager.current.Score >= 205 && UIManager.current.Score < 290)
-        {
-            player.WalkSpeed = 17.5f;
-            player.TurnSpeed = 315f;
-            CoronaManager.current.CoronaSpeed = 8.5f;
-            CinemachineShake.Instance.ShakeCamera(5f, 0.25f);
-            return;
-        }
-        if(UIManager.current.Score >= 290 && UIManager.current.Score < 375)
-        {
-            player.WalkSpeed = 20f;
-            player.TurnSpeed = 360f;
-            CoronaManager.current.CoronaSpawnTime = 3f;
-            CoronaManager.current.CoronaSpeed = 9f;
-            CinemachineShake.Instance.ShakeCamera(5f, 0.25f);
-            Pooler.current.stage2 = true;
-            return;
+            else{
+                if(UIManager.current.Score >= 10 && !LevelManager.isLevelPassed[0])
+                {
+                    Debug.Log("Level 2");
+                    LevelManager.instance.SetLevel(2);
+                    LevelManager.isLevelPassed[0] = true;
+                }
+                else if(UIManager.current.Score >= 20 && !LevelManager.isLevelPassed[1])
+                {
+                    Debug.Log("Level 3");
+                    LevelManager.instance.SetLevel(3);
+                    LevelManager.isLevelPassed[1] = true;
+                }
+                else if(UIManager.current.Score >= 30 && !LevelManager.isLevelPassed[2])
+                {
+                    Debug.Log("Level 4");
+                    LevelManager.instance.SetLevel(4);
+                    LevelManager.isLevelPassed[2] = true;
+                }
+                else if(UIManager.current.Score >= 40 && !LevelManager.isLevelPassed[3])
+                {
+                    Debug.Log("Level 5");
+                    LevelManager.instance.SetLevel(5);
+                    LevelManager.isLevelPassed[3] = true;
+                }
+            }
         }
     }
+
+    // public void BoolChecker()
+    // {
+    //     CheckClass check = new CheckClass();
+    //     check.isPassed = LevelManager.isLevelPassed;
+    //     check.Levels = LevelManager.newLevelScores;
+
+    //     string json = JsonUtility.ToJson(check);
+    //     Debug.Log(json);
+    // }
 }
+
+// public class CheckClass
+// {
+//     public bool[] isPassed;
+//     public int[] Levels;
+// }
+
