@@ -2,10 +2,10 @@
 public class FirstPersonController : MonoBehaviour
 {
     Rigidbody rb;
-    private float walkSpeed = 10f;
-    private float turnSpeed = 180f;
-    public float WalkSpeed { get{ return walkSpeed; } set{ walkSpeed = value; } }
-    public float TurnSpeed { get{ return turnSpeed; } set{ turnSpeed = value; } }
+    private static float walkSpeed = 10f;
+    private static float turnSpeed = 180f;
+    public static float WalkSpeed { get{ return walkSpeed; } set{ walkSpeed = value; } }
+    public static float TurnSpeed { get{ return turnSpeed; } set{ turnSpeed = value; } }
     private float screenWidth, screenHeight;
     private Vector3 moveAmount;
     private Vector3 smoothMoveVelocity;
@@ -64,7 +64,7 @@ public class FirstPersonController : MonoBehaviour
         int i = 0;
         if(i == Input.touchCount) 
         {
-            AnimationManager.current.SetAnim("LookStraight");
+            AnimationManager.SetAnim("LookStraight");
             return;
         }
         
@@ -74,13 +74,18 @@ public class FirstPersonController : MonoBehaviour
             if(Input.GetTouch(i).position.x < screenWidth/2)
             {
                 SideMovement(-1f);
-                AnimationManager.current.SetAnim("LookLeft");
+                AnimationManager.SetAnim("LookLeft");
             }
             //Belok Kanan
             if(Input.GetTouch(i).position.x > screenWidth/2)
             {
                 SideMovement(1f);
-                AnimationManager.current.SetAnim("LookRight");
+                AnimationManager.SetAnim("LookRight");
+            }
+            //Pencet kanan kiri
+            if(Input.GetTouch(i).position.x < screenWidth/2 && Input.GetTouch(i).position.x > screenWidth/2)
+            {
+                AnimationManager.SetAnim("LookStraight");
             }
             i++;    
         }
@@ -97,17 +102,19 @@ public class FirstPersonController : MonoBehaviour
     private void OnCollisionEnter(Collision obs) {
         if(obs.gameObject.CompareTag("Obstacle"))
         {
-            if(ParticleManager.instance.walkDust.isPlaying) ParticleManager.instance.walkDust.Stop();
+            if(ParticleManager.instance.walkDust.isPlaying) 
+            ParticleManager.instance.walkDust.Stop();
 
             AudioManager.Vibrate();
 
+            //Male or female sound to play
             if(UIManager.current.SceneName == "World_3")
             AudioManager.PlaySound("FemaleHit");
             else
             AudioManager.PlaySound("MaleHit");
 
-            AnimationManager.current.SetAnim("DeathType1");
-            AnimationManager.current.SetAnim("Die");
+            AnimationManager.SetAnim("DeathType1");
+            AnimationManager.SetAnim("Die");
             UIManager.current.EndUI();
 
             this.enabled = false;

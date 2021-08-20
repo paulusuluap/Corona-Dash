@@ -9,7 +9,8 @@ public class SaveManager : MonoBehaviour
     [Header("Save & Load Settings")]
     [SerializeField] private bool[] worldsUnlocked = new bool[5] {true, false, false, false, false};
     public bool[] WorldsUnlocked {get {return worldsUnlocked;} set {worldsUnlocked = value;}}
-    public int playerMoney, gainedMoney;
+    [HideInInspector] public int playerMoney, gainedMoney;
+    [HideInInspector] public string language;
 
     private void Awake() {
         Instance = this;
@@ -23,6 +24,7 @@ public class SaveManager : MonoBehaviour
         saveData.worldsUnlocked = worldsUnlocked;
         saveData.playerMoney = playerMoney;
         saveData.gainedMoney = gainedMoney;
+        saveData.language = language;
 
         //Converting to JSON
         string jsonData = JsonUtility.ToJson(saveData);
@@ -30,7 +32,7 @@ public class SaveManager : MonoBehaviour
         //Save JSON String
         PlayerPrefs.SetString("MySettings", jsonData);
         PlayerPrefs.Save();
-        Debug.Log("Saved");
+        // Debug.Log("Saved");
     }
 
     public void Load()
@@ -44,12 +46,14 @@ public class SaveManager : MonoBehaviour
             worldsUnlocked = new bool[5] {true, false, false, false, false};;
             playerMoney = 0;
             gainedMoney = 0;
+            language = "English";
         }
         else
         {
             worldsUnlocked = loadedData.worldsUnlocked;
             playerMoney = loadedData.playerMoney;
             gainedMoney = loadedData.gainedMoney;
+            language = loadedData.language;
             //highscore
         }
     }
@@ -61,4 +65,5 @@ public class PlayerData_Storage
     public int playerMoney;
     public int gainedMoney;
     public bool[] worldsUnlocked;
+    public string language;
 }

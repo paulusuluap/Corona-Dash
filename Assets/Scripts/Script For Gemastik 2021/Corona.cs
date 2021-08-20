@@ -27,8 +27,8 @@ public class Corona : MonoBehaviour
             else
             AudioManager.PlaySound("MaleCorona");
             
-            AnimationManager.current.SetAnim("DeathType2");
-            AnimationManager.current.SetAnim("Die");
+            AnimationManager.SetAnim("DeathType2");
+            AnimationManager.SetAnim("Die");
             UIManager.current.EndUI();
         }
     }

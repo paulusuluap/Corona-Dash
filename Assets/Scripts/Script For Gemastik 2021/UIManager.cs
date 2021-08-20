@@ -12,11 +12,12 @@ public class UIManager : MonoBehaviour
 
     [Header("Texts")]
     public TextMeshProUGUI scoreText;
-    public TextMeshProUGUI newHighScoreText;
+    public TextMeshProUGUI newHighScoreText; //
     public TextMeshProUGUI deathScoreText;
     public TextMeshProUGUI highScoreText;
     public TextMeshProUGUI prizeText;
-    public TextMeshProUGUI nextLevelNotifText;
+    public TextMeshProUGUI nextLevelNotifText; //
+    public TextMeshProUGUI restartText;
 
     [Header("Scores")]
     private int score;
@@ -77,10 +78,28 @@ public class UIManager : MonoBehaviour
         }   
     }
 
-    public void TaskOnClick()
+    private void Start() {
+        SetLanguageOnStart(SaveManager.Instance.language);
+    }
+
+    private void TaskOnClick()
     {
         foreach(Button b in Resources.FindObjectsOfTypeAll(typeof(Button)) as Button[])
         b.enabled = false;
+    }
+
+    private void SetLanguageOnStart(string bahasa)
+    {
+        if(bahasa == "English")
+        {
+            newHighScoreText.text = "New Highscore";
+            restartText.text = "Tap To Replay";
+        }
+        else
+        {
+            newHighScoreText.text = "Highscore Baru";
+            restartText.text = "Ketuk Untuk Mengulang";
+        }
     }
 
     private void Update() {
@@ -196,6 +215,7 @@ public class UIManager : MonoBehaviour
         StartCoroutine(DeathPopUp());
     }
 
+    //Button When Die
     public void UpdatingWalletWhenBackHome(){
         SaveManager.Instance.gainedMoney += score;
         SaveManager.Instance.Save();
@@ -209,6 +229,7 @@ public class UIManager : MonoBehaviour
         StartCoroutine(RestartScene());
     }
 
+    //Check if Highscore is beaten
     void BeatTheHighScore()
     {
         if(score < lastHighScore) return;
@@ -229,7 +250,7 @@ public class UIManager : MonoBehaviour
         newHighScoreText.GetComponent<RectTransform>().DOAnchorPosY(-100f, 7f);
 
         //Cinemachine shake
-        CinemachineShake.Instance.ShakeCamera(3f, 0.25f);
+        CinemachineShake.Instance.ShakeCamera(3f, 0.2f);
         //Firework
         foreach(ParticleSystem f in fireworks)
         {
@@ -243,7 +264,7 @@ public class UIManager : MonoBehaviour
 
         newHighScoreText.GetComponent<CanvasGroup>().DOFade(0, 1f);
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.2f);
 
         newHighScoreText.gameObject.SetActive(false);
     }
@@ -264,7 +285,8 @@ public class UIManager : MonoBehaviour
         prizeText.GetComponent<CanvasGroup>().DOFade(0, 1f);
 
         yield return new WaitForSeconds(1.2f);
-
+        
+        prizeText.GetComponent<CanvasGroup>().alpha = 1f;
         prizeText.gameObject.SetActive(false);
     }
 
@@ -299,6 +321,7 @@ public class UIManager : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
+    //Tells us when is the next level begin
     private void NextLevelNotification()
     {
         for(int i = 0 ; i < LevelManager.levelAmount ; i++)
@@ -307,7 +330,10 @@ public class UIManager : MonoBehaviour
             {
                 nextLevelNotifText.gameObject.SetActive(true);
 
+                if(SaveManager.Instance.language == "English")
                 nextLevelNotifText.text = "next level in " + (LevelManager.newLevelScores[i] - score);
+                else
+                nextLevelNotifText.text = "level berikutnya dalam " + (LevelManager.newLevelScores[i] - score);
             }
             
             if(nextLevelNotifText.gameObject.activeInHierarchy && score == LevelManager.newLevelScores[i])

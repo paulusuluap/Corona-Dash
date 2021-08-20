@@ -29,10 +29,10 @@ public class GameManager : MonoBehaviour
         objectPosOnPlanet = planetRadius + offset;
         randomPos = new Vector3[4];
 
-        float prizeInitalTime = Random.Range(30f, 60f);
+        float prizeInitalTime = Random.Range(60f, 100f);
 
-        InvokeRepeating("PrizeSpawning", prizeInitalTime, 300f);
-        InvokeRepeating("CoinSpawning", 2f, 1f);
+        InvokeRepeating("PrizeSpawning", prizeInitalTime, 250f);
+        InvokeRepeating("CoinSpawning", 2f, 2f);
         InvokeRepeating("PowerUpSpawning", 20f, 45f);
         InvokeRepeating("CoronaVirusSpawning", 10f, CoronaManager.current.CoronaSpawnTime);
 
@@ -129,28 +129,28 @@ public class GameManager : MonoBehaviour
             return;
 
             else{
-                if(UIManager.current.Score >= 10 && !LevelManager.isLevelPassed[0])
+                if(UIManager.current.Score >= 50 && !LevelManager.isLevelPassed[0])
                 {
                     Debug.Log("Level 2");
-                    LevelManager.instance.SetLevel(2);
+                    LevelManager.SetLevel(2);
                     LevelManager.isLevelPassed[0] = true;
                 }
-                else if(UIManager.current.Score >= 20 && !LevelManager.isLevelPassed[1])
+                else if(UIManager.current.Score >= 120 && !LevelManager.isLevelPassed[1])
                 {
                     Debug.Log("Level 3");
-                    LevelManager.instance.SetLevel(3);
+                    LevelManager.SetLevel(3);
                     LevelManager.isLevelPassed[1] = true;
                 }
-                else if(UIManager.current.Score >= 30 && !LevelManager.isLevelPassed[2])
+                else if(UIManager.current.Score >= 205 && !LevelManager.isLevelPassed[2])
                 {
                     Debug.Log("Level 4");
-                    LevelManager.instance.SetLevel(4);
+                    LevelManager.SetLevel(4);
                     LevelManager.isLevelPassed[2] = true;
                 }
-                else if(UIManager.current.Score >= 40 && !LevelManager.isLevelPassed[3])
+                else if(UIManager.current.Score >= 290 && !LevelManager.isLevelPassed[3])
                 {
                     Debug.Log("Level 5");
-                    LevelManager.instance.SetLevel(5);
+                    LevelManager.SetLevel(5);
                     LevelManager.isLevelPassed[3] = true;
                 }
             }

@@ -1,17 +1,31 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AnimationManager : MonoBehaviour
 {
     public static AnimationManager current;
-    private Animator playerAnim;
-    public GameObject m_PlayerCharacter;
+    private static Animator playerAnim;
+    private static Animator[] menuAnims;
+    private int[] idleCollections = new int[4] {1, 2, 3, 7};
 
-    private void Start() {
+    private void Awake() {
         current = this;
-        playerAnim = m_PlayerCharacter.GetComponent<Animator>();
+
+        if(SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            menuAnims = GameObject.FindObjectsOfType<Animator>();
+            foreach(var a in menuAnims) a.SetFloat("Speed_f", 0.2f);
+            StartCoroutine(RandomMenuAnims());
+        }
+        else 
+        {
+            playerAnim = GameObject.FindWithTag("Characters").GetComponent<Animator>();
+            SetAnim("Running");
+        }
     }
 
-    public void SetAnim(string whatIsCondition)
+    public static void SetAnim(string whatIsCondition)
     {
         switch(whatIsCondition)
         {
@@ -42,5 +56,25 @@ public class AnimationManager : MonoBehaviour
                 playerAnim.SetFloat("Head_Horizontal_f", LookRight);
                 break;
         }
+    }
+
+    private static void SetIdleRandom(int random)
+    {
+        foreach(Animator a in menuAnims)
+        a.SetInteger("Animation_int", random);
+    }
+
+    private IEnumerator RandomMenuAnims()
+    {
+        int random = Random.Range(0, 4);
+        SetIdleRandom(idleCollections[random]);
+
+        yield return new WaitForSeconds(2f);
+
+        SetIdleRandom(0);
+
+        yield return new WaitForSeconds(1.5f);
+
+        StartCoroutine(RandomMenuAnims());
     }
 }

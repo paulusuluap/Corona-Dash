@@ -12,10 +12,10 @@ public class Pooler : MonoBehaviour
     public GameObject star;
     [Header("Prize")]public GameObject prizeBox;
     [Header("Corona")]public GameObject pooledCorona;
-    private int pooledCoinAmount = 5;
-    private int powerUpsAmount = 2;
-    private int prizeBoxAmount = 1;
-    private int pooledCoronaAmount = 4;
+    private int pooledCoinAmount = 6; // Coin amount controller
+    private int powerUpsAmount = 2; // Pow Up amount controller
+    private int prizeBoxAmount = 1; 
+    private int pooledCoronaAmount = 4; // Corona amount controller
     private Vector3 powerUpSpawnLocation = new Vector3 (-7.186849f, -8.279894f, -12.61536f);
     private Vector3 prizeSpawnLocation = new Vector3 (0f, 16.21f, 0f);
 

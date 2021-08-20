@@ -8,7 +8,12 @@ public class UIMenu : MonoBehaviour
 {
     [Header("Texts")]
     public TextMeshProUGUI walletText;
-    public TextMeshProUGUI selectedLanguageText = default;
+    public TextMeshProUGUI selectedLanguageText;
+    public TextMeshProUGUI musicText;
+    public TextMeshProUGUI soundText;
+    public TextMeshProUGUI vibrationText;
+    public TextMeshProUGUI bahasaText;
+    public TextMeshProUGUI tapText;
     public TextMeshProUGUI[] highScoreTexts = new TextMeshProUGUI[5]; //Nanti dicari metode lain
 
     [Header("Rect Transforms")]
@@ -33,14 +38,9 @@ public class UIMenu : MonoBehaviour
     private float textUpdateTime = 1.5f;
     private bool isMoneyUpdated = false;
     private bool isHidden = false; // for settings UI
-    public Transform[] bottomTransform = new Transform[2]; 
-    public Transform tapOnPlayTransform; //character hanya percobaan satu stage
     public CanvasGroup settingsGroup;
     
     private void Awake() {
-        myMoney = SaveManager.Instance.playerMoney;
-        addedMoney = SaveManager.Instance.gainedMoney;
-
         //Tween Controller
         DOTween.Init(true, true, LogBehaviour.Verbose).SetCapacity(2000, 100);
 
@@ -50,12 +50,16 @@ public class UIMenu : MonoBehaviour
     }
 
     private void Start() {
+        myMoney = SaveManager.Instance.playerMoney;
+        addedMoney = SaveManager.Instance.gainedMoney;
 
         SaveManager.Instance.playerMoney = Mathf.RoundToInt(myMoney + addedMoney);
         SaveManager.Instance.gainedMoney = 0;
         SaveManager.Instance.Save();
 
         updatedMoney = SaveManager.Instance.playerMoney;
+        
+        SetLanguageOnStart(SaveManager.Instance.language);
         
         if(addedMoney > 0) StartCoroutine(Pulse());
 
@@ -179,23 +183,51 @@ public class UIMenu : MonoBehaviour
     public void Bahasa()
     {
         AudioManager.PlaySound("Button");
-        selectedLanguageText.text = "Indonesia";
         settingsGroup.DOFade(1f, 0.15f);
         selectedLanguage.transform.GetChild(0).gameObject.SetActive(false);
         InteractableControl(true);
 
         //Semua bahasa berubah Indonesia
+        SaveManager.Instance.language = "Indonesia";
+        SaveManager.Instance.Save();
+
+        SetLanguageOnStart(SaveManager.Instance.language);
     }
 
     public void English()
     {
         AudioManager.PlaySound("Button");
-        selectedLanguageText.text = "English";
         settingsGroup.DOFade(1f, 0.15f);
         selectedLanguage.transform.GetChild(0).gameObject.SetActive(false);
         InteractableControl(true);
 
         //Semua bahasa berubah Inggris
+        SaveManager.Instance.language = "English";
+        SaveManager.Instance.Save();
+
+        SetLanguageOnStart(SaveManager.Instance.language);
+    }
+
+    private void SetLanguageOnStart(string bahasa)
+    {
+        if(bahasa == "English")
+        {
+            selectedLanguageText.text = "English";
+            bahasaText.text = "Language";
+            musicText.text = "Music";
+            soundText.text = "Sound";
+            vibrationText.text = "Vibration";
+            tapText.text = "Tap To Play";
+        }
+        else
+        {
+            selectedLanguageText.text = "Indonesia";
+            bahasaText.text = "Bahasa";
+            musicText.text = "Musik";
+            soundText.text = "Suara";
+            vibrationText.text = "Getaran";
+            tapText.text = "Ketuk Untuk Bermain";
+        }
     }
 
 

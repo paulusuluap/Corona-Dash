@@ -3,7 +3,7 @@
 public class AudioManager : MonoBehaviour
 {
     public static AudioClip coin, maleHitSound, maleCorona, femaleHitSound, femaleCorona, updateGold;
-    public static AudioClip menuButton, prize, powerUp, newHighScore, playButton, buyWorld;
+    public static AudioClip menuButton, prize, powerUp, newHighScore, playButton, buyWorld, hitObs, coronaHit;
     private static AudioSource audioSource;
     private static AudioSource musicAudioSource;
     public AudioClip[] musicCollections = new AudioClip[3];
@@ -13,7 +13,6 @@ public class AudioManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();      
         if(PlayerPrefs.GetInt("Sound", 1) == 0) audioSource.mute = true;
         
-        CheckChildAudioSource();
         GetAllClips();  
         MusicToPlay();  
     }
@@ -33,29 +32,28 @@ public class AudioManager : MonoBehaviour
         powerUp = Resources.Load<AudioClip>("Prize4");      
         newHighScore = Resources.Load<AudioClip>("NewHighScore");
         buyWorld = Resources.Load<AudioClip>("Buy");
-    }
 
-    private void CheckChildAudioSource()
-    {
-        if(transform.GetChild(0).name == "Null") return;
-        else
-        {
-            musicAudioSource = transform.GetChild(0).GetComponent<AudioSource>();      
-            musicAudioSource.loop = true;
-
-            if(PlayerPrefs.GetInt("Music", 1) == 0)
-            musicAudioSource.Stop();
-        }
+        hitObs = Resources.Load<AudioClip>("HitObstacle");
+        coronaHit = Resources.Load<AudioClip>("Punched");
     }
 
     private void MusicToPlay()
     {
+        if(transform.GetChild(0).name == "Null") return;
+        else musicAudioSource = transform.GetChild(0).GetComponent<AudioSource>();      
+
         for(int i = 0 ; i < musicCollections.Length ; i++)
         {
             if(UIManager.current.SceneName == "World_" + (i+1))
-            musicAudioSource.PlayOneShot(musicCollections[i]);
-        }
+            {
+                musicAudioSource.clip = musicCollections[i];
+                musicAudioSource.Play();
+                musicAudioSource.loop = true;
 
+                if(PlayerPrefs.GetInt("Music", 1) == 0)
+                musicAudioSource.Stop();
+            }
+        } 
     }
 
     public static void PlaySound(string clip)
@@ -69,6 +67,7 @@ public class AudioManager : MonoBehaviour
                 break;     
             case "FemaleHit":
                 audioSource.PlayOneShot(femaleHitSound);
+                audioSource.PlayOneShot(hitObs);
                 CinemachineShake.Instance.ShakeCamera(3f, 0.1f);
                 musicAudioSource.Stop();
                 break;         
@@ -79,6 +78,7 @@ public class AudioManager : MonoBehaviour
                 break;     
             case "FemaleCorona":
                 audioSource.PlayOneShot(femaleCorona);
+                audioSource.PlayOneShot(coronaHit);
                 CinemachineShake.Instance.ShakeCamera(3f, 0.1f);
                 musicAudioSource.Stop();
                 break;         
