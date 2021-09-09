@@ -23,7 +23,6 @@ public class PlayerMoveSmooth : MonoBehaviour
         float vertical = Input.GetAxisRaw("Vertical");
 
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
-        // Vector3 direction = new Vector3(0f, 0f, vertical).normalized;
         Vector3 targetMoveAmount = direction * walkSpeed;
         moveAmount = Vector3.SmoothDamp(moveAmount, targetMoveAmount, ref smoothMoveVelocity, .15f);
         

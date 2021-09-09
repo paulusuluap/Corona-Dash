@@ -33,7 +33,8 @@ public class swipe : MonoBehaviour
     }
 
     private void SmoothStageSelection()
-    {
+    {            
+        //Nanti Get mouse button dihapus aja
         if (Input.GetMouseButton(0) || (Input.touchCount > 0))
         {
             scroll_pos = scrollbar.GetComponent<Scrollbar>().value;
@@ -61,7 +62,7 @@ public class swipe : MonoBehaviour
                     {
                         if (j != i)
                         {
-                            transform.GetChild(j).localScale = Vector3.Lerp(transform.GetChild(j).localScale, new Vector3(0.8f, 0.8f, 0.8f), 0.1f);
+                            transform.GetChild(j).localScale = Vector3.Lerp(transform.GetChild(j).localScale, new Vector3(0.65f, 0.65f, 0.65f), 0.1f);
                         }
                     }
                 }

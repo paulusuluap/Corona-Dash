@@ -19,30 +19,34 @@ public class LevelManager : MonoBehaviour
         switch (level)
         {
             case 2:
-            FirstPersonController.WalkSpeed = 12.5f;
-            FirstPersonController.TurnSpeed = 225f;
+            FirstPersonController.instance.WalkSpeed = 12.5f;
+            FirstPersonController.instance.TurnSpeed = 60f;
+            FirstPersonController.instance.FinalTurnSpeed = 120f;
             CoronaManager.current.CoronaSpawnTime = 5f;
             CoronaManager.current.CoronaSpeed = 8f;
             Pooler.current.coronaStage1 = true;
             CinemachineShake.Instance.ShakeCamera(5f, 0.1f);
             break;
             case 3:
-            FirstPersonController.WalkSpeed = 15f;
-            FirstPersonController.TurnSpeed = 270f;
+            FirstPersonController.instance.WalkSpeed = 15f;
+            FirstPersonController.instance.TurnSpeed = 75f;
+            FirstPersonController.instance.FinalTurnSpeed = 150f;
             CoronaManager.current.CoronaSpawnTime = 4f;
             CoronaManager.current.CoronaSpeed = 8.25f;
             CinemachineShake.Instance.ShakeCamera(5f, 0.1f);
             break;
             case 4:
-            FirstPersonController.WalkSpeed = 17.5f;
-            FirstPersonController.TurnSpeed = 315f;
+            FirstPersonController.instance.WalkSpeed = 17.5f;
+            FirstPersonController.instance.TurnSpeed = 85f;
+            FirstPersonController.instance.FinalTurnSpeed = 170f;
             CoronaManager.current.CoronaSpeed = 8.5f;
             Pooler.current.coronaStage2 = true;
             CinemachineShake.Instance.ShakeCamera(5f, 0.1f);
             break;
             case 5:
-            FirstPersonController.WalkSpeed = 20f;
-            FirstPersonController.TurnSpeed = 360f;
+            FirstPersonController.instance.WalkSpeed = 20f;
+            FirstPersonController.instance.TurnSpeed = 100f;
+            FirstPersonController.instance.FinalTurnSpeed = 200f;
             CoronaManager.current.CoronaSpawnTime = 3f;
             CoronaManager.current.CoronaSpeed = 9f;
             CinemachineShake.Instance.ShakeCamera(5f, 0.1f);

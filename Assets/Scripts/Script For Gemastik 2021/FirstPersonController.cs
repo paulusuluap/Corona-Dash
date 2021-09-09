@@ -1,11 +1,31 @@
 ﻿using UnityEngine;
 public class FirstPersonController : MonoBehaviour
 {
+     //static should not be used, when game restart the value still    
+    public static FirstPersonController instance;
     Rigidbody rb;
-    private static float walkSpeed = 10f;
-    private static float turnSpeed = 180f;
-    public static float WalkSpeed { get{ return walkSpeed; } set{ walkSpeed = value; } }
-    public static float TurnSpeed { get{ return turnSpeed; } set{ turnSpeed = value; } }
+    
+    //Initial rotation speed before lerp
+    private float turnSpeed = 50f;
+    public float TurnSpeed { 
+        get => turnSpeed;
+        set => turnSpeed = value;
+    }
+    //Target rotation speed after lerp
+    private float finalTurnSpeed = 100f;
+    public float FinalTurnSpeed { 
+        get => finalTurnSpeed;
+        set => finalTurnSpeed = value;
+    }
+
+    //Walk or Run speed    
+    private float walkSpeed = 10f;
+    public float WalkSpeed {
+        get => walkSpeed;
+        set => walkSpeed = value;
+    }
+    [Range(0f, 1f)] private float t_lerp = .0f;
+
     private float screenWidth, screenHeight;
     private Vector3 moveAmount;
     private Vector3 smoothMoveVelocity;
@@ -16,7 +36,8 @@ public class FirstPersonController : MonoBehaviour
     private Color c;
 
     void Start() {
-
+        
+        instance = this;
         rb = GetComponent<Rigidbody>();
         myRender = GetComponent<Renderer>();
         powerUps = FindObjectOfType<PowerUpsController>();
@@ -54,49 +75,61 @@ public class FirstPersonController : MonoBehaviour
         //FromtoRotation is for spherical planet, LookRotation for flat surface with different components
         Vector3 targetDir = (this.transform.position - planet.position).normalized;
         Quaternion targetRotation = Quaternion.FromToRotation(this.transform.up, targetDir) * this.transform.rotation;
-        Quaternion newRotation = Quaternion.Slerp(this.transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+        Quaternion newRotation = Quaternion.Slerp(this.transform.rotation, targetRotation, finalTurnSpeed * Time.deltaTime);
 
         transform.rotation = newRotation;
     }
 
     private void PlayerInputRotation()
-    {   
-        int i = 0;
-        if(i == Input.touchCount) 
+    {           
+        if(Input.touchCount == 0) 
         {
+            turnSpeed = 50f;
             AnimationManager.SetAnim("LookStraight");
             return;
         }
         
-        while(i < Input.touchCount)
+        for(int i = 0 ; i < Input.touchCount ; i++)
         {
-            //Belok Kiri
-            if(Input.GetTouch(i).position.x < screenWidth/2)
+            if(Input.GetTouch(i).phase == TouchPhase.Stationary || Input.GetTouch(i).phase == TouchPhase.Moved)
             {
-                SideMovement(-1f);
-                AnimationManager.SetAnim("LookLeft");
+                //Belok Kiri
+                if(Input.GetTouch(i).position.x < screenWidth/2)
+                {
+                    MoveSide(-1f);
+                    AnimationManager.SetAnim("LookLeft");
+                }
+                //Belok Kanan
+                else if (Input.GetTouch(i).position.x > screenWidth/2)
+                {
+                    MoveSide(1f);
+                    AnimationManager.SetAnim("LookRight");
+                }
+                //Both
+                else
+                {
+                    MoveSide(0f);
+                    turnSpeed = 50f;
+                    AnimationManager.SetAnim("LookStraight");
+                    return;
+                }
             }
-            //Belok Kanan
-            if(Input.GetTouch(i).position.x > screenWidth/2)
+            
+            if(Input.GetTouch(i).phase == TouchPhase.Ended)
             {
-                SideMovement(1f);
-                AnimationManager.SetAnim("LookRight");
-            }
-            //Pencet kanan kiri
-            if(Input.GetTouch(i).position.x < screenWidth/2 && Input.GetTouch(i).position.x > screenWidth/2)
-            {
+                turnSpeed = 50f;
                 AnimationManager.SetAnim("LookStraight");
+                return;
             }
-            i++;    
         }
     }
-    private void SideMovement(float dir)
-	{
-        float initTurnSpeed = 0f;
-        float lerpSpeed = 25f;
 
-        initTurnSpeed = Mathf.Lerp(initTurnSpeed, turnSpeed, lerpSpeed * Time.deltaTime); //make the turn move smooth
-		transform.Rotate(Vector3.up * dir * Time.deltaTime * initTurnSpeed, Space.Self);
+    private void MoveSide(float moveDir)
+	{    
+        turnSpeed = Mathf.Lerp(turnSpeed, finalTurnSpeed, t_lerp); //make the turn move smooth
+        t_lerp += 0.5f * Time.deltaTime;
+        
+        transform.Rotate(Vector3.up * moveDir * Time.deltaTime * turnSpeed, Space.Self);        
 	}
 
     private void OnCollisionEnter(Collision obs) {
@@ -104,8 +137,6 @@ public class FirstPersonController : MonoBehaviour
         {
             if(ParticleManager.instance.walkDust.isPlaying) 
             ParticleManager.instance.walkDust.Stop();
-
-            AudioManager.Vibrate();
 
             //Male or female sound to play
             if(UIManager.current.SceneName == "World_3")
@@ -118,6 +149,7 @@ public class FirstPersonController : MonoBehaviour
             UIManager.current.EndUI();
 
             this.enabled = false;
+            AudioManager.Vibrate();
         }
     }
 }

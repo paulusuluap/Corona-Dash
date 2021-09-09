@@ -10,7 +10,7 @@ public class AnimationManager : MonoBehaviour
     private int[] idleCollections = new int[4] {1, 2, 3, 7};
 
     private void Awake() {
-        current = this;
+        current = this;        
 
         if(SceneManager.GetActiveScene().buildIndex == 0)
         {
@@ -58,20 +58,22 @@ public class AnimationManager : MonoBehaviour
         }
     }
 
-    private static void SetIdleRandom(int random)
-    {
-        foreach(Animator a in menuAnims)
-        a.SetInteger("Animation_int", random);
+    private void SetIdleRandom()
+    {        
+        for(int i = 0 ; i < menuAnims.Length ; i++)
+        {
+            int random = Random.Range(0, 4);
+            menuAnims[i].SetInteger("Animation_int", idleCollections[random]);
+        }                
     }
 
     private IEnumerator RandomMenuAnims()
-    {
-        int random = Random.Range(0, 4);
-        SetIdleRandom(idleCollections[random]);
+    {        
+        SetIdleRandom();
 
         yield return new WaitForSeconds(2f);
-
-        SetIdleRandom(0);
+        
+        SetIdleRandom();
 
         yield return new WaitForSeconds(1.5f);
 

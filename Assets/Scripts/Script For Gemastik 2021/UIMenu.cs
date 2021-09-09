@@ -8,13 +8,14 @@ public class UIMenu : MonoBehaviour
 {
     [Header("Texts")]
     public TextMeshProUGUI walletText;
+    public TextMeshProUGUI walletOnUpgradesText;
     public TextMeshProUGUI selectedLanguageText;
     public TextMeshProUGUI musicText;
     public TextMeshProUGUI soundText;
     public TextMeshProUGUI vibrationText;
     public TextMeshProUGUI bahasaText;
     public TextMeshProUGUI tapText;
-    public TextMeshProUGUI[] highScoreTexts = new TextMeshProUGUI[5]; //Nanti dicari metode lain
+    public TextMeshProUGUI[] highScoreTexts = new TextMeshProUGUI[5]; //Nanti dicari metode lain    
 
     [Header("Rect Transforms")]
     public RectTransform mainMenu;
@@ -28,17 +29,24 @@ public class UIMenu : MonoBehaviour
     public Button english;
 
     [Header("Music Buttons & Others")]
+    public CanvasGroup settingsGroup;
     public Button exitSetting_Button;
     public Button msc_Button;
     public Button sou_Button;
     public Button vib_Button;
     public Image[] buttonImages = new Image[3];
+    
+    [Header("Upgrades")]
+    [SerializeField] private Button m_UpgradeButton; //Petir di Menu
+    [SerializeField] private Button m_PanelUpgradeButton; //if upgrade panel is click return
+    [SerializeField] private Button m_ExitUpgradeButton; // fungsi sama ky panelUpgrade    
+
 
     private float myMoney, updatedMoney, addedMoney; //initMoney tempat store myMoney awal awake
     private float textUpdateTime = 1.5f;
     private bool isMoneyUpdated = false;
     private bool isHidden = false; // for settings UI
-    public CanvasGroup settingsGroup;
+    
     
     private void Awake() {
         //Tween Controller
@@ -62,12 +70,20 @@ public class UIMenu : MonoBehaviour
         SetLanguageOnStart(SaveManager.Instance.language);
         
         if(addedMoney > 0) StartCoroutine(Pulse());
+        else 
+        {
+            walletText.text = $"$ {(myMoney).ToString("0")}";
+            walletOnUpgradesText.text = walletText.text;
+        }
 
         //Tap To Play Yoyo Effect (bottomTranform are TapOnPlay and Buy Button)
         YoyoScalingUpDown();
         
         //Audio Button Images On Start Menu
         AudioButtonImageMenu();
+
+        //Add functions to upgrade buttons
+        UpgradeButtonsTasksOnClick();
     }
 
     private void Update() {
@@ -81,15 +97,12 @@ public class UIMenu : MonoBehaviour
     //Updating Wallet Smooth with Lerp
     private void UpdatingWalletAfterGame()
     {
-        if(addedMoney == 0) 
-        {
-            walletText.text = (myMoney).ToString("0");
-            return;
-        }
+        if(addedMoney == 0) return;        
         else
         {   
-            myMoney = Mathf.Lerp(myMoney, updatedMoney, textUpdateTime * Time.deltaTime);
-            walletText.text = Mathf.RoundToInt(myMoney).ToString("0");
+            myMoney = Mathf.Lerp(myMoney, updatedMoney, textUpdateTime * Time.deltaTime);            
+            walletText.text = $"$ {Mathf.RoundToInt(myMoney).ToString("0")}";
+            walletOnUpgradesText.text = walletText.text;
 
             if(Mathf.RoundToInt(myMoney) == Mathf.RoundToInt(updatedMoney))
             {
@@ -107,20 +120,28 @@ public class UIMenu : MonoBehaviour
         if(SaveManager.Instance.playerMoney < Mathf.RoundToInt(updatedMoney))
         {
             updatedMoney = Mathf.Lerp(updatedMoney, SaveManager.Instance.playerMoney, textUpdateTime * Time.deltaTime);
-            walletText.text = Mathf.Round(updatedMoney).ToString("0");
+            walletText.text = $"$ {Mathf.Round(updatedMoney).ToString("0")}";
+            walletOnUpgradesText.text = walletText.text;
         }
     }
 
     //Yoyo effect for play & buy image
     private void YoyoScalingUpDown()
     {
+        //Play
         ShopSystem.Instance.play.transform.DOScale(new Vector3(18.5f, 18.5f, 1f), 1.5f)
-        .SetEase(Ease.InOutSine)
-        .SetLoops(-1, LoopType.Yoyo);
+            .SetEase(Ease.InOutSine)
+            .SetLoops(-1, LoopType.Yoyo);
 
+        //Buy
         ShopSystem.Instance.buy.transform.DOScale(new Vector3(0.925f, 0.925f, 1f), 1.5f)
-        .SetEase(Ease.InOutSine)
-        .SetLoops(-1, LoopType.Yoyo);
+            .SetEase(Ease.InOutSine)
+            .SetLoops(-1, LoopType.Yoyo);
+
+        //Upgrade
+        m_UpgradeButton.gameObject.transform.DOScale(new Vector3(1.1f, 1.1f, 1f), 1.5f)
+            .SetEase(Ease.InOutSine)
+            .SetLoops(-1, LoopType.Yoyo);
     }
 
     //Stage Selection
@@ -153,9 +174,7 @@ public class UIMenu : MonoBehaviour
         msc_Button.interactable = state;
         sou_Button.interactable = state;
         vib_Button.interactable = state;
-        
     }
-
     public void SelectLanguage()
     {
         InteractableControl(false);
@@ -173,13 +192,11 @@ public class UIMenu : MonoBehaviour
 
         FadeOtherSettings();
     }
-
     private void FadeOtherSettings()
     {
         float alphaValue = isHidden == true ? 0.1f : 1f;
         settingsGroup.DOFade(alphaValue, 0.15f);
     }
-
     public void Bahasa()
     {
         AudioManager.PlaySound("Button");
@@ -193,7 +210,6 @@ public class UIMenu : MonoBehaviour
 
         SetLanguageOnStart(SaveManager.Instance.language);
     }
-
     public void English()
     {
         AudioManager.PlaySound("Button");
@@ -230,6 +246,43 @@ public class UIMenu : MonoBehaviour
         }
     }
 
+    //Power Ups Upgrade UI
+
+    private void UpgradeButtonsTasksOnClick()
+    {
+        m_UpgradeButton.onClick.AddListener(OpenUpgradePowerUpsPanel); 
+        m_PanelUpgradeButton.onClick.AddListener(CloseUpgradePowerUpsPanel);
+        m_ExitUpgradeButton.onClick.AddListener(CloseUpgradePowerUpsPanel);        
+    }
+    protected void OpenUpgradePowerUpsPanel()
+    {
+        float panelAlphaValue = 1f;
+        AudioManager.PlaySound("Button");
+
+        // mainMenu.DOMove(new Vector2(0f, 2300f), 0.25f); //acuanBuatFungsiDotween
+        mainMenu.DOAnchorPos(new Vector2(0f, 2300f), 0.25f).SetEase(Ease.InExpo);
+
+        m_PanelUpgradeButton.gameObject.SetActive(true);
+        m_PanelUpgradeButton.GetComponent<CanvasGroup>().alpha = 0;
+        m_PanelUpgradeButton.GetComponent<CanvasGroup>().DOFade(panelAlphaValue, 0.25f);
+
+        powerUpsMenu.DOAnchorPos(new Vector2(0f, 0f), 0.25f)
+            .SetEase(Ease.OutExpo)
+            .SetDelay(0.25f);        
+    }
+    protected void CloseUpgradePowerUpsPanel()
+    {
+        AudioManager.PlaySound("Button");
+
+        powerUpsMenu.DOAnchorPos(new Vector2(0f, -2250f), 0.25f).SetEase(Ease.InExpo);
+        m_PanelUpgradeButton.GetComponent<CanvasGroup>()
+            .DOFade(0f, 0.25f)
+            .OnComplete(()=> m_PanelUpgradeButton.gameObject.SetActive(false));
+
+        mainMenu.DOAnchorPos(new Vector2(0f, 0f), 0.25f)
+            .SetDelay(0.25f)
+            .SetEase(Ease.OutExpo);
+    }    
 
     //Music Etc.
 
@@ -300,19 +353,10 @@ public class UIMenu : MonoBehaviour
         for(int i = 0 ; i < SaveManager.Instance.WorldsUnlocked.Length ; i++)
         {
             if(SaveManager.Instance.WorldsUnlocked[i] == true)
-            {
-                ShopSystem.Instance.worldPlayButtons[i].interactable = true;
-                
-                if(ShopSystem.Instance.padlocks[i] != null)
-                ShopSystem.Instance.padlocks[i].SetActive(false);
-            }
+            ShopSystem.Instance.worldPlayButtons[i].interactable = true;
+            
             else
-            {
-                ShopSystem.Instance.worldPlayButtons[i].interactable = false;
-
-                if(ShopSystem.Instance.padlocks[i] != null)
-                ShopSystem.Instance.padlocks[i].SetActive(true);
-            }
+            ShopSystem.Instance.worldPlayButtons[i].interactable = false;                            
         }
     }
     private IEnumerator Pulse()
