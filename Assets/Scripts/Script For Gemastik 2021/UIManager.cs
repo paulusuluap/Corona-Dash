@@ -21,7 +21,16 @@ public class UIManager : MonoBehaviour
 
     [Header("Scores")]
     private int score;
-    public int Score { get{return score; } set {value = score;}}
+    public int Score 
+    {
+        get => score; 
+        set => score = value;
+    }
+    private int scoreValue = 1;
+    public int ScoreValue
+    {
+        set => scoreValue = value;
+    }
     private int lastHighScore;
     private int highscoreIndex;
 
@@ -43,6 +52,7 @@ public class UIManager : MonoBehaviour
         sceneName = SceneManager.GetActiveScene().name;
         
         Collectibles.CoinPickedUp += Pulsing;
+        Corona.CoinPickedUp += Pulsing;
         score = 0;
 
         FadeSetter();
@@ -63,7 +73,7 @@ public class UIManager : MonoBehaviour
         prizeText.gameObject.SetActive(false);
         nextLevelNotifText.gameObject.SetActive(false);
 
-        //PowerUps inside frame icons
+        //PowerUps sprites inside frame icons
         foreach(Transform p in powerUpsIcon.transform)
         {
             p.gameObject.SetActive(false);
@@ -138,7 +148,7 @@ public class UIManager : MonoBehaviour
         }
         scoreText.rectTransform.localScale = new Vector3(1f, 1f, 1f);
 
-        score++;
+        score += scoreValue;
 
         for(float i = 1.15f; i >= 1f ; i -= 0.05f)
         {
@@ -148,7 +158,7 @@ public class UIManager : MonoBehaviour
         scoreText.rectTransform.localScale = new Vector3(1f, 1f, 1f);
     }
 
-    //Pulse for other text than coin
+    //Pulse for other texts than coin
     private IEnumerator Pulse(TextMeshProUGUI text)
     {   
         for(float i = 1f; i <= 1.5f ; i += 0.05f)
@@ -173,38 +183,70 @@ public class UIManager : MonoBehaviour
 
     private void OnDestroy() {
         Collectibles.CoinPickedUp -= Pulsing;
+        Corona.CoinPickedUp -= Pulsing;
     }
 
-    public void MagnetIconCalled(float magnetDur)
+    public void MagnetIconCalled(float initMagnetDur, float magnetDur)
     {
-        if(magnetDur >= 0)
+        if(magnetDur > 0)
         {
-            powIconStorage[0].SetActive(true);
-            powIconStorage[2].SetActive(true);
+            powSlider.maxValue = initMagnetDur;
             powSlider.value = magnetDur;
+            powIconStorage[0].SetActive(true);
+            powIconStorage[4].SetActive(true);
         }
         else
         {
             powIconStorage[0].SetActive(false);
-            powIconStorage[2].SetActive(false);
-            powSlider.value = resetSlider;
+            powIconStorage[4].SetActive(false);            
             return;
         };
     }
-
-    public void InvincibleIconCalled(float invisibleDur)
+    public void MaskIconCalled(float initMaskDur, float maskDur)
     {
-        if(invisibleDur >= 0)
+        if(maskDur > 0)
         {
+            powSlider.maxValue = initMaskDur;
+            powSlider.value = maskDur;
             powIconStorage[1].SetActive(true);
-            powIconStorage[2].SetActive(true);
-            powSlider.value = invisibleDur;
+            powIconStorage[4].SetActive(true);
         }
         else
         {
             powIconStorage[1].SetActive(false);
+            powIconStorage[4].SetActive(false); 
+            return;
+        };
+    }
+    public void InvincibleIconCalled(float initInvicibleDur, float invisibleDur)
+    {
+        if(invisibleDur > 0)
+        {
+            powSlider.maxValue = initInvicibleDur;
+            powSlider.value = invisibleDur;
+            powIconStorage[2].SetActive(true);
+            powIconStorage[4].SetActive(true);
+        }
+        else
+        {
             powIconStorage[2].SetActive(false);
-            powSlider.value = resetSlider;
+            powIconStorage[4].SetActive(false); 
+            return;
+        };
+    }
+    public void MultiplierIconCalled(float initMultiplierDur, float multiplyDur)
+    {
+        if(multiplyDur > 0)
+        {
+            powSlider.maxValue = initMultiplierDur;
+            powSlider.value = multiplyDur;
+            powIconStorage[3].SetActive(true);
+            powIconStorage[4].SetActive(true);
+        }
+        else
+        {
+            powIconStorage[3].SetActive(false);
+            powIconStorage[4].SetActive(false);
             return;
         };
     }

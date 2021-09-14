@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
+using System;
 
 public class Corona : MonoBehaviour
 {
+    public static event Action CoinPickedUp = delegate{};
     private GravityAttractor planet;
     private Rigidbody rb;
     
@@ -16,11 +18,9 @@ public class Corona : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision col) {   
-        if(col.gameObject.CompareTag("Player")) 
+        if(col.gameObject.CompareTag("Player") && !PowerUpsController.Instance.IsMaskActive)
         {
-            AudioManager.Vibrate();
             col.gameObject.GetComponent<FirstPersonController>().enabled = false;
-            Destroy();
 
             if(UIManager.current.SceneName == "World_3")
             AudioManager.PlaySound("FemaleCorona");
@@ -30,6 +30,24 @@ public class Corona : MonoBehaviour
             AnimationManager.SetAnim("DeathType2");
             AnimationManager.SetAnim("Die");
             UIManager.current.EndUI();
+
+            AudioManager.Vibrate();
+            Destroy();
+        }
+        //Immune to CoronaVirus
+        else if(col.gameObject.CompareTag("Player") && PowerUpsController.Instance.IsMaskActive)
+        {
+            //Play satisfying corona sound hitting player
+            //Add extra coin to player everytime corona hit
+
+            CoinPickedUp();
+            CinemachineShake.Instance.ShakeCamera(3f, 0.1f);
+            AudioManager.PlaySound("TakeCoin");
+            AudioManager.PlaySound("CoronaHit");
+            
+            ParticleManager.instance.SmokeParticles("CoronaOver", this.transform, this.transform);
+            
+            this.gameObject.SetActive(false);    
         }
     }
 

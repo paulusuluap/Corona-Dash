@@ -4,9 +4,10 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioClip coin, maleHitSound, maleCorona, femaleHitSound, femaleCorona, updateGold;
     public static AudioClip menuButton, prize, powerUp, newHighScore, playButton, buyWorld, hitObs, coronaHit;
+    public static AudioClip openUI, closeUI, upgradePowerUp;
     private static AudioSource audioSource;
     private static AudioSource musicAudioSource;
-    public AudioClip[] musicCollections = new AudioClip[3];
+    public AudioClip[] musicCollections = new AudioClip[4];
  
     void Start()    
     {
@@ -35,6 +36,9 @@ public class AudioManager : MonoBehaviour
 
         hitObs = Resources.Load<AudioClip>("HitObstacle");
         coronaHit = Resources.Load<AudioClip>("Punched");
+        openUI = Resources.Load<AudioClip>("-OpenUI");
+        closeUI = Resources.Load<AudioClip>("-CloseUI");
+        upgradePowerUp = Resources.Load<AudioClip>("Upgrade");
     }
 
     private void MusicToPlay()
@@ -97,6 +101,9 @@ public class AudioManager : MonoBehaviour
             case "TakePow":
                 audioSource.PlayOneShot(powerUp);
                 break;         
+            case "CoronaHit":
+                audioSource.PlayOneShot(coronaHit);
+                break;         
             case "NewHighScore":
                 audioSource.PlayOneShot(newHighScore);
                 break;         
@@ -105,6 +112,15 @@ public class AudioManager : MonoBehaviour
                 break;         
             case "UpdateGold":
                 audioSource.PlayOneShot(updateGold);
+                break;         
+            case "UpgradePowerUp":
+                audioSource.PlayOneShot(upgradePowerUp);
+                break;         
+            case "OpenUI":
+                audioSource.PlayOneShot(openUI);
+                break;         
+            case "CloseUI":
+                audioSource.PlayOneShot(closeUI);
                 break;         
         }
     }

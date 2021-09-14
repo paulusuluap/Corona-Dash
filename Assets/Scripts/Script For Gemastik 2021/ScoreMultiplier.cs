@@ -1,13 +1,14 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-public class Magnet : MonoBehaviour
+public class ScoreMultiplier : MonoBehaviour
 {
-    private PowerUpsController powerUps;
     private GravityAttractor planet;
 
     private void OnEnable() 
     {
-        powerUps = FindObjectOfType<PowerUpsController>();
+        // powerUps = FindObjectOfType<PowerUpsController>();
         planet = GameObject.FindObjectOfType<GravityAttractor>();
         Attract();
     }
@@ -17,13 +18,13 @@ public class Magnet : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other) {
-        if(other.gameObject.CompareTag("Player") && !PowerUpsController.Instance.IsMagnetActive)
+        if(other.gameObject.CompareTag("Player") && !PowerUpsController.Instance.IsMultiplierActive)
         {
-            PowerUpsController.Instance.ActivateMagnet();
-            ParticleManager.instance.IdleParticles("PowTaken");
+            PowerUpsController.Instance.ActivateMultiplier();
             AudioManager.PlaySound("TakePow");
+            ParticleManager.instance.IdleParticles("PowTaken");
             
-            this.gameObject.SetActive(false);            
+            this.gameObject.SetActive(false);
         }
     }    
 

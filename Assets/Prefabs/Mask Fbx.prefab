@@ -224,7 +224,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8109269007108695622}
   - component: {fileID: 8109269007108695617}
-  - component: {fileID: 8109269007108695621}
+  - component: {fileID: 3202952221721326589}
   m_Layer: 9
   m_Name: Mask Fbx
   m_TagString: Untagged
@@ -260,7 +260,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8109269007108695621
+--- !u!114 &3202952221721326589
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -269,7 +269,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8109269007108695618}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ad1e556259464b80b758c4f1770f6f8, type: 3}
+  m_Script: {fileID: 11500000, guid: cb258b935d9c44790bf7dad2ba27fb53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &4780297351499214028

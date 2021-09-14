@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
 
-public class Magnet : MonoBehaviour
+public class SuperMask : MonoBehaviour
 {
-    private PowerUpsController powerUps;
     private GravityAttractor planet;
 
     private void OnEnable() 
     {
-        powerUps = FindObjectOfType<PowerUpsController>();
+        // powerUps = FindObjectOfType<PowerUpsController>();
         planet = GameObject.FindObjectOfType<GravityAttractor>();
         Attract();
     }
@@ -17,13 +16,13 @@ public class Magnet : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other) {
-        if(other.gameObject.CompareTag("Player") && !PowerUpsController.Instance.IsMagnetActive)
-        {
-            PowerUpsController.Instance.ActivateMagnet();
-            ParticleManager.instance.IdleParticles("PowTaken");
+        if(other.gameObject.CompareTag("Player") && !PowerUpsController.Instance.IsMaskActive)
+        {            
+            PowerUpsController.Instance.ActivateMask();
             AudioManager.PlaySound("TakePow");
+            ParticleManager.instance.IdleParticles("PowTaken");
             
-            this.gameObject.SetActive(false);            
+            this.gameObject.SetActive(false);
         }
     }    
 

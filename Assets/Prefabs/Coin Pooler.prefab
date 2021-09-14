@@ -43,11 +43,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a67c59fdac5546e4885c2ba4dea6d0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pooledCoin: {fileID: 1654909804264824708, guid: 137b4d1ad4f7347379c95cdd2c7b13f9,
+  coronaStage1: 0
+  coronaStage2: 0
+  pooledCoin: {fileID: 2355601240689735342, guid: 3c079e413a6f243b1a8deac3175ce760,
     type: 3}
-  magnet: {fileID: 170173696165451807, guid: 46955a697f03c4dd484449c99de89425, type: 3}
-  specialBox: {fileID: 8403106571310345334, guid: 42550e825db0848d0908cb196af63206,
+  magnetPrefab: {fileID: 170173696165451807, guid: 46955a697f03c4dd484449c99de89425,
     type: 3}
-  pooledCorona: {fileID: 1546532096341185368, guid: a83bcf8da254442ab91ae540a31fcaf8,
+  maskPrefab: {fileID: 8109269007108695618, guid: c3a0eca9043854d6f9b036967d0a9be5,
     type: 3}
-  willGrow: 0
+  invincibleStarPrefab: {fileID: 3037706832884513571, guid: e34351767770d4536b8f270c21545c75,
+    type: 3}
+  multiplierPrefab: {fileID: 994005490841371263, guid: 98f124124c2c94bc8adef1b3460ecc3b,
+    type: 3}
+  prizeBox: {fileID: 8403106571310345334, guid: 42550e825db0848d0908cb196af63206,
+    type: 3}
+  pooledCorona: {fileID: 3282134612457931757, guid: 2bee83029b2f941b2914168c3d7e853a,
+    type: 3}
+  coronaPositions:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

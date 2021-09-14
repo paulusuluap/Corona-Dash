@@ -2,12 +2,12 @@
 
 public class Invincible : MonoBehaviour
 {
-    private PowerUpsController powerUps;
+    // private PowerUpsController powerUps;
     private GravityAttractor planet;
 
     private void OnEnable() 
     {
-        powerUps = FindObjectOfType<PowerUpsController>();
+        // powerUps = FindObjectOfType<PowerUpsController>();
         planet = GameObject.FindObjectOfType<GravityAttractor>();
         Attract();
     }
@@ -17,12 +17,13 @@ public class Invincible : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other) {
-        if(other.gameObject.CompareTag("Player") && !powerUps.IsInvincible)
+        if(other.gameObject.CompareTag("Player") && !PowerUpsController.Instance.IsInvincibleActive)
         {
-            powerUps.IsInvincible = true;
-            this.gameObject.SetActive(false);
+            PowerUpsController.Instance.ActivateInvincibility();
             AudioManager.PlaySound("TakePow");
             ParticleManager.instance.IdleParticles("PowTaken");
+            
+            this.gameObject.SetActive(false);
         }
     }    
 

@@ -67,7 +67,7 @@ public class UIMenu : MonoBehaviour
 
         updatedMoney = SaveManager.Instance.playerMoney;
         
-        SetLanguageOnStart(SaveManager.Instance.language);
+        SetLanguage(SaveManager.Instance.language);
         
         if(addedMoney > 0) StartCoroutine(Pulse());
         else 
@@ -158,15 +158,15 @@ public class UIMenu : MonoBehaviour
     // Settings
     public void SettingsMenu()
     {
-        AudioManager.PlaySound("Button");
-        mainMenu.DOAnchorPos(new Vector2(0f, 2300f), 0.25f);
-        settingsMenu.DOAnchorPos(new Vector2(0f, 0f), 0.25f).SetDelay(0.25f);
+        AudioManager.PlaySound("OpenUI");
+        mainMenu.DOAnchorPos(new Vector2(0f, 2300f), 0.25f).SetEase(Ease.InExpo);
+        settingsMenu.DOAnchorPos(new Vector2(0f, 0f), 0.25f).SetDelay(0.25f).SetEase(Ease.OutExpo);
     }
     public void ExitSettings()
     {
-        AudioManager.PlaySound("Button");
-        settingsMenu.DOAnchorPos(new Vector2(-1100f, 0f), 0.25f);
-        mainMenu.DOAnchorPos(new Vector2(0f, 0f), 0.25f).SetDelay(0.25f);
+        AudioManager.PlaySound("CloseUI");
+        settingsMenu.DOAnchorPos(new Vector2(-1100f, 0f), 0.25f).SetEase(Ease.InExpo);
+        mainMenu.DOAnchorPos(new Vector2(0f, 0f), 0.25f).SetDelay(0.25f).SetEase(Ease.OutExpo);
     }
     private void InteractableControl(bool state)
     {
@@ -208,7 +208,7 @@ public class UIMenu : MonoBehaviour
         SaveManager.Instance.language = "Indonesia";
         SaveManager.Instance.Save();
 
-        SetLanguageOnStart(SaveManager.Instance.language);
+        SetLanguage(SaveManager.Instance.language);
     }
     public void English()
     {
@@ -221,10 +221,10 @@ public class UIMenu : MonoBehaviour
         SaveManager.Instance.language = "English";
         SaveManager.Instance.Save();
 
-        SetLanguageOnStart(SaveManager.Instance.language);
+        SetLanguage(SaveManager.Instance.language);
     }
 
-    private void SetLanguageOnStart(string bahasa)
+    private void SetLanguage(string bahasa)
     {
         if(bahasa == "English")
         {
@@ -244,6 +244,8 @@ public class UIMenu : MonoBehaviour
             vibrationText.text = "Getaran";
             tapText.text = "Ketuk Untuk Bermain";
         }
+
+        ShopSystem.Instance.UpgradesLanguage(bahasa);
     }
 
     //Power Ups Upgrade UI
@@ -257,7 +259,7 @@ public class UIMenu : MonoBehaviour
     protected void OpenUpgradePowerUpsPanel()
     {
         float panelAlphaValue = 1f;
-        AudioManager.PlaySound("Button");
+        AudioManager.PlaySound("OpenUI");
 
         // mainMenu.DOMove(new Vector2(0f, 2300f), 0.25f); //acuanBuatFungsiDotween
         mainMenu.DOAnchorPos(new Vector2(0f, 2300f), 0.25f).SetEase(Ease.InExpo);
@@ -272,7 +274,7 @@ public class UIMenu : MonoBehaviour
     }
     protected void CloseUpgradePowerUpsPanel()
     {
-        AudioManager.PlaySound("Button");
+        AudioManager.PlaySound("CloseUI");
 
         powerUpsMenu.DOAnchorPos(new Vector2(0f, -2250f), 0.25f).SetEase(Ease.InExpo);
         m_PanelUpgradeButton.GetComponent<CanvasGroup>()

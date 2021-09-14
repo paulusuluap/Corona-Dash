@@ -5,13 +5,14 @@ public class swipe : MonoBehaviour
 {
     public static swipe instance;
     public GameObject scrollbar;
-    private float scroll_pos = 0;
+    private float scroll_pos;
     public float ScrollPos {get {return scroll_pos;}}
     private float[] pos;
     public float[] Pos {get {return pos;}}
     private float distance;
     public float Distance {get {return distance;}}
     public int currentIndex;
+    // private bool isStageIndexSaved;
 
     private void Start() 
     {
@@ -24,7 +25,7 @@ public class swipe : MonoBehaviour
         for (int i = 0; i < pos.Length; i++)
         {
             pos[i] = distance * i;
-        }
+        }        
     }
 
     void Update()
@@ -37,7 +38,8 @@ public class swipe : MonoBehaviour
         //Nanti Get mouse button dihapus aja
         if (Input.GetMouseButton(0) || (Input.touchCount > 0))
         {
-            scroll_pos = scrollbar.GetComponent<Scrollbar>().value;
+            scroll_pos = scrollbar.GetComponent<Scrollbar>().value;     
+            // isStageIndexSaved = false;
         }
         else
         {
@@ -47,13 +49,20 @@ public class swipe : MonoBehaviour
                 {
                     currentIndex = i;
 
-                    if(ShopSystem.Instance.worldsPrice[i] > 500)
+                    if(currentIndex > ShopSystem.Instance.permittedWorlds - 1)
                     ShopSystem.Instance.buy.enabled = false;
                     else
                     ShopSystem.Instance.buy.enabled = true;
 
-                    scrollbar.GetComponent<Scrollbar>().value = Mathf.Lerp(scrollbar.GetComponent<Scrollbar>().value, pos[i], 0.1f);
+                    scrollbar.GetComponent<Scrollbar>().value = Mathf.Lerp(scrollbar.GetComponent<Scrollbar>().value, pos[i], 0.1f);                    
                     scroll_pos = scrollbar.GetComponent<Scrollbar>().value;
+
+                    //To save current index saved when start
+                    // if(!isStageIndexSaved)
+                    // {                        
+                    //     PlayerPrefs.SetFloat("StageIndex", pos[currentIndex]);
+                    //     isStageIndexSaved = true;
+                    // }
                     
                     transform.GetChild(i).localScale = Vector3.Lerp(transform.GetChild(i).localScale, new Vector3(1f, 1f, 1f), 0.1f);
                     // Debug.LogWarning("Current Selected Stage " + (i + 1));

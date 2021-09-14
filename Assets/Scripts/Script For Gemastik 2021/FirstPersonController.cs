@@ -29,7 +29,6 @@ public class FirstPersonController : MonoBehaviour
     private float screenWidth, screenHeight;
     private Vector3 moveAmount;
     private Vector3 smoothMoveVelocity;
-    private PowerUpsController powerUps;
     private Transform planetPos;
     private Renderer myRender;
     public Renderer c_transparent, c_opaque;
@@ -40,7 +39,6 @@ public class FirstPersonController : MonoBehaviour
         instance = this;
         rb = GetComponent<Rigidbody>();
         myRender = GetComponent<Renderer>();
-        powerUps = FindObjectOfType<PowerUpsController>();
         planetPos = FindObjectOfType<GravityAttractor>().transform;
 
         screenWidth = Screen.width;
@@ -51,8 +49,21 @@ public class FirstPersonController : MonoBehaviour
 
     void Update()
     {
-        if(powerUps.IsMagnetized) powerUps.Magnetizing(this);
-        if(powerUps.IsInvincible) powerUps.Invulnerable(c_transparent, c_opaque, c);
+        if(!PowerUpsController.Instance.IsMagnetActive && !PowerUpsController.Instance.IsMaskActive
+            && !PowerUpsController.Instance.IsInvincibleActive && !PowerUpsController.Instance.IsMultiplierActive)
+            return;
+
+        if(PowerUpsController.Instance.IsMagnetActive) 
+            PowerUpsController.Instance.Magnetize(this);
+
+        else if(PowerUpsController.Instance.IsMaskActive) 
+            PowerUpsController.Instance.GiveMaskToPlayer();
+
+        else if(PowerUpsController.Instance.IsInvincibleActive) 
+            PowerUpsController.Instance.Invincible(c_transparent, c_opaque, c);
+
+        else if(PowerUpsController.Instance.IsMultiplierActive) 
+            PowerUpsController.Instance.MultiplyScore();
     }
     private void FixedUpdate() {
         Movement();

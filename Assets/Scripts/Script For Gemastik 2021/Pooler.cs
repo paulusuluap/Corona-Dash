@@ -7,24 +7,28 @@ public class Pooler : MonoBehaviour
     public bool coronaStage1 = false;
     public bool coronaStage2 = false;
     public GameObject pooledCoin;
+    
     [Header("Power Ups")]
-    public GameObject magnet;
-    public GameObject star;
+    [SerializeField] private GameObject magnetPrefab;
+    [SerializeField] private GameObject maskPrefab;
+    [SerializeField] private GameObject invincibleStarPrefab;
+    [SerializeField] private GameObject multiplierPrefab;
+
     [Header("Prize")]public GameObject prizeBox;
     [Header("Corona")]public GameObject pooledCorona;
     private int pooledCoinAmount = 6; // Coin amount controller
-    private int powerUpsAmount = 2; // Pow Up amount controller
+    private int powerUpsAmount = 4; // Pow Up amount controller
     private int prizeBoxAmount = 1; 
     private int pooledCoronaAmount = 4; // Corona amount controller
     private Vector3 powerUpSpawnLocation = new Vector3 (-7.186849f, -8.279894f, -12.61536f);
     private Vector3 prizeSpawnLocation = new Vector3 (0f, 16.21f, 0f);
 
-    public int PooledCoinAmount {get { return pooledCoinAmount; }}
-    public int PowerUpsAmount {get { return powerUpsAmount; }}
-    public int PrizeSpawnAmount {get { return prizeBoxAmount; }}
-    public Vector3 PrizeBoxLocation {get { return prizeSpawnLocation; }}
-    public Vector3 PowerUpSpawnLocation {get { return powerUpSpawnLocation; }}
-    public int PooledCoronaAmount {get { return pooledCoronaAmount; }}
+    public int PooledCoinAmount {get => pooledCoinAmount; }
+    public int PowerUpsAmount {get => powerUpsAmount; }
+    public int PrizeSpawnAmount {get => prizeBoxAmount; }
+    public Vector3 PrizeBoxLocation {get => prizeSpawnLocation; }
+    public Vector3 PowerUpSpawnLocation {get => powerUpSpawnLocation; }
+    public int PooledCoronaAmount {get => pooledCoronaAmount; }
     
     List<GameObject> pooledCoins = new List<GameObject>();
     List<GameObject> powerUps = new List<GameObject>();
@@ -32,9 +36,9 @@ public class Pooler : MonoBehaviour
     List<GameObject> pooledCoronas = new List<GameObject>();
     public Transform[] coronaPositions = new Transform[10];
 
-    public List<GameObject> PowerUps {get { return powerUps; }}
-    public List<GameObject> PrizeBoxes {get { return prizeBoxes; }}
-    public List<GameObject> PooledCoronas {get { return pooledCoronas; }}
+    public List<GameObject> PowerUps {get => powerUps; }
+    public List<GameObject> PrizeBoxes {get => prizeBoxes; }
+    public List<GameObject> PooledCoronas {get => pooledCoronas; }
 
     private void Awake() {
         current = this;    
@@ -116,12 +120,17 @@ public class Pooler : MonoBehaviour
 
     private void PowerUpsInstantiation()
     {
-        GameObject m_magnet = (GameObject) Instantiate (magnet);
-        GameObject m_invincible = (GameObject) Instantiate (star);
+        GameObject m_Magnet = (GameObject) Instantiate (magnetPrefab);
+        GameObject m_Mask = (GameObject) Instantiate (maskPrefab);
+        GameObject m_Invincible = (GameObject) Instantiate (invincibleStarPrefab);
+        GameObject m_Multiplier = (GameObject) Instantiate (multiplierPrefab);
 
-        powerUps.Add(m_magnet);
-        powerUps.Add(m_invincible);
+        powerUps.Add(m_Magnet);
+        powerUps.Add(m_Mask);
+        powerUps.Add(m_Invincible);
+        powerUps.Add(m_Multiplier);
         
-        for(int i = 0; i < powerUpsAmount; i++) powerUps[i].SetActive(false);
+        for(int i = 0; i < powerUpsAmount; i++) 
+        powerUps[i].SetActive(false);
     }
 }

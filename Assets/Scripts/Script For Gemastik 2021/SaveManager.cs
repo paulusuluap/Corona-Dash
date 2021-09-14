@@ -101,7 +101,7 @@ public class SaveManager : MonoBehaviour
         if(loadedData == null)
         {
             worldsUnlocked = new bool[5] {true, false, false, false, false};
-            playerMoney = 0;
+            playerMoney = 10000;
             gainedMoney = 0;
             language = "English";
 
@@ -121,6 +121,16 @@ public class SaveManager : MonoBehaviour
             playerMoney = loadedData.playerMoney;
             gainedMoney = loadedData.gainedMoney;
             language = loadedData.language;
+
+            magnetDuration = loadedData.magnetDuration;
+            maskDuration = loadedData.maskDuration;
+            invincibleDuration = loadedData.invincibleDuration;
+            multiplierDuration = loadedData.multiplierDuration;
+
+            m_MagnetLevel = loadedData.magnetLevel;
+            m_MaskLevel = loadedData.maskLevel;
+            m_InvincibleLevel = loadedData.invincibleLevel;
+            m_MultiplierLevel = loadedData.multiplierLevel;
             //highscore
         }
     }
