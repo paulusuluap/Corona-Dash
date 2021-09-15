@@ -21,6 +21,7 @@ public class UIMenu : MonoBehaviour
     public RectTransform mainMenu;
     public RectTransform settingsMenu;
     public RectTransform powerUpsMenu;
+    public RectTransform infoMenu;
     public RectTransform fade;
 
     [Header("Languages Button")]
@@ -39,7 +40,20 @@ public class UIMenu : MonoBehaviour
     [Header("Upgrades")]
     [SerializeField] private Button m_UpgradeButton; //Petir di Menu
     [SerializeField] private Button m_PanelUpgradeButton; //if upgrade panel is click return
-    [SerializeField] private Button m_ExitUpgradeButton; // fungsi sama ky panelUpgrade    
+    [SerializeField] private Button m_ExitUpgradeButton; // fungsi sama ky panelUpgrade
+
+    [Header("Character Info")]
+    [SerializeField] private TextMeshProUGUI m_CharacterName;
+    [SerializeField] private TextMeshProUGUI m_CharacterDesc;    
+    [SerializeField] private TextMeshProUGUI m_CloseCharacter;    
+    [SerializeField] private Button m_OpenInfoButton_1; 
+    [SerializeField] private Button m_OpenInfoButton_2; 
+    [SerializeField] private Button m_OpenInfoButton_3; 
+    [SerializeField] private Button m_OpenInfoButton_4; 
+    [SerializeField] private Button m_ExitInfoButton; 
+    [SerializeField] private Button m_ExitInfoButtonPanel; 
+    [SerializeField] private Image m_iconSprite; 
+    [SerializeField] private Sprite[] m_Sprites = new Sprite[4]; 
 
 
     private float myMoney, updatedMoney, addedMoney; //initMoney tempat store myMoney awal awake
@@ -77,13 +91,13 @@ public class UIMenu : MonoBehaviour
         }
 
         //Tap To Play Yoyo Effect (bottomTranform are TapOnPlay and Buy Button)
-        YoyoScalingUpDown();
+        YoyoScalingLoop();
         
         //Audio Button Images On Start Menu
         AudioButtonImageMenu();
 
         //Add functions to upgrade buttons
-        UpgradeButtonsTasksOnClick();
+        ButtonsTasksOnClick();
     }
 
     private void Update() {
@@ -126,7 +140,7 @@ public class UIMenu : MonoBehaviour
     }
 
     //Yoyo effect for play & buy image
-    private void YoyoScalingUpDown()
+    private void YoyoScalingLoop()
     {
         //Play
         ShopSystem.Instance.play.transform.DOScale(new Vector3(18.5f, 18.5f, 1f), 1.5f)
@@ -136,12 +150,7 @@ public class UIMenu : MonoBehaviour
         //Buy
         ShopSystem.Instance.buy.transform.DOScale(new Vector3(0.925f, 0.925f, 1f), 1.5f)
             .SetEase(Ease.InOutSine)
-            .SetLoops(-1, LoopType.Yoyo);
-
-        //Upgrade
-        m_UpgradeButton.gameObject.transform.DOScale(new Vector3(1.1f, 1.1f, 1f), 1.5f)
-            .SetEase(Ease.InOutSine)
-            .SetLoops(-1, LoopType.Yoyo);
+            .SetLoops(-1, LoopType.Yoyo);        
     }
 
     //Stage Selection
@@ -246,16 +255,76 @@ public class UIMenu : MonoBehaviour
         }
 
         ShopSystem.Instance.UpgradesLanguage(bahasa);
-    }
+    }    
 
-    //Power Ups Upgrade UI
-
-    private void UpgradeButtonsTasksOnClick()
+    private void ButtonsTasksOnClick()
     {
         m_UpgradeButton.onClick.AddListener(OpenUpgradePowerUpsPanel); 
         m_PanelUpgradeButton.onClick.AddListener(CloseUpgradePowerUpsPanel);
         m_ExitUpgradeButton.onClick.AddListener(CloseUpgradePowerUpsPanel);        
+
+        //Info Button
+        m_OpenInfoButton_1.onClick.AddListener(delegate{OpenCharacterInfoPanel(1);});
+        m_OpenInfoButton_2.onClick.AddListener(delegate{OpenCharacterInfoPanel(2);});
+        m_OpenInfoButton_3.onClick.AddListener(delegate{OpenCharacterInfoPanel(3);});
+        m_OpenInfoButton_4.onClick.AddListener(delegate{OpenCharacterInfoPanel(4);});
+        m_ExitInfoButton.onClick.AddListener(CloseCharacterInfoPanel);
+        m_ExitInfoButtonPanel.onClick.AddListener(CloseCharacterInfoPanel);
     }
+
+    // Character Info Panel
+    protected void OpenCharacterInfoPanel(int characterIndex)
+    {        
+        AudioManager.PlaySound("OpenUI");        
+        m_CloseCharacter.text = SaveManager.Instance.language == "Indonesia" 
+            ? "Tutup" : "Close";
+
+        //Text & Name
+        switch(characterIndex)
+        {
+            case 1:
+            m_CharacterName.text = "Andre";
+            m_iconSprite.sprite = m_Sprites[0];
+            m_CharacterDesc.text = SaveManager.Instance.language == "Indonesia" 
+                ? "Pengusaha yang mempertahankan usahanya demi hidup karyawan dan keluarganya ditengah pandemi Covid-19." 
+                : "An entrepreneur who maintains his business for the life of his employees and his family in the midst of the Covid-19 pandemic.";
+            break;
+            case 2:
+            m_CharacterName.text = "Joko";
+            m_iconSprite.sprite = m_Sprites[1];
+            m_CharacterDesc.text = SaveManager.Instance.language == "Indonesia" 
+                ? "Pekerja bangunan yang memutuskan untuk tidak menyerah ditengah pandemi dan tetap memilih bekerja untuk keluarganya."
+                : "Construction worker who decided not to give up in the middle of the pandemic and still choose to work for his family.";
+            break;
+            case 3:
+            m_CharacterName.text = "Dr. Winda";
+            m_iconSprite.sprite = m_Sprites[2];
+            m_CharacterDesc.text = SaveManager.Instance.language == "Indonesia" 
+                ? "Dokter yang mendedikasikan hidupnya dan mempertaruhkan nyawanya untuk kesehatan masyarakat dan memutuskan tetap bekerja di tengah pandemi Covid-19." 
+                : "A doctor who dedicated her life and risked her life for public health and decided to keep working in the midst of the Covid-19 pandemic.";
+            break;
+            case 4:
+            m_CharacterName.text = "Pak Bejo";
+            m_iconSprite.sprite = m_Sprites[3];
+            m_CharacterDesc.text = SaveManager.Instance.language == "Indonesia" 
+                ? "Petani yang tidak menyerah menghasilkan hasil pertanian terbaik dimasa pandemi." 
+                : "Farmer who does not give up producing the best agricultural products during the pandemic.";
+            break;
+        }
+
+        infoMenu.DOAnchorPos(new Vector2(0f, 0f), 0.25f)
+            .SetEase(Ease.OutExpo)
+            .SetDelay(0.25f);        
+    }
+
+    protected void CloseCharacterInfoPanel()
+    {
+        AudioManager.PlaySound("CloseUI");
+
+        infoMenu.DOAnchorPos(new Vector2(0f, -2250f), 0.25f).SetEase(Ease.InExpo);
+    }    
+
+    //Power Ups Upgrade UI
     protected void OpenUpgradePowerUpsPanel()
     {
         float panelAlphaValue = 1f;
@@ -272,6 +341,7 @@ public class UIMenu : MonoBehaviour
             .SetEase(Ease.OutExpo)
             .SetDelay(0.25f);        
     }
+    
     protected void CloseUpgradePowerUpsPanel()
     {
         AudioManager.PlaySound("CloseUI");

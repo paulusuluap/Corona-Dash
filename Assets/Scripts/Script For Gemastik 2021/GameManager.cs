@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
     Vector3 cloudPosEnd = new Vector3 (-13f, 119f, -71f);
     [Range(0f, 1f)] public float cloudLerp = 1f;
     private GameObject clouds;
+    [SerializeField] private GameObject cinemachine_1;
+    [SerializeField] private GameObject cinemachine_2;
 
     void Start()
     {
@@ -45,6 +47,7 @@ public class GameManager : MonoBehaviour
         Randoms();
         CloudMove();
         StageSetter();
+        CinemachineControl();
     }
 
     void CoinSpawning()
@@ -121,6 +124,16 @@ public class GameManager : MonoBehaviour
         clouds.transform.position = cloudPosInit;
     }
 
+    private void CinemachineControl()
+    {
+        if(player.enabled) return;
+        else
+        {
+            cinemachine_1.SetActive(false);
+            cinemachine_2.SetActive(true);
+        }
+    }
+
     private void StageSetter()
     {
         for(int i = 0 ; i < LevelManager.levelAmount ; i++)
@@ -156,21 +169,5 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
-    // public void BoolChecker()
-    // {
-    //     CheckClass check = new CheckClass();
-    //     check.isPassed = LevelManager.isLevelPassed;
-    //     check.Levels = LevelManager.newLevelScores;
-
-    //     string json = JsonUtility.ToJson(check);
-    //     Debug.Log(json);
-    // }
 }
-
-// public class CheckClass
-// {
-//     public bool[] isPassed;
-//     public int[] Levels;
-// }
 
