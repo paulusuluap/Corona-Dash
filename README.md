@@ -2,6 +2,10 @@
 
 Corona Dash is a mobile game developed for GEMASTIK 2021, an Indonesian national competition for game development among students. Representing my campus, I’m proud to share that this game secured a spot in the Top 20 among Indonesian game dev students.
 
+Additionally, I was highlighted by a news anchor for this achievement! You can read more about it in this article:
+Corona-Dash Highlighted on TribunNews
+[https://www.tribunnews.com/techno/2021/10/08/game-corona-dash-lolos-babak-final-ajang-gemastik-2021]
+
 Game Overview
 In Corona-Dash, players must navigate through an ever-changing world filled with obstacles and challenges, all while avoiding the deadly "Corona" virus. The game is fast-paced and requires quick reflexes as the player dashes, dodges, and collects power-ups to stay alive.
 
